@@ -2,23 +2,32 @@
 <html>
 	<head>
 		<style>
-			.browser-window {
+			body {
+				--control-colour: #aaa;
+				--control-highlight: #ccc;
+				--control-shadow: #888;
+				display: flex;
+				background-color: #666;
+			}
+
+			.chrome {
 				width: 40vw;
 				height: 80vh;
-				border: 2px solid #aaa;
-				border-left: 4px ridge #aaa;
+				border: 2px solid var(--control-colour);
+				border-left: 4px ridge var(--control-colour);
 				position: relative;
 			}
-			.browser-window::before {
+			.chrome::before {
 				content: '';
 				width: calc(40vw + 4px);
 				height: calc(80vh + 4px);
 				border: 2px solid;
 				left: -4px;
 				top: -4px;
-				border-color: #ccc;
-				border-right-color: #888;
+				border-color: var(--control-highlight);
+				border-right-color: var(--control-shadow);
 				position: absolute;
+				z-index: -1;
 			}
 
 
@@ -30,7 +39,7 @@
 				position: relative;
 				display: flex;
 			}
-			.button {
+			.window-control {
 				width: 10px;
 				height: 10px;
 				border-radius: 50%;
@@ -38,20 +47,106 @@
 				margin: 5px 2px;
 				border: 1px solid #666;
 			}
-			.button:nth-child(2) {
+			.window-control:nth-child(2) {
 				background-image: linear-gradient(hsl(40, 100%, 90%), hsl(40, 100%, 50%));
 			}
-			.button:last-child {
+			.window-control:last-child {
 				background-image: linear-gradient(lightgreen,green);
+			}
+
+			.page {
+				padding: 3em;
+			}
+
+			button {
+				border: 4px outset var(--control-colour);
+				background-color: var(--control-colour);
+				font-size: 1.5em;
+				font-family: 'Times New Roman', Times, serif;
+			}
+
+			button:active {
+				border-style: inset;
+				outline: 0;
+			}
+			button:focus {
+				outline: 0;
+			}
+
+			.engine {
+				width: 50vw;
+				transform: rotateX(80deg);
+				transform-style: preserve-3d;
+				margin: auto;
+			}
+			
+			.loop {
+				width: 40vw;
+				height: 40vw;
+				border: 10px dotted white;
+				border-radius: 50%;
+				position: relative;
+				animation: spin-da-loop 3s linear infinite;
+				transform-style: preserve-3d;
+			}
+			.pacman {
+				width: 80px;
+				height: 80px;
+				box-sizing: border-box;
+				display: block;
+				border-radius: 50%;
+				border: 40px solid yellow;
+				border-top-color: transparent;
+				position: absolute;
+				left: -50px;
+				top: 50%;
+				transform: rotateY(90deg);
+			}
+			.pacman::before, .pacman::after {
+				content: '';
+				width: 40px;
+				height: 40px;
+				background-color: yellow;
+				display: block;
+				position: absolute;
+				bottom: 0;
+				animation: chomp .5s linear infinite alternate;
+			}
+			.pacman::before {
+				right: 0;
+				border-top-left-radius: 40px;
+				transform-origin: bottom right;
+				transform: rotate(-45deg);
+			}
+			.pacman::after {
+				left: 0;
+				border-top-right-radius: 40px;
+				transform-origin: bottom left;
+				transform: rotate(45deg);
+			}
+
+			@keyframes spin-da-loop {
+				to { transform: rotateZ(1turn); }
+			}
+			@keyframes chomp {
+				to { transform: rotate(0); }
 			}
 		</style>
 	</head>
 	<body>
-		<div class="browser-window">
+		<div class="chrome">
 			<div class="titlebar">
-				<div class="button"></div>
-				<div class="button"></div>
-				<div class="button"></div>
+				<div class="window-control"></div>
+				<div class="window-control"></div>
+				<div class="window-control"></div>
+			</div>
+			<div class="page">
+				<button>Click Me</button>
+			</div>
+		</div>
+		<div class="engine">
+			<div class="loop">
+				<div class="pacman"></div>
 			</div>
 		</div>
 	</body>
