@@ -11,6 +11,18 @@
 				height: 100vh;
 			}
 
+			.page.wipe {
+				-webkit-mask-image: linear-gradient(to right, 
+				rgba(0,0,0,1) 0%,
+				rgba(0,0,0,1) 40%,
+				rgba(0,0,0,0) 50%,
+				rgba(0,0,0,0) 55%,
+				rgba(0,0,0,1) 65%);
+				-webkit-mask-size: 300% 100%;
+				-webkit-mask-position: 100% 0;
+				transition: -webkit-mask-position 1s ease; 
+			}
+
 			.chrome {
 				width: 40vw;
 				height: 80vh;
@@ -177,23 +189,51 @@
 			}
 		</style>
 		<script>
-			let checking;
 			let pacman;
 			let loop;
 			let taskQueue;
+			let page;
+			let spin;
+			let watching = false;
 
 			document.addEventListener('DOMContentLoaded', () => {
 				pacman = document.querySelector('.pacman');
 				loop = document.querySelector('.loop');
 				taskQueue = document.querySelector('.task-queue');
+				page = document.querySelector('.page');
+				spin = document.querySelector('.spin');
 			});
 
-			function checkForTasks() {
-				if (document.querySelector('.task')) {
-					checking = setInterval(checkPosition, 256);
+			function watchPosition() {
+				if (!watching && document.querySelector('.task')) {
+					watching = true;
+					setTimeout(checkPosition, 256);
 				}
 			}
 
+			function pausePacman() {
+				spin.style.animationPlayState = 'paused';
+			}
+			function restartPacman() {
+				spin.style.animationPlayState = 'running';
+			}
+
+			function draw() {
+				const drawInterval = setInterval(() => {
+					const pacmanPosition = pacman.getBoundingClientRect();
+					const loopPosition = loop.getBoundingClientRect();
+					if (Math.round(pacmanPosition.right) === Math.round(loopPosition.right)) {
+						clearInterval(drawInterval);
+						pausePacman();
+						page.classList.add('wipe');
+
+						document.addEventListener('transitionend', () => {
+							restartPacman();
+							watchPosition();
+						}, { once: true });
+					}
+				}, 16);
+			}
 
 			function addTask() {
 				const numberOfTasks = document.querySelectorAll('.task').length;
@@ -204,10 +244,11 @@
 				div.style.zIndex = numberOfTasks * -1;
 				taskQueue.appendChild(div);
 
-				checkForTasks();
+				watchPosition();
 			}
 
 			function checkPosition() {
+				watching = false;
 				const firstTask = document.querySelector('.task');
 				const loopPosition = loop.getBoundingClientRect();
 				const pacmanPosition = pacman.getBoundingClientRect();
@@ -215,16 +256,16 @@
 				if (pacmanPosition.right < taskPosition.right
 						&& pacmanPosition.right > taskPosition.left + 10
 						&& pacmanPosition.bottom < loopPosition.bottom) {
-					const spinStyle = document.querySelector('.spin').style;
-					spinStyle.animationPlayState = 'paused';
-					clearInterval(checking);
-
+					pausePacman();
+					watching = false;
 					setTimeout(() => {
 						firstTask.remove();
-						spinStyle.animationPlayState = 'running';
-						checkForTasks();
+						restartPacman();
+						draw();
 					}, 3000);
-				} 
+				} else {
+					watchPosition();
+				}
 			}
 
 		</script>
