@@ -94,16 +94,18 @@
 			}
 
 			.loop {
+				width: 40vw;
+				height: 40vw;
+				border: 10px solid white;
+				border-right-color: red;
+				border-radius: 50%;
 				margin-top: -30%;
 				transform: rotateX(80deg);
 				transform-style: preserve-3d;
 			}
 			
 			.spin {
-				width: 40vw;
 				height: 40vw;
-				border: 10px solid white;
-				border-radius: 50%;
 				position: relative;
 				animation: spin-da-loop 8s linear infinite;
 				transform-style: preserve-3d;
@@ -152,6 +154,15 @@
 				background-color: white;
 				border: 2px solid black;
 				flex-shrink: 0;
+				display: flex;
+			}
+			.task::before {
+				margin: auto;
+				content: '{}';
+				font-family: 'Courier New', Courier, monospace;
+				font-weight: bold;
+				overflow: hidden;
+				font-size: 2em;
 			}
 			
 			.task:not(:first-child) {
@@ -177,6 +188,13 @@
 				taskQueue = document.querySelector('.task-queue');
 			});
 
+			function checkForTasks() {
+				if (document.querySelector('.task')) {
+					checking = setInterval(checkPosition, 256);
+				}
+			}
+
+
 			function addTask() {
 				const numberOfTasks = document.querySelectorAll('.task').length;
 				const div = document.createElement('div');
@@ -186,23 +204,25 @@
 				div.style.zIndex = numberOfTasks * -1;
 				taskQueue.appendChild(div);
 
-				checking = setInterval(checkPosition, 256);
+				checkForTasks();
 			}
 
 			function checkPosition() {
+				const firstTask = document.querySelector('.task');
 				const loopPosition = loop.getBoundingClientRect();
 				const pacmanPosition = pacman.getBoundingClientRect();
-				const taskPosition = document.querySelector('.task').getBoundingClientRect();
+				const taskPosition = firstTask.getBoundingClientRect();
 				if (pacmanPosition.right < taskPosition.right
-						&& pacmanPosition.left > (taskPosition.left - 5)
+						&& pacmanPosition.right > taskPosition.left + 10
 						&& pacmanPosition.bottom < loopPosition.bottom) {
 					const spinStyle = document.querySelector('.spin').style;
 					spinStyle.animationPlayState = 'paused';
 					clearInterval(checking);
 
 					setTimeout(() => {
+						firstTask.remove();
 						spinStyle.animationPlayState = 'running';
-						setInterval(checkPosition, 256);
+						checkForTasks();
 					}, 3000);
 				} 
 			}
