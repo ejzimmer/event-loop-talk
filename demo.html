@@ -98,6 +98,8 @@
 
 			.task-queue {
 				height: 30vh;
+				width: 30vw;
+				margin: auto;
 				padding-left: 5vw;
 				position: relative;
 				display: flex;
@@ -111,6 +113,7 @@
 				border: 10px solid white;
 				border-right-color: red;
 				border-radius: 50%;
+				margin: auto;
 				margin-top: -30%;
 				transform: rotateX(80deg);
 				transform-style: preserve-3d;
@@ -167,6 +170,9 @@
 				border: 2px solid black;
 				flex-shrink: 0;
 				display: flex;
+				transition: left .5s linear, bottom .5s linear, height 3s linear;
+				position: absolute;
+				overflow: hidden;
 			}
 			.task::before {
 				margin: auto;
@@ -176,11 +182,7 @@
 				overflow: hidden;
 				font-size: 2em;
 			}
-			
-			.task:not(:first-child) {
-				position: relative;
-			}
-			
+		
 			@keyframes spin-da-loop {
 				to { transform: rotateZ(1turn); }
 			}
@@ -228,6 +230,7 @@
 						page.classList.add('wipe');
 
 						document.addEventListener('transitionend', () => {
+							page.classList.remove('wipe');
 							restartPacman();
 							watchPosition();
 						}, { once: true });
@@ -235,16 +238,25 @@
 				}, 16);
 			}
 
+			function drawTask(task, index) {
+				task.style.left = `${index * -5}px`;
+				task.style.bottom = `${index * 5}px`;
+				task.style.zIndex = index * -1;			
+			}
+
 			function addTask() {
 				const numberOfTasks = document.querySelectorAll('.task').length;
 				const div = document.createElement('div');
 				div.classList.add('task');
-				div.style.left = `${numberOfTasks * -5}px`;
-				div.style.bottom = `${numberOfTasks * -80}px`;
-				div.style.zIndex = numberOfTasks * -1;
+				drawTask(div, numberOfTasks);
 				taskQueue.appendChild(div);
 
 				watchPosition();
+			}
+
+			function redrawTasks() {
+				const tasks = document.querySelectorAll('.task');
+				tasks.forEach(drawTask);
 			}
 
 			function checkPosition() {
@@ -257,9 +269,11 @@
 						&& pacmanPosition.right > taskPosition.left + 10
 						&& pacmanPosition.bottom < loopPosition.bottom) {
 					pausePacman();
+					firstTask.style.height = 0;
 					watching = false;
 					setTimeout(() => {
 						firstTask.remove();
+						redrawTasks();
 						restartPacman();
 						draw();
 					}, 3000);
