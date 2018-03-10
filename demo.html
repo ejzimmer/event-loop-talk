@@ -7,7 +7,8 @@
 				--control-highlight: #ccc;
 				--control-shadow: #888;
 				display: flex;
-				background-color: #668;
+				background: linear-gradient(to bottom right, #4517ed, #291c59);
+				height: 100vh;
 			}
 
 			.chrome {
@@ -16,7 +17,8 @@
 				border: 2px solid var(--control-colour);
 				border-left: 4px ridge var(--control-colour);
 				position: relative;
-				background-color: white;
+				display: flex;
+				flex-direction: column;
 			}
 			.chrome::before {
 				content: '';
@@ -30,7 +32,6 @@
 				position: absolute;
 				z-index: -1;
 			}
-
 
 			.titlebar {
 				height: 20px;
@@ -55,8 +56,9 @@
 				background-image: linear-gradient(lightgreen,green);
 			}
 
-			.page {		
-				padding: 1em;
+			.page {
+				background: white;
+				flex-grow: 1;
 			}
 
 			button {
@@ -64,6 +66,7 @@
 				background-color: var(--control-colour);
 				font-size: 1.5em;
 				font-family: 'Times New Roman', Times, serif;
+				margin: 1.5em;
 			}
 
 			button:active {
@@ -76,19 +79,35 @@
 
 			.engine {
 				width: 50vw;
+				margin: auto;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.task-queue {
+				height: 30vh;
+				padding-left: 5vw;
+				position: relative;
+				display: flex;
+				flex-direction: column-reverse;
+				justify-content: flex-start;
+			}
+
+			.loop {
+				margin-top: -30%;
 				transform: rotateX(80deg);
 				transform-style: preserve-3d;
-				margin: auto;
 			}
 			
-			.loop {
+			.spin {
 				width: 40vw;
 				height: 40vw;
 				border: 10px solid white;
 				border-radius: 50%;
 				position: relative;
-				animation: spin-da-loop 10s linear infinite;
+				animation: spin-da-loop 8s linear infinite;
 				transform-style: preserve-3d;
+				margin: auto;
 			}
 			.pacman {
 				--pacman-colour: goldenrod;
@@ -127,27 +146,67 @@
 				transform: rotate(45deg);
 			}
 
+			.task {
+				width: 60px;
+				height: 80px;
+				background-color: white;
+				border: 2px solid black;
+				flex-shrink: 0;
+			}
+			
+			.task:not(:first-child) {
+				position: relative;
+			}
+			
 			@keyframes spin-da-loop {
 				to { transform: rotateZ(1turn); }
 			}
 			@keyframes chomp {
 				to { transform: rotate(0); }
 			}
-
-			.task {
-				width: 20px;
-				height: 40px;
-				background-color: white;
-				border: 2px solid black;
-				position: absolute;
-			}
 		</style>
 		<script>
+			let checking;
+			let pacman;
+			let loop;
+			let taskQueue;
+
+			document.addEventListener('DOMContentLoaded', () => {
+				pacman = document.querySelector('.pacman');
+				loop = document.querySelector('.loop');
+				taskQueue = document.querySelector('.task-queue');
+			});
+
 			function addTask() {
-				const task = document.createElement('div');
-				task.classList.add('task');
-				document.querySelector('.engine').appendChild(task);
+				const numberOfTasks = document.querySelectorAll('.task').length;
+				const div = document.createElement('div');
+				div.classList.add('task');
+				div.style.left = `${numberOfTasks * -5}px`;
+				div.style.bottom = `${numberOfTasks * -80}px`;
+				div.style.zIndex = numberOfTasks * -1;
+				taskQueue.appendChild(div);
+
+				checking = setInterval(checkPosition, 256);
 			}
+
+			function checkPosition() {
+				const loopPosition = loop.getBoundingClientRect();
+				const pacmanPosition = pacman.getBoundingClientRect();
+				const taskPosition = document.querySelector('.task').getBoundingClientRect();
+				if (pacmanPosition.right < taskPosition.right
+						&& pacmanPosition.left > (taskPosition.left - 5)
+						&& pacmanPosition.bottom < loopPosition.bottom) {
+					const spinStyle = document.querySelector('.spin').style;
+					spinStyle.animationPlayState = 'paused';
+					clearInterval(checking);
+
+					setTimeout(() => {
+						spinStyle.animationPlayState = 'running';
+						setInterval(checkPosition, 256);
+					}, 3000);
+				} 
+			}
+
 		</script>
 	</head>
 	<body>
@@ -162,8 +221,11 @@
 			</div>
 		</div>
 		<div class="engine">
+			<div class="task-queue"></div>
 			<div class="loop">
-				<div class="pacman"></div>
+				<div class="spin">
+					<div class="pacman"></div>
+				</div>			
 			</div>
 		</div>
 	</body>
