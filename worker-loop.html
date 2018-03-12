@@ -2,87 +2,44 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="loops.css">
-
 		<style>
 			body {
-				--control-colour: #aaa;
-				--control-highlight: #ccc;
-				--control-shadow: #888;
-			}
-
-			.page.wipe {
-				-webkit-mask-image: linear-gradient(to right, 
-				rgba(0,0,0,1) 0%,
-				rgba(0,0,0,1) 40%,
-				rgba(0,0,0,0) 50%,
-				rgba(0,0,0,0) 55%,
-				rgba(0,0,0,1) 65%);
-				-webkit-mask-size: 300% 100%;
-				-webkit-mask-position: 100% 0;
-				transition: -webkit-mask-position 1s ease; 
-			}
-
-			.chrome {
-				width: 40vw;
-				height: 80vh;
-				border: 2px solid var(--control-colour);
-				border-left: 4px ridge var(--control-colour);
-				position: relative;
-				display: flex;
 				flex-direction: column;
 			}
-			.chrome::before {
-				content: '';
-				width: calc(40vw + 4px);
-				height: calc(80vh + 4px);
-				border: 2px solid;
-				left: -4px;
-				top: -4px;
-				border-color: var(--control-highlight);
-				border-right-color: var(--control-shadow);
-				position: absolute;
-				z-index: -1;
-			}
 
-			.titlebar {
-				height: 20px;
-				margin: -2px 0 -2px -2px;
-				border-bottom: 4px ridge #aaa;
-				background-color: #aaa;
-				position: relative;
+			.controls {
+				padding: 3em;
 				display: flex;
-				flex: 0 0 auto;
-			}
-			.window-control {
-				width: 10px;
-				height: 10px;
-				border-radius: 50%;
-				background-image: linear-gradient(hsl(1, 100%, 90%), hsl(1, 100%, 50%));
-				margin: 5px 2px;
-				border: 1px solid #666;
-			}
-			.window-control:nth-child(2) {
-				background-image: linear-gradient(hsl(40, 100%, 90%), hsl(40, 100%, 50%));
-			}
-			.window-control:last-child {
-				background-image: linear-gradient(lightgreen,green);
-			}
-
-			.page {
-				background: white;
-				flex-grow: 1;
+				justify-content: space-around;
 			}
 
 			button {
-				border: 4px outset var(--control-colour);
-				background-color: var(--control-colour);
-				font-size: 1.5em;
-				font-family: 'Times New Roman', Times, serif;
-				margin: 1.5em;
+				font-size: 3em;
+				border-radius: 5px;
+				padding: .5em;
+				border: 4px solid white;
+				background: #e87c25;
+				color: white;
+				box-shadow: inset -2px -2px var(--background-end);
+			}
+			button:active {
+				box-shadow: inset 2px 2px var(--background-end);
 			}
 
-			button:active {
-				border-style: inset;
+			.envelope {
+				--width: 100px;
+				--height: 60px;
+				width: var(--width);
+				height: var(--height);
+				box-sizing: border-box;
+				border-style: solid;
+				border-radius: 5px;
+				border-width: calc(var(--width) / 2) calc(var(--height) / 2);
+				border-top-color: blue;
+				border-left-color: #ccc;
+				border-right-color: #ccc;
+				border-bottom-color: white;
+				margin-left: 3em;
 			}
 
 			.engine {
@@ -343,17 +300,11 @@
 		</script>
 	</head>
 	<body>
-		<div class="chrome">
-			<div class="titlebar">
-				<div class="window-control"></div>
-				<div class="window-control"></div>
-				<div class="window-control"></div>
-			</div>
-			<div class="page">
-				<button onclick="addTask()">Create event</button>
-				<button onclick="countdown()">Create timeout</button>
-			</div>
+		<div class="controls">
+			<button>Send message</button>
+			<button>Set timer</button>
 		</div>
+		<div><div class="envelope"></div></div>
 		<div class="engine">
 			<div class="clocks"></div>
 			<div class="task-queue"></div>

@@ -1,0 +1,11 @@
+body {
+  --background-start: #4517ed;
+  --background-end: #291c59;
+  display: flex;
+  background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
+  height: 100vh;
+}
+
+button:focus, button:active {
+  outline: 0;
+}
