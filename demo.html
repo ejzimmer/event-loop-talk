@@ -52,6 +52,7 @@
 				background-color: #aaa;
 				position: relative;
 				display: flex;
+				flex: 0 0 auto;
 			}
 			.window-control {
 				width: 10px;
@@ -174,6 +175,9 @@
 				position: absolute;
 				overflow: hidden;
 			}
+			.task.timer {
+				background-color: orange;
+			}
 			.task::before {
 				margin: auto;
 				content: '{}';
@@ -189,25 +193,77 @@
 			@keyframes chomp {
 				to { transform: rotate(0); }
 			}
+
+			.clocks {
+				height: 10vh;
+				display: flex;
+			}
+			.clock {
+				--width: 10vw;
+				--colour: white;
+				border: 4px solid var(--colour);
+				border-radius: 50%;
+				width: var(--width);
+				height: var(--width);
+				position: relative;
+				animation: spin-clock 5s forwards steps(12, end);
+				flex-shrink: 0;
+				transition: opacity, height, width;
+				transition-duration: .5s;
+				transition-delay: .5s;
+			}
+			.clock::after {
+				content: '';
+				border: 2px solid var(--colour);
+				height: calc(var(--width) / 2 - 4px);
+				position: absolute;
+				left: 50%;
+				transition: height .5s .5s;
+			}
+			.clock.done {
+				--colour: red;
+				height: 0;
+				width: 0;
+				opacity: 0;
+			}
+			.clock.done::after {
+				height: 0;
+			}
+			@keyframes spin-clock {
+				to { transform: rotate(1turn); }
+			}
+
 		</style>
 		<script>
+			const $ = selector => document.querySelector(selector);
+
+
 			let pacman;
 			let loop;
 			let taskQueue;
 			let page;
 			let spin;
+			let clocks;
 			let watching = false;
 
 			document.addEventListener('DOMContentLoaded', () => {
-				pacman = document.querySelector('.pacman');
-				loop = document.querySelector('.loop');
-				taskQueue = document.querySelector('.task-queue');
-				page = document.querySelector('.page');
-				spin = document.querySelector('.spin');
+				pacman = $('.pacman');
+				loop = $('.loop');
+				taskQueue = $('.task-queue');
+				page = $('.page');
+				spin = $('.spin');
+				clocks = $('.clocks');
+
+				clocks.addEventListener('animationend', (event) => {
+					if (event.animationName === 'spin-clock') {
+						event.target.classList.add('done');
+						addTask('timer');
+					}
+				});
 			});
 
 			function watchPosition() {
-				if (!watching && document.querySelector('.task')) {
+				if (!watching && $('.task')) {
 					watching = true;
 					setTimeout(checkPosition, 256);
 				}
@@ -244,10 +300,11 @@
 				task.style.zIndex = index * -1;			
 			}
 
-			function addTask() {
+			function addTask(type) {
 				const numberOfTasks = document.querySelectorAll('.task').length;
 				const div = document.createElement('div');
 				div.classList.add('task');
+				div.classList.add(type);
 				drawTask(div, numberOfTasks);
 				taskQueue.appendChild(div);
 
@@ -261,7 +318,7 @@
 
 			function checkPosition() {
 				watching = false;
-				const firstTask = document.querySelector('.task');
+				const firstTask = $('.task');
 				const loopPosition = loop.getBoundingClientRect();
 				const pacmanPosition = pacman.getBoundingClientRect();
 				const taskPosition = firstTask.getBoundingClientRect();
@@ -282,6 +339,12 @@
 				}
 			}
 
+			function countdown() {
+				const clock = document.createElement('div');
+				clock.classList.add('clock');
+				clocks.appendChild(clock);
+			}
+
 		</script>
 	</head>
 	<body>
@@ -292,10 +355,12 @@
 				<div class="window-control"></div>
 			</div>
 			<div class="page">
-				<button onclick="addTask()">Click Me</button>
+				<button onclick="addTask()">Create event</button>
+				<button onclick="countdown()">Create timeout</button>
 			</div>
 		</div>
 		<div class="engine">
+			<div class="clocks"></div>
 			<div class="task-queue"></div>
 			<div class="loop">
 				<div class="spin">
