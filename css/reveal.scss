@@ -349,9 +349,6 @@ $controlsArrowAngleActive: 36deg;
 			transform: rotate( 180deg );
 		}
 
-		&.highlight {
-			animation: bounce-right 2s 50 both ease-out;
-		}
 	}
 
 	.navigate-up {

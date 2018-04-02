@@ -9,8 +9,18 @@
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
 
+		<link rel="stylesheet" href="loops.css">
+
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<script type="module">
+			import { Loop } from './components/loop.js';
+			import { Browser } from './components/browser.js';
+			customElements.define('event-loop', Loop);
+			customElements.define('browser-window', Browser);
+		</script>
+
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -24,21 +34,41 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>
+				<!-- <section>
+					<div class="mask">
+						<svg class="title" viewBox="0 0 100 50" style="width: 80%">
+							<path id="curve" d="M 10 50 a 40 40 0 0 1 80 0" fill="transparent" />
+							<text font-family="cursive">
+								<textPath font-size=".2em" textLength="125" xlink:href="#curve">
+									Further Adventures of
+								</textPath>
+							</text>
+						</svg>
+					</div>
 					<h1>The Event Loop</h1>
+					<div class="twitter">@erinjzimmer</div>
+				</section> -->
+				<section>
+					<div style="display: flex; flex-direction: column;">
+						<browser-window style="height: 40vh; width: 20vw; align-self: flex-end;">
+							<button>CLICK</button>
+						</browser-window>
+						<event-loop></event-loop>
+					</div>
 				</section>
-				<section>Slide 2</section>
 			</div>
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
-
+		
 		<script>
 			// More info about config & dependencies:
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				controls: false,
+				progress: false,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },

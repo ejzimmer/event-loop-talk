@@ -1,9 +1,35 @@
 body {
   --background-start: #4517ed;
   --background-end: #291c59;
+  --subtle: #ccf;
   display: flex;
   background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
   height: 100vh;
+}
+
+svg.title {
+  transform: rotate(.5turn);
+  transform-origin: bottom;
+  animation: spin 3s ease-out forwards;
+  width: 80%;
+  fill: var(--subtle); 
+}
+
+@keyframes spin {
+  to { transform: rotate(1turn) }
+}
+
+.mask {
+  overflow: hidden;
+  width: 90%;
+  margin: auto;
+}
+
+.twitter {
+  position: fixed;
+  right: 5vw;
+  bottom: 0;
+  color: var(--subtle);
 }
 
 button:focus, button:active {
