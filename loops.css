@@ -32,6 +32,22 @@ svg.title {
   color: var(--subtle);
 }
 
-button:focus, button:active {
-  outline: 0;
+button {
+  background: hsl(215, 100%, 50%);
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid #666;
+  border-radius: 2px;
+  box-shadow: 2px 2px 4px #ccc,
+              0 -2px 2px hsl(215, 80%, 38%) inset,
+              0 2px 2px hsl(215, 80%, 80%) inset;
 }
+button:active {
+  outline: none;
+  box-shadow: 0 -2px 2px hsl(215, 80%, 80%) inset,
+              0 2px 2px hsl(215, 80%, 38%) inset;
+}
+button:focus {
+  outline: none;
+}
+

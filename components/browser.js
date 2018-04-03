@@ -62,20 +62,35 @@ export class Browser extends HTMLElement {
 				background: white;
 				flex-grow: 1;
       }
+
       .window-control {
+        --box-shadow-1: 0 -1px 0 1px;
+        --box-shadow-2: 0 2px 2px;
+        --box-shadow-3: 0 2px rgba(255, 255, 255, 0.25) inset;
+        cursor: pointer;
+        background: #e53030;
+        box-shadow: var(--box-shadow-1) #c91919 inset, 
+                    var(--box-shadow-2) rgba(65, 8, 8, 0.17), 
+                    var(--box-shadow-3);
 				width: 10px;
 				height: 10px;
 				border-radius: 50%;
-				background-image: linear-gradient(hsl(1, 100%, 90%), hsl(1, 100%, 50%));
 				margin: 5px 2px;
-				border: 1px solid #666;
+        border: 1px solid #666;
+        flex-shrink: 0;
 			}
 			.window-control:nth-child(2) {
-				background-image: linear-gradient(hsl(40, 100%, 90%), hsl(40, 100%, 50%));
+        background: #ffc334;
+        box-shadow: var(--box-shadow-1) #ffb401 inset, 
+                    var(--box-shadow-2) rgba(103, 73, 0, 0.17), 
+                    var(--box-shadow-3);
 			}
 			.window-control:last-child {
-				background-image: linear-gradient(lightgreen,green);
-			}`;
+        background: #0ec518;
+        box-shadow: var(--box-shadow-1) #0b9512 inset, 
+                    var(--box-shadow-2) rgba(0, 7, 1, 0.17),
+                    var(--box-shadow-3);
+      }`;
     
     shadow.appendChild(chrome);
     shadow.appendChild(style);
