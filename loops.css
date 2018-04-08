@@ -7,6 +7,19 @@ body {
   height: 100vh;
 }
 
+h1 {
+  margin: 0 0 20px 0;
+  color: #fff;
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-transform: uppercase;
+  word-wrap: break-word; 
+  font-size: 5em;
+  text-shadow: 4px 4px var(--background-start);
+}
+
 svg.title {
   transform: rotate(.5turn);
   transform-origin: bottom;
@@ -30,6 +43,7 @@ svg.title {
   right: 5vw;
   bottom: 0;
   color: var(--subtle);
+  font-size: 2em;
 }
 
 button {
