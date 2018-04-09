@@ -2,15 +2,16 @@ body {
   --background-start: #4517ed;
   --background-end: #291c59;
   --subtle: #ccf;
+  color: white;
   display: flex;
   background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
   height: 100vh;
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  margin: 0;
 }
 
 h1 {
   margin: 0 0 20px 0;
-  color: #fff;
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: normal;
@@ -18,6 +19,15 @@ h1 {
   word-wrap: break-word; 
   font-size: 5em;
   text-shadow: 4px 4px var(--background-start);
+}
+
+h2 {
+  font-size: 3em;
+}
+
+.fancy {
+  font-family: cursive;
+  font-size: 5em;
 }
 
 svg.title {
@@ -65,3 +75,6 @@ button:focus {
   outline: none;
 }
 
+.statement {
+  font-size: 3.5em;
+}

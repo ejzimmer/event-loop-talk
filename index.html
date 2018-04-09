@@ -48,6 +48,91 @@
 					<h1>The Event Loop</h1>
 					<div class="twitter">@erinjzimmer</div>
 				</section>
+				<section data-transition="fade-out" style="transition-duration: 10s">
+					<div class="fancy">The story so far...</div>
+				</section>
+				<section data-transition="fade-in" style="transition-duration: 10s">
+					<h2>what the heck is the event loop anyway?</h2>
+					<div style="font-size: 2em">@philip_roberts</div>
+					<img src="css/whattheheck.png" style="max-width: 80vw; margin-top: 40px" />
+				</section>
+				<section data-transition="fade-in" style="transition-duration: 1s">
+					<h2>what the heck is the event loop anyway?</h2>
+					<div style="font-size: 2em">@philip_roberts</div>
+					<img src="css/onfire.png" style="max-width: 80vw; margin-top: 40px" />
+					<div class="notes">
+						If you've not seen it - go watch it - it goes into a lot more detail of how the event loop
+						interacts with the stack and other APIs than I'm going to go into here.
+						Instead, I'm going to start with a much closer look at the task queue. Or queues, as it turns out.		
+					</div>
+				</section>
+				<section>
+					<div class="statement">The Event Loop is a series of Queues</div>
+				</section>
+				<section>
+					<browser-window>
+						<button>CLICK ME</button>
+					</browser-window>
+					<task-queues></task-queues>
+					<the-stack></the-stack>
+					The event loop is a series of queues - task queue and we can think of the rendering pipe-line as a kind 
+					of queue that only has one thing in it
+					Describe how things get added to queues
+				</section>
+				<section>
+					Can have lots of other queues - Node has separate queues for timeouts and I/O callbacks
+					Browsers might have separate queues for user-generated callbacks and DOM parsing callbacks
+				</section>
+				<section>
+					The event loop picks a queues, takes a task from it and runs it to completion, then picks another queue
+				</section>
+				<section>
+						Blocking event loop - add a task that takes a long time so other tasks can't run
+				</section>	
+				<section>
+					More detail of Node queues and how the event loop picks things
+					Difference between Node and browser
+					 - browser: can pick a task from any queue once this task finishes
+					 - Node: runs all the tasks in the current queue before picking another queue
+				</section>
+				<section>
+					In addition, there are a few special queues that Node and browsers implement
+					Browsers: microtasks and requestAnimationCallback
+					Node: process.nextTick & setImmediate
+				</section>
+				<section>
+					Microtasks = Promises
+				</section>
+				<section>
+					The spec section on microtask checks
+				</section>
+				<section>
+					Microtasks can add more microtasks
+				</section>
+				<section>
+					Animation explanation
+				</section>
+				<section>
+					What that actually looks like in code
+				</section>
+				<section>
+					requestAnimationCallback is similar - before each repaint - can't block event loop
+				</section>
+				<section>
+					process.nextTick - run something as soon as this task finishes - can be called recursively
+				</section>
+				<section>
+					setImmediate - pick this queue once you've finished all the tasks in the current queue
+				</section>
+				<section>
+					Then there's the case of multiple event loops
+				</section>
+				<section>
+					Browsers - iframes & child windows - separate vs same event loop - demonstrate in browser? - postmessage
+				</section>
+				<section>
+					workers - a bit simpler - each worker has its own event loop - communicate via postmessage - same for Node and browser
+				</section>
 				<section>
 					<div style="display: flex; flex-direction: column;">
 						<browser-window style="height: 40vh; width: 20vw; align-self: flex-end;">
