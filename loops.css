@@ -78,3 +78,7 @@ button:focus {
 .statement {
   font-size: 3.5em;
 }
+
+.notes {
+  display: none;
+}

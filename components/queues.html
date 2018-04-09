@@ -1,0 +1,24 @@
+<template id="queues">
+  <style>
+    rendering-pipeline {
+      max-width: 20vw;
+      margin: 3vw;
+    }
+  </style>
+  <slot id="queues"></slot>
+  <rendering-pipeline></rendering-pipeline>
+  <queue-selector></queue-selector>
+</template>
+<script>
+  const queuesDocument = document.currentScript.ownerDocument;
+  class Queues extends HTMLElement {
+    constructor() {
+      super();
+
+      const shadow = this.attachShadow({ mode: 'closed' });
+      const content = queuesDocument.getElementById('queues').content.cloneNode(true);
+      shadow.appendChild(content);
+    }
+  }
+  customElements.define('task-queues', Queues);
+</script>

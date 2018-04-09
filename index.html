@@ -14,14 +14,6 @@
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<script type="module">
-			import { Loop } from './components/loop.js';
-			import { Browser } from './components/browser.js';
-			customElements.define('event-loop', Loop);
-			customElements.define('browser-window', Browser);
-		</script>
-
-
 		<!-- Printing and PDF exports -->
 		<script>
 			var link = document.createElement( 'link' );
@@ -34,7 +26,7 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>
+				<!-- <section>
 					<div class="mask">
 						<svg class="title" viewBox="0 0 100 50" style="width: 80%">
 							<path id="curve" d="M 10 50 a 40 40 0 0 1 80 0" fill="transparent" />
@@ -68,16 +60,15 @@
 				</section>
 				<section>
 					<div class="statement">The Event Loop is a series of Queues</div>
-				</section>
+				</section> -->
 				<section>
 					<browser-window>
 						<button>CLICK ME</button>
 					</browser-window>
 					<task-queues></task-queues>
-					<the-stack></the-stack>
-					The event loop is a series of queues - task queue and we can think of the rendering pipe-line as a kind 
+					<div class="notes">The event loop is a series of queues - task queue and we can think of the rendering pipe-line as a kind 
 					of queue that only has one thing in it
-					Describe how things get added to queues
+					Describe how things get added to queues</div>
 				</section>
 				<section>
 					Can have lots of other queues - Node has separate queues for timeouts and I/O callbacks
@@ -133,14 +124,6 @@
 				<section>
 					workers - a bit simpler - each worker has its own event loop - communicate via postmessage - same for Node and browser
 				</section>
-				<section>
-					<div style="display: flex; flex-direction: column;">
-						<browser-window style="height: 40vh; width: 20vw; align-self: flex-end;">
-							<button>CLICK</button>
-						</browser-window>
-						<event-loop></event-loop>
-					</div>
-				</section>
 			</div>
 		</div>
 
@@ -162,5 +145,11 @@
 				]
 			});
 		</script>
+
+		<link rel="import" href="components/browser.html">
+		<link rel="import" href="components/queues.html">
+		<link rel="import" href="components/rendering-pipeline.html">
+		<link rel="import" href="components/queue-selector.html">
+
 	</body>
 </html>

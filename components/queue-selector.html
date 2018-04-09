@@ -1,0 +1,63 @@
+<template id="selector">
+  <style>
+    :host {
+      --side: 50px;
+      --border-color: hsl(28, 100%, 30%);
+      --background-color: hsl(28, 100%, 50%);
+    }
+    .arrow {
+      border: 4px solid var(--border-color);
+      border-top: 0;
+      background-color: var(--background-color);
+      width: var(--side);
+      height: var(--side);
+      position: fixed;
+      bottom: -40px;
+      left: 40px;
+    }
+    .arrow::before {
+      --arrow-side: calc(var(--side) * 1.5);
+      content: '';
+      display: block;
+      width: var(--arrow-side);
+      height: var(--arrow-side);
+      border: calc(var(--arrow-side) / 2) solid var(--background-color);
+      border-bottom-color: transparent;
+      border-right-color: transparent;
+      box-sizing: border-box;
+      transform: rotate(.125turn);
+      position: relative;
+      right: 12px;
+      bottom: calc(var(--side) / 2);
+      box-shadow: -4px -4px var(--border-color),
+                  -4px 0 var(--border-color),
+                  0 -4px var(--border-color);
+      z-index: -2;
+    }
+    .arrow::after {
+      content: '';
+      display: block;
+      height: 4px;
+      background-color: var(--border-color);
+      width: 106px;
+      position: relative;
+      bottom: 66px;
+      left: -26px;
+      z-index: -1;
+    }
+  </style>
+  <div class="arrow"></div>
+</template>
+<script>
+  const selectorDocument = document.currentScript.ownerDocument;
+  class QueueSelector extends HTMLElement {
+    constructor() {
+      super();
+
+      this.shadow = this.attachShadow({ mode: 'closed' });
+      const content = selectorDocument.getElementById('selector').content.cloneNode(true);
+      this.shadow.appendChild(content);
+    }
+  }
+  customElements.define('queue-selector', QueueSelector);
+</script>

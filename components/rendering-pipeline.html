@@ -1,0 +1,46 @@
+<template id="pipeline">
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    browser-window {
+      height: 200px;
+      width: 75%;
+      margin: auto;
+      margin-bottom: 5px;
+      transition: transform 2s linear;
+      z-index: -1;
+    }
+
+    browser-window.go {
+      transform: translateY(210px);
+    }
+  </style>
+  <browser-window>
+    <button>CLICK ME</button>
+  </browser-window>
+  <img class="pipe" src="css/Mario_pipe.png" />
+  <button id="go">Go</button>
+</template>
+<script>
+  const pipelineDocument = document.currentScript.ownerDocument;
+  class RenderingPipeline extends HTMLElement {
+    constructor() {
+      super();
+
+      this.shadow = this.attachShadow({ mode: 'closed' });
+      const content = pipelineDocument.getElementById('pipeline').content.cloneNode(true);
+      this.shadow.appendChild(content);
+    }
+
+    connectedCallback() {
+      this.shadow.getElementById('go').addEventListener('click', () => {
+        this.shadow.querySelector('browser-window').classList.add('go');
+      });
+    }
+  }
+  customElements.define('rendering-pipeline', RenderingPipeline);
+</script>
+
