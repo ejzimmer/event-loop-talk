@@ -7,7 +7,7 @@
     
     browser-window {
       height: 200px;
-      width: 75%;
+      width: 95%;
       margin: auto;
       margin-bottom: 5px;
       z-index: -1;
@@ -17,11 +17,33 @@
       transition: transform 2s linear;
       transform: translateY(210px);
     }
+
+    .pipe {
+      --lightgreen: #16cc16;
+      --midgreen: #28a828;
+      width: 16vw;
+      height: 33vw;
+      border: 6px solid #006000;
+      background: linear-gradient(to right, green, green 12%, var(--midgreen) 12%, var(--midgreen) 15%, green 15%, green 17%, var(--midgreen) 17%, var(--midgreen) 60%, var(--lightgreen) 60%, var(--lightgreen) 81%, var(--midgreen) 81%, var(--midgreen) 86%, var(--lightgreen) 86%, var(--lightgreen) 93%, var(--midgreen) 93%);
+      box-sizing: border-box;
+      position: relative;
+    }
+    .pipe::before {
+      content: '';
+      display: block;
+      height: 25%;
+      position: absolute;
+      border: inherit;
+      left: calc(-2vw - 6px);
+      right: calc(-2vw - 6px);
+      top: -6px;
+      background: inherit;
+    }
   </style>
   <browser-window>
     <button>CLICK ME</button>
   </browser-window>
-  <img class="pipe" src="css/Mario_pipe.png" />
+  <div class="pipe"></div>
 </template>
 <script>
   const pipelineDocument = document.currentScript.ownerDocument;
