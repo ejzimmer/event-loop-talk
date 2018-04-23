@@ -1,0 +1,126 @@
+<template id="task-source">
+  <style>
+      :host {
+        display: flex;
+        --diameter: 8vw;
+      }
+
+			.timer {
+				--colour: white;
+				border: 4px solid var(--colour);
+				border-radius: 50%;
+				width: var(--diameter);
+				height: var(--diameter);
+				position: relative;
+				flex-shrink: 0;
+        margin: auto;
+			}
+			.timer::after {
+				content: '';
+				border: 2px solid var(--colour);
+				height: calc(var(--diameter) / 2 - 4px);
+				position: absolute;
+				left: 50%;
+      }
+
+      .html {
+        display: flex;
+      }
+      .html::after {
+        content: '<html> ...</html>';
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: bold;
+        font-size: 2vw;
+        margin: auto;
+      }
+
+      .network {
+        width: var(--diameter);
+        height: var(--diameter);
+        margin: auto;
+        background: repeating-radial-gradient(circle at bottom left, white, white 9%, transparent 9%, transparent 18%);
+        border-top-right-radius: 100%;
+        transform-origin: bottom left;
+        transform:  translateX(50%) rotate(-.125turn);
+        position: relative;
+        margin: 0 10px;
+      }
+      .network::after {
+        content: '';
+        display: block;
+        width: 18%;
+        height: 18%;
+        border-radius: 50%;
+        background-color: white;
+        position: absolute;
+        left: -4.5%;
+        bottom: -4.5%;
+      }
+
+      .drive {
+        border: 2px solid white;
+        border-radius: 4px;
+        width: 100px;
+        position: relative;
+        background: 
+          radial-gradient(circle at 50% 40%, transparent, transparent 5%, white 5%, white 10%, darkgrey 10%, grey 50%, white 50%, white calc(50% + 1px), transparent 20%),
+          radial-gradient(circle at 30% 75%, grey 20%, white calc(20% + 4px), transparent calc(20% + 4px));
+      }
+      .drive .arm {
+        border: 8px solid transparent;
+        border-bottom-color: white;
+        box-sizing: border-box;
+        width: 8px;
+        position: absolute;
+        bottom: 20%;
+        left: calc(30% - 8px);
+        transform-origin: bottom;
+        transform: rotate(.1turn);
+      }
+  </style>
+</template>
+<script>
+  const taskSourceDocument = document.currentScript.ownerDocument;
+  class TaskSource extends HTMLElement {
+    constructor() {
+      super();
+
+      this.shadow = this.attachShadow({ mode: 'closed' });
+      const content = taskSourceDocument.getElementById('task-source').content.cloneNode(true);
+      this.shadow.appendChild(content);
+
+      this.type = this.attributes.type.value;
+
+      if (this.type === 'browser') {
+        const browser = document.createElement('browser-window');
+        this.shadow.appendChild(browser);
+      } else {
+        this.source = document.createElement('div');
+        this.source.classList.add(this.type);
+        this.shadow.appendChild(this.source);
+
+        if (this.type === 'drive') {
+          this.arm = document.createElement('div');
+          this.arm.classList.add('arm');
+          this.source.appendChild(this.arm);
+        }
+      }
+    }
+
+    connectedCallback() {
+      if (this.type === 'drive') {
+        const driveHeight = this.source.getBoundingClientRect().height;
+        const armHeight = driveHeight * 0.35;
+        console.log(armHeight);
+        this.arm.style.height = armHeight;
+        this.arm.style.borderBottomWidth = `${armHeight}px`;
+      }
+    }
+
+    onClick() {
+      document.body.dispatchEvent(new Event('task', { type: this.type }));
+    }
+  }
+  customElements.define('task-source', TaskSource);
+</script>
+

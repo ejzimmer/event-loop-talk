@@ -14,6 +14,7 @@
       position: relative;
       display: flex;
       flex-direction: column;
+      background-color: white;
     }			
     .chrome::before {
       content: '';
@@ -37,8 +38,8 @@
       flex: 0 0 auto;
     }
     .page {
-      background: white;
       flex-grow: 1;
+      margin: 20px 10px;
     }
 
     .window-control {
@@ -69,6 +70,25 @@
                   var(--box-shadow-2) rgba(0, 7, 1, 0.17),
                   var(--box-shadow-3);
     }
+
+    button {
+      background: hsl(215, 100%, 50%);
+      color: white;
+      padding: 10px 20px;
+      border: 1px solid #666;
+      border-radius: 2px;
+      box-shadow: 2px 2px 4px #ccc,
+                  0 -2px 2px hsl(215, 80%, 38%) inset,
+                  0 2px 2px hsl(215, 80%, 80%) inset;
+    }
+    button:active {
+      outline: none;
+      box-shadow: 0 -2px 2px hsl(215, 80%, 80%) inset,
+                  0 2px 2px hsl(215, 80%, 38%) inset;
+    }
+    button:focus {
+      outline: none;
+    }
   </style>
   <div class="chrome">
     <div class="titlebar">
@@ -76,7 +96,7 @@
       <div class="window-control"></div>
       <div class="window-control"></div>
     </div>
-    <div class="page"><slot></slot></div>
+    <div class="page"><button>Click Me</button></div>
   </div>
 </template>
 <script>

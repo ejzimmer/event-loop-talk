@@ -1,8 +1,12 @@
 <template id="queues">
   <style>
-    rendering-pipeline {
+    :host {
+      display: flex;
+    }
+    rendering-pipeline, queue-selector {
       max-width: 20vw;
       margin: 3vw;
+      margin-bottom: 0;
     }
   </style>
   <slot id="queues"></slot>
@@ -15,10 +19,21 @@
     constructor() {
       super();
 
-      const shadow = this.attachShadow({ mode: 'closed' });
+      this.shadow = this.attachShadow({ mode: 'open' });
       const content = queuesDocument.getElementById('queues').content.cloneNode(true);
-      shadow.appendChild(content);
+      this.shadow.appendChild(content);
     }
+
+    connectedCallback() {
+      this.selector = this.shadow.querySelector('queue-selector');
+      this.pipeline = this.shadow.querySelector('rendering-pipeline');
+      this.queues = this.querySelectorAll('task-queue');
+    }
+
+    addTask(taskType) {
+      this.queues[0].addTask();
+    }
+
   }
   customElements.define('task-queues', Queues);
 </script>

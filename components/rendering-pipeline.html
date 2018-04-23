@@ -10,11 +10,11 @@
       width: 75%;
       margin: auto;
       margin-bottom: 5px;
-      transition: transform 2s linear;
       z-index: -1;
     }
 
     browser-window.go {
+      transition: transform 2s linear;
       transform: translateY(210px);
     }
   </style>
@@ -22,7 +22,6 @@
     <button>CLICK ME</button>
   </browser-window>
   <img class="pipe" src="css/Mario_pipe.png" />
-  <button id="go">Go</button>
 </template>
 <script>
   const pipelineDocument = document.currentScript.ownerDocument;
@@ -30,15 +29,30 @@
     constructor() {
       super();
 
-      this.shadow = this.attachShadow({ mode: 'closed' });
+      this.shadow = this.attachShadow({ mode: 'open' });
       const content = pipelineDocument.getElementById('pipeline').content.cloneNode(true);
       this.shadow.appendChild(content);
+
+      this.browser = this.shadow.querySelector('browser-window');
     }
 
-    connectedCallback() {
-      this.shadow.getElementById('go').addEventListener('click', () => {
-        this.shadow.querySelector('browser-window').classList.add('go');
+    runTask() {
+      let resolveTask;
+      const taskPromise = new Promise(resolve => resolveTask = resolve);
+
+      this.browser.addEventListener('transitionend', () => {
+        resolveTask();
       });
+
+      requestAnimationFrame(() => {
+        this.browser.classList.remove('go');
+
+        requestAnimationFrame(() => {
+          this.browser.classList.add('go')
+        });
+      });
+
+      return taskPromise;
     }
   }
   customElements.define('rendering-pipeline', RenderingPipeline);

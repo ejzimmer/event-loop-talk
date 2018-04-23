@@ -1,0 +1,91 @@
+<template id="queue">
+  <style>
+    :host {
+      display: block;
+      width: 100px;
+      position: relative;
+    }
+    .task {
+      width: 60px;
+      height: 80px;
+      background-color: white;
+      border: 2px solid black;
+      flex-shrink: 0;
+      display: flex;
+      transition: left .5s linear, bottom .5s linear, height 3s linear;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+  </style>
+  <div class="tasks"></div>
+</template>
+<script>
+  const queueDocument = document.currentScript.ownerDocument;
+  class TaskQueue extends HTMLElement {
+    constructor() {
+      super();
+
+      this.shadow = this.attachShadow({ mode: 'closed' });
+      const content = queueDocument.getElementById('queue').content.cloneNode(true);
+      this.shadow.appendChild(content);
+
+      this.tasks = this.shadow.querySelector('.tasks');
+
+      this.addEventListener('do-task', this.runTask);
+    }
+    
+    addTask(taskType) {
+      const task = document.createElement('div');
+      task.classList.add('task');
+      task.classList.add(taskType);
+
+      const index = this.getTasks().length;
+      this.positionTask(task, index);
+
+      this.tasks.appendChild(task);
+    }
+
+    getTasks() {
+      return this.shadow.querySelectorAll('.task');
+    }
+    getTask(index) {
+      return this.getTasks()[index];
+    }
+
+    runTask() {
+      let resolveTask;
+      const taskPromise = new Promise(resolve => resolveTask = resolve);
+
+      const firstTask = this.getTask(0);
+      if (firstTask) {
+        firstTask.style.height = 0;
+      }
+
+      firstTask.addEventListener('transitionend', (event) => {
+        if (event.propertyName === 'height') {
+          firstTask.remove();
+          this.redrawTasks();
+          resolveTask();
+        }
+      });
+
+      return taskPromise;
+    }
+
+    redrawTasks() {
+      const tasks = this.getTasks();
+      tasks.forEach(this.positionTask);
+    }
+
+    positionTask(task, index) {
+      task.style.right = `${index * 5}px`;
+      task.style.bottom = `${index * 5}px`;
+      task.style.zIndex = index * -1;			
+    }
+
+  }
+  customElements.define('task-queue', TaskQueue);
+</script>
+

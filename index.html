@@ -13,15 +13,6 @@
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
-
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.querySelector('head').appendChild(link);
-		</script>
 	</head>
 	<body>
 		<div class="reveal">
@@ -62,10 +53,12 @@
 					<div class="statement">The Event Loop is a series of Queues</div>
 				</section> -->
 				<section>
-					<browser-window>
-						<button>CLICK ME</button>
-					</browser-window>
-					<task-queues></task-queues>
+					<div class="sources">
+						<task-source type="browser"></task-source>
+					</div>
+					<task-queues>
+						<task-queue></task-queue>
+					</task-queues>
 					<div class="notes">The event loop is a series of queues - task queue and we can think of the rendering pipe-line as a kind 
 					of queue that only has one thing in it
 					Describe how things get added to queues</div>
@@ -150,6 +143,7 @@
 		<link rel="import" href="components/queues.html">
 		<link rel="import" href="components/rendering-pipeline.html">
 		<link rel="import" href="components/queue-selector.html">
-
+		<link rel="import" href="components/queue.html">
+		<link rel="import" href="components/task-source.html">
 	</body>
 </html>

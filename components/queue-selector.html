@@ -1,52 +1,20 @@
 <template id="selector">
   <style>
     :host {
-      --side: 50px;
-      --border-color: hsl(28, 100%, 30%);
-      --background-color: hsl(28, 100%, 50%);
-    }
-    .arrow {
-      border: 4px solid var(--border-color);
-      border-top: 0;
-      background-color: var(--background-color);
-      width: var(--side);
-      height: var(--side);
+      display: flex;
       position: fixed;
-      bottom: -40px;
-      left: 40px;
+      transition: left .3s;
     }
-    .arrow::before {
-      --arrow-side: calc(var(--side) * 1.5);
-      content: '';
-      display: block;
-      width: var(--arrow-side);
-      height: var(--arrow-side);
-      border: calc(var(--arrow-side) / 2) solid var(--background-color);
-      border-bottom-color: transparent;
-      border-right-color: transparent;
-      box-sizing: border-box;
-      transform: rotate(.125turn);
-      position: relative;
-      right: 12px;
-      bottom: calc(var(--side) / 2);
-      box-shadow: -4px -4px var(--border-color),
-                  -4px 0 var(--border-color),
-                  0 -4px var(--border-color);
-      z-index: -2;
+    .loop {
+      margin: auto;
     }
-    .arrow::after {
-      content: '';
-      display: block;
-      height: 4px;
-      background-color: var(--border-color);
-      width: 106px;
-      position: relative;
-      bottom: 66px;
-      left: -26px;
-      z-index: -1;
+    .loop.spin {
+      transition: transform 1s .3s;
+      transform: rotate(-1turn);
     }
+    
   </style>
-  <div class="arrow"></div>
+  <img class="loop" src="css/circular-arrow.svg" />
 </template>
 <script>
   const selectorDocument = document.currentScript.ownerDocument;
@@ -57,6 +25,75 @@
       this.shadow = this.attachShadow({ mode: 'closed' });
       const content = selectorDocument.getElementById('selector').content.cloneNode(true);
       this.shadow.appendChild(content);
+
+      this.loop = this.shadow.querySelector('.loop');
+
+      setTimeout(() => this.pickQueue(), 1000);
+    }
+
+    connectedCallback() {
+      const diameter = this.previousElementSibling.clientWidth * 0.3;
+      this.loop.style.width = `${diameter}px`;
+      this.loop.style.height = `${diameter}px`;
+      
+      this.style.bottom = `-${diameter}px`;
+
+      setInterval(() => this.repaint = true, 10000);
+    }
+
+    async pickQueue() {
+      const queue = this.getNextQueue();
+      if (queue) {
+        this.moveToQueue(queue);
+        this.spin();
+        await queue.runTask();
+        this.pickQueue();
+      } else {
+        await this.wait();
+        this.pickQueue();
+      }
+    }
+
+    getNextQueue() {
+      if (this.repaint) {
+        this.repaint = false;
+        return this.parentNode.querySelector('rendering-pipeline');
+      } else {
+        const taskQueue = document.querySelector('task-queue');
+        if (taskQueue.getTask(0)) {
+          return taskQueue;
+        }
+      }
+
+      if (this.pipeline === 1) {
+        return this.parentNode.querySelector('rendering-pipeline');
+      } else if (this.pipeline === 2) {
+        console.log('task');
+        return document.querySelector('task-queue');
+      } 
+    }
+
+    moveToQueue(queue) {
+      const queueRect = queue.getBoundingClientRect();
+      const loopRect = this.getBoundingClientRect();
+
+      const margin = (queueRect.width - loopRect.width) / 2;
+
+      const left = queueRect.left + margin;
+      this.style.left = `${left - 40}px`; // I think reveal makes things off by 40px for some reason
+    }
+
+    spin() {
+      this.loop.addEventListener('transitionend', (event) => {
+        if (event.propertyName === 'transform') {
+          this.loop.classList.remove('spin');
+        }
+      });
+      this.loop.classList.add('spin');
+    }
+
+    wait() {
+      return new Promise(resolve => setTimeout(resolve, 3000));
     }
   }
   customElements.define('queue-selector', QueueSelector);

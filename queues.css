@@ -67,5 +67,4 @@ svg.title {
 .sources {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
