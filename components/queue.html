@@ -49,7 +49,20 @@
       overflow: hidden;
       font-size: 2em;
       color: black;
-    }  
+    }
+
+    .task.browser {
+      background-color: hsl(215, 80%, 80%);
+    }
+    .task.timer {
+      background-color: hsl(350, 80%, 80%);
+    }
+    .task.network {
+      background-color: hsl(100, 80%, 80%);
+    }
+    .task.drive {
+      background-color: hsl(40, 80%, 80%);
+    }
   </style>
   <div class="tasks"></div>
 </template>
@@ -69,6 +82,7 @@
     }
     
     addTask(taskType) {
+      console.log(taskType);
       const task = document.createElement('div');
       task.classList.add('task');
       task.classList.add(taskType);
@@ -120,7 +134,7 @@
     }
 
     getRandomTime() {
-      return Math.random() * 7 + 3;
+      return Math.random() * 6 + 2;
     }
 
   }
