@@ -24,12 +24,10 @@
 			}
 			
 			section {
-				width: 90vh;
-				height: 90vh;
+				width: 80vh;
+				height: 80vh;
 				margin: auto;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-around;
+				position: relative;
 			}
 
 			.sources {
@@ -37,12 +35,18 @@
   			flex-wrap: wrap;
 				justify-content: space-between;
 				align-items: flex-start;
+				position: absolute;
+				top: 0;
+				width: 100%;
 			}
 			task-source {
 				max-width: 10%;
 			}
 			task-queues {
 				max-height: 40vh;
+				position: absolute;
+				bottom: 0;
+				width: 100%;
 			}
 
 			.notes {

@@ -9,7 +9,7 @@
         width: 100%;
       }
       .thread {
-        --diameter: calc(4.5vh - 8px);
+        --diameter: calc(4.5vh - 9px);
         display: flex;
         flex-wrap: wrap;
       }
@@ -67,6 +67,23 @@
         left: -4.5%;
         bottom: -4.5%;
       }
+      .thread .network {
+        animation: wifi 3s infinite steps(3);
+      }
+      @keyframes wifi {
+        from {
+          background: none;
+        }
+        33% { 
+          background: radial-gradient(circle at bottom left, transparent, transparent 18%, white 18%, white 27%, transparent 27%);
+        }
+        66% {
+          background: radial-gradient(circle at bottom left, transparent, transparent 36%, white 36%, white 45%, transparent 45%);
+        }
+        to {
+          background: radial-gradient(circle at bottom left, transparent, transparent 54%, white 54%, white 63%, transparent 63%);
+        }
+      }
 
       .drive {
         width: var(--diameter);
@@ -75,8 +92,8 @@
         border-radius: 4px;
         position: relative;
         background: 
-          radial-gradient(circle at 50% 40%, transparent, transparent 5%, white 5%, white 10%, darkgrey 10%, grey 50%, white 50%, white calc(50% + 1px), transparent 20%),
-          radial-gradient(circle at 30% 75%, grey 20%, white calc(20% + 4px), transparent calc(20% + 4px));
+          radial-gradient(circle at 50% 40%, transparent, transparent 5%, white 5%, white 10%, goldenrod 10%, grey 50%, white 50%, white calc(50% + 1px), transparent 20%),
+          radial-gradient(circle at 30% 75%, #334 20%, white calc(20% + 4px), transparent calc(20% + 4px));
       }
       .drive .arm {
         border: 8px solid transparent;
@@ -88,6 +105,12 @@
         left: calc(30% - 8px);
         transform-origin: bottom;
         transform: rotate(.1turn);
+        animation: read-drive 2s infinite alternate linear;
+        animation-play-state: paused;
+      }
+      @keyframes read-drive {
+        from { transform: rotate(.09turn); }
+        to { transform: rotate(.18turn); }
       }
   </style>
   <div class="container"></div>
@@ -147,22 +170,53 @@
 
     startAsyncTask() {
       const asyncTask = document.createElement('div');
-      
       asyncTask.classList.add(this.type);
-      asyncTask.style.transitionDuration = this.getDuration();
-
       this.thread.appendChild(asyncTask);
 
       requestAnimationFrame(() => asyncTask.classList.add('go'));
 
-      asyncTask.addEventListener('transitionend', () => {
-        this.addTask();
-        asyncTask.remove();
-      })
+      if (this.type === 'timer') {
+        asyncTask.style.transitionDuration = `${this.getRandomTime()}ms`;
+        asyncTask.addEventListener('transitionend', () => {
+          this.addTask();
+          asyncTask.remove();
+        });
+      } else if (this.type === 'drive') {
+        const isPlaying = this.arm.style.animationPlayState === 'running';
+
+        if (!isPlaying) {
+          this.arm.style.animationPlayState = 'running';
+          this.finishDriveTask();
+        }
+      } else {
+        this.finishTask(asyncTask);
+      }
     }
 
-    getDuration() {
-      return `${Math.random() * 10}s`;
+    finishTask(task, time = this.getRandomTime()) {
+      setTimeout(() => {
+        this.addTask();
+        task.remove();
+      }, time);
+    }
+
+    finishDriveTask() {
+      setTimeout(() => {
+        const driveTasks = this.shadow.querySelectorAll('.thread .drive');
+        const currentTask = driveTasks[0];
+        this.finishTask(currentTask, 0);
+
+        if (driveTasks.length > 1) {
+          const nextTask = driveTasks[1];
+          this.finishDriveTask();
+        } else {
+          this.arm.style.animationPlayState = 'paused';
+        }
+      }, this.getRandomTime());
+    }
+
+    getRandomTime() {
+      return (Math.random() * 7000) + 3000;
     }
 
     addTask() {

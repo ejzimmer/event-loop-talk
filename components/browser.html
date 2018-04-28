@@ -40,6 +40,7 @@
     .page {
       flex-grow: 1;
       padding: 5px;
+      display: flex;
     }
 
     .window-control {
@@ -74,12 +75,14 @@
     button {
       background: hsl(215, 100%, 50%);
       color: white;
-      padding: 10px 20px;
       border: 1px solid #666;
       border-radius: 2px;
       box-shadow: 2px 2px 4px #ccc,
                   0 -2px 2px hsl(215, 80%, 38%) inset,
                   0 2px 2px hsl(215, 80%, 80%) inset;
+      width: 80%;
+      margin: auto;
+      padding: 5px;
     }
     button:active {
       outline: none;
