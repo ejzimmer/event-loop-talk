@@ -5,11 +5,22 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<title>Simple Event Loop</title>
-		<link rel="stylesheet" href="loops.css">
 
 		<style>
 			body {
 				display: flex;
+			}
+
+			body {
+				--background-start: #4517ed;
+				--background-end: #291c59;
+				--subtle: #ccf;
+				color: white;
+				display: flex;
+				background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
+				height: 100vh;
+				font-family: "Source Sans Pro", Helvetica, sans-serif;
+				margin: 0;
 			}
 			
 			section {
@@ -22,15 +33,22 @@
 			}
 
 			.sources {
-				width: 100%;
+  			display: flex;
+  			flex-wrap: wrap;
+				justify-content: space-between;
+				align-items: flex-start;
 			}
-
 			task-source {
 				max-width: 10%;
 			}
 			task-queues {
 				max-height: 40vh;
 			}
+
+			.notes {
+			  display: none;
+			}
+
 		</style>
 
 		<link rel="import" href="components/browser.html">
@@ -43,9 +61,9 @@
 	<body>
 		<section>
 			<div class="sources">
+				<task-source type="html"></task-source>
 				<task-source type="browser"></task-source>
 				<task-source type="timer"></task-source>
-				<task-source type="html"></task-source>
 				<task-source type="network"></task-source>
 				<task-source type="drive"></task-source>
 			</div>
@@ -57,6 +75,13 @@
 		<div class="notes">The event loop is a series of queues - task queue and we can think of the rendering pipe-line as a kind 
 		of queue that only has one thing in it
 		Describe how things get added to queues</div>
+
+		<script>
+			const queues = document.querySelector('task-queues');
+			document.querySelector('body').addEventListener('task', function (event) {
+				queues.addTask(event.detail);
+			});
+		</script>
 
 	</body>
 </html>

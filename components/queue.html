@@ -2,10 +2,10 @@
   <style>
     :host {
       display: block;
-      width: 16vw;
+      width: 80px;
       height: 4vw;
       position: relative;
-      border: 4px solid white;
+      border: 4px solid orange;
       border-top-color: transparent;
       align-self: flex-end;
     }
@@ -14,7 +14,7 @@
       width: 2vw;
       height: 2vw;
       display: block;
-      border: 4px solid white;
+      border: 4px solid orange;
       border-radius: 50%;
       border-bottom-color: transparent;
       border-right-color: transparent;
@@ -29,7 +29,7 @@
       left: 100%;
     }
     .task {
-      width: 80%;
+      width: 60px;
       height: 80px;
       background-color: white;
       border: 2px solid black;
@@ -41,6 +41,15 @@
       bottom: 0;
       overflow: hidden;
     }
+    .task::before {
+      margin: auto;
+      content: '{}';
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      overflow: hidden;
+      font-size: 2em;
+      color: black;
+    }  
   </style>
   <div class="tasks"></div>
 </template>

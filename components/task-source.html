@@ -3,9 +3,18 @@
       :host {
         display: flex;
         --diameter: 9vh;
+        cursor: pointer;
+      }
+      .container {
+        width: 100%;
+      }
+      .thread {
+        --diameter: calc(4.5vh - 8px);
+        display: flex;
+        flex-wrap: wrap;
       }
 
-			.timer {
+      .timer {
 				--colour: white;
 				border: 4px solid var(--colour);
 				border-radius: 50%;
@@ -13,7 +22,7 @@
 				height: var(--diameter);
 				position: relative;
 				flex-shrink: 0;
-        margin: auto;
+        transition: transform steps(12, end);
 			}
 			.timer::after {
 				content: '';
@@ -21,6 +30,9 @@
 				height: calc(var(--diameter) / 2 - 4px);
 				position: absolute;
 				left: 50%;
+      }
+      .timer.go {
+        transform: rotate(1turn);
       }
 
       .html {
@@ -57,9 +69,10 @@
       }
 
       .drive {
+        width: var(--diameter);
+        height: calc(var(--diameter) * 1.4);
         border: 2px solid white;
         border-radius: 4px;
-        width: 100px;
         position: relative;
         background: 
           radial-gradient(circle at 50% 40%, transparent, transparent 5%, white 5%, white 10%, darkgrey 10%, grey 50%, white 50%, white calc(50% + 1px), transparent 20%),
@@ -77,6 +90,7 @@
         transform: rotate(.1turn);
       }
   </style>
+  <div class="container"></div>
 </template>
 <script>
   const taskSourceDocument = document.currentScript.ownerDocument;
@@ -89,14 +103,19 @@
       this.shadow.appendChild(content);
 
       this.type = this.attributes.type.value;
+      this.container = this.shadow.querySelector('.container');
 
       if (this.type === 'browser') {
         const browser = document.createElement('browser-window');
-        this.shadow.appendChild(browser);
+        this.container.appendChild(browser);
       } else {
         this.source = document.createElement('div');
         this.source.classList.add(this.type);
-        this.shadow.appendChild(this.source);
+        this.container.appendChild(this.source);
+
+        this.thread = document.createElement('div');
+        this.thread.classList.add('thread');
+        this.container.appendChild(this.thread);
 
         if (this.type === 'drive') {
           this.arm = document.createElement('div');
@@ -113,10 +132,41 @@
         this.arm.style.height = armHeight;
         this.arm.style.borderBottomWidth = `${armHeight}px`;
       }
+
+      if (this.type === 'html') {
+        this.container.addEventListener('click', () => {
+          this.addTask();
+        });
+      }
+      if (this.source && this.type !== 'html') {
+        this.source.addEventListener('click', () => {
+          this.startAsyncTask();
+        });
+      }
     }
 
-    onClick() {
-      document.body.dispatchEvent(new Event('task', { type: this.type }));
+    startAsyncTask() {
+      const asyncTask = document.createElement('div');
+      
+      asyncTask.classList.add(this.type);
+      asyncTask.style.transitionDuration = this.getDuration();
+
+      this.thread.appendChild(asyncTask);
+
+      requestAnimationFrame(() => asyncTask.classList.add('go'));
+
+      asyncTask.addEventListener('transitionend', () => {
+        this.addTask();
+        asyncTask.remove();
+      })
+    }
+
+    getDuration() {
+      return `${Math.random() * 10}s`;
+    }
+
+    addTask() {
+      document.body.dispatchEvent(new CustomEvent('task', { detail: this.type }));     
     }
   }
   customElements.define('task-source', TaskSource);
