@@ -7,6 +7,8 @@
     }
     .loop {
       margin: auto;
+      width: 100%;
+      height: 100%;
     }
     .loop.spin {
       transition: transform 1s .3s;
@@ -26,19 +28,22 @@
       const content = selectorDocument.getElementById('selector').content.cloneNode(true);
       this.shadow.appendChild(content);
 
-      this.loop = this.shadow.querySelector('.loop');
-
-      setTimeout(() => this.pickQueue(), 1000);
+      // setTimeout(() => this.pickQueue(), 1000);
     }
 
     connectedCallback() {
-      const diameter = this.previousElementSibling.clientWidth * 0.3;
-      this.loop.style.width = `${diameter}px`;
-      this.loop.style.height = `${diameter}px`;
-      
-      this.style.bottom = `-${diameter}px`;
+      const diameter = this.previousElementSibling.clientWidth * 0.5;
+      this.style.width = `${diameter}px`;
+      this.style.height = `${diameter}px`;
 
-      setInterval(() => this.repaint = true, 10000);
+      const firstQueueRect = document.querySelector('task-queue').getBoundingClientRect();
+      const left = firstQueueRect.left;
+      const bottom = firstQueueRect.bottom;
+
+      this.style.left = `${left + diameter/4}px`;
+      this.style.top = `${bottom}px`;
+
+      setInterval(() => this.readyToPaint = true, 10000);
     }
 
     async pickQueue() {
@@ -55,7 +60,8 @@
     }
 
     getNextQueue() {
-      if (this.repaint) {
+      if (this.readyToPaint && this.repaint) {
+        this.readyToPaint = false;
         this.repaint = false;
         return this.parentNode.querySelector('rendering-pipeline');
       } else {

@@ -2,11 +2,12 @@
   <style>
     :host {
       display: flex;
+      justify-content: space-around;
+      position: relative;
     }
-    rendering-pipeline, queue-selector {
-      max-width: 20vw;
-      margin: 3vw;
-      margin-bottom: 0;
+    rendering-pipeline {
+      max-width: 25%;
+      margin: 0 3vw;
     }
   </style>
   <slot id="queues"></slot>

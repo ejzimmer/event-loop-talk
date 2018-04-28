@@ -6,23 +6,23 @@
     }
     
     browser-window {
-      height: 200px;
+      height: 30vh;
       width: 95%;
       margin: auto;
-      margin-bottom: 5px;
       z-index: -1;
     }
 
     browser-window.go {
-      transition: transform 2s linear;
-      transform: translateY(210px);
+      transition: transform 2s .5s linear;
+      transform: translateY(103%);
     }
 
     .pipe {
       --lightgreen: #16cc16;
       --midgreen: #28a828;
-      width: 16vw;
-      height: 33vw;
+      width: 16vh;
+      max-width: 100%;
+      height: 33vh;
       border: 6px solid #006000;
       background: linear-gradient(to right, green, green 12%, var(--midgreen) 12%, var(--midgreen) 15%, green 15%, green 17%, var(--midgreen) 17%, var(--midgreen) 60%, var(--lightgreen) 60%, var(--lightgreen) 81%, var(--midgreen) 81%, var(--midgreen) 86%, var(--lightgreen) 86%, var(--lightgreen) 93%, var(--midgreen) 93%);
       box-sizing: border-box;

@@ -2,7 +2,7 @@
   <style>
       :host {
         display: flex;
-        --diameter: 8vw;
+        --diameter: 9vh;
       }
 
 			.timer {
@@ -27,7 +27,7 @@
         display: flex;
       }
       .html::after {
-        content: '<html> ...</html>';
+        content: '<html>\A...</html>';
         font-family: 'Courier New', Courier, monospace;
         font-weight: bold;
         font-size: 2vw;
@@ -43,7 +43,6 @@
         transform-origin: bottom left;
         transform:  translateX(50%) rotate(-.125turn);
         position: relative;
-        margin: 0 10px;
       }
       .network::after {
         content: '';
@@ -111,7 +110,6 @@
       if (this.type === 'drive') {
         const driveHeight = this.source.getBoundingClientRect().height;
         const armHeight = driveHeight * 0.35;
-        console.log(armHeight);
         this.arm.style.height = armHeight;
         this.arm.style.borderBottomWidth = `${armHeight}px`;
       }
