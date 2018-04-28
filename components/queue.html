@@ -92,6 +92,8 @@
 
       const firstTask = this.getTask(0);
       if (firstTask) {
+        const duration = this.getRandomTime();
+        firstTask.style.transitionDuration = `.5s, .5s, ${duration}s`;
         firstTask.style.height = 0;
       }
 
@@ -115,6 +117,10 @@
       task.style.right = `${index * 5}px`;
       task.style.bottom = `${index * 5}px`;
       task.style.zIndex = index * -1;			
+    }
+
+    getRandomTime() {
+      return Math.random() * 7 + 3;
     }
 
   }
