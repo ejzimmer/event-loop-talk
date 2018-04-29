@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Event Loop with Multiple Queues</title>
+    
+    <link rel="stylesheet" href="css/demo.css">
+
+    <link rel="import" href="components/event-loop.html">
+		<link rel="import" href="components/browser.html">
+		<link rel="import" href="components/queues.html">
+		<link rel="import" href="components/rendering-pipeline.html">
+		<link rel="import" href="components/queue-selector.html">
+		<link rel="import" href="components/queue.html">
+		<link rel="import" href="components/task-source.html">
+	</head>
+	<body>
+		<section>
+      <event-loop>
+        <div class="sources">
+          <task-source type="html"></task-source>
+          <task-source type="browser"></task-source>
+          <task-source type="timer"></task-source>
+          <task-source type="network"></task-source>
+          <task-source type="drive"></task-source>  
+        </div>
+        <task-queues>
+          <task-queue type="browser"></task-queue>
+          <task-queue></task-queue>  
+        </task-queues>
+      </event-loop>
+		</section>
+	
+		<div class="notes">				
+      Can have lots of other queues - Node has separate queues for timeouts and I/O callbacks
+      Browsers might have separate queues for user-generated callbacks and DOM parsing callbacks
+    </div>
+	</body>
+</html>

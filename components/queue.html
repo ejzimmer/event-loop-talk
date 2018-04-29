@@ -78,11 +78,13 @@
 
       this.tasks = this.shadow.querySelector('.tasks');
 
+      const typeAttribute = this.attributes.type;
+      this.type = typeAttribute ? typeAttribute.value : 'default';
+
       this.addEventListener('do-task', this.runTask);
     }
     
     addTask(taskType) {
-      console.log(taskType);
       const task = document.createElement('div');
       task.classList.add('task');
       task.classList.add(taskType);

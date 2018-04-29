@@ -44,7 +44,7 @@
       const bottom = firstQueueRect.bottom;
       this.style.top = `${bottom}px`;
 
-      setInterval(() => { this.readyToPaint = true }, 10000);
+      setInterval(() => { this.readyToPaint = true }, 20000);
     }
 
     async pickQueue() {
@@ -67,10 +67,12 @@
         this.repaint = false;
         return this.parentNode.querySelector('rendering-pipeline');
       } else {
-        const taskQueue = document.querySelector('task-queue');
-        if (taskQueue.getTask(0)) {
-          this.repaint = true;
-          return taskQueue;
+        const queues = document.querySelectorAll('task-queue');
+        for (let queue of queues) {
+          if (queue.getTask(0)) {
+            this.repaint = true;
+            return queue;
+          }
         }
       }
     }

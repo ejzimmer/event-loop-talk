@@ -1,0 +1,22 @@
+<template id="event-loop">
+  <slot></slot>
+</template>
+<script>
+  const eventLoopDocument = document.currentScript.ownerDocument;
+  class EventLoop extends HTMLElement {
+    constructor() {
+      super();
+
+      this.shadow = this.attachShadow({ mode: 'open' });
+      const content = eventLoopDocument.getElementById('event-loop').content.cloneNode(true);
+      this.shadow.appendChild(content);
+    }
+
+    connectedCallback() {
+      this.queues = document.querySelector('task-queues');
+      document.querySelector('body').addEventListener('task', event => this.queues.addTask(event.detail));
+    }
+  }
+  customElements.define('event-loop', EventLoop);
+</script>
+ 

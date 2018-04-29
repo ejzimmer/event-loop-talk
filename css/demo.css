@@ -1,0 +1,43 @@
+body {
+  --background-start: #4517ed;
+  --background-end: #291c59;
+  --subtle: #ccf;
+  color: white;
+  display: flex;
+  background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
+  height: 100vh;
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  margin: 0;
+  display: flex;
+}
+
+section {
+  width: 80vh;
+  height: 80vh;
+  margin: auto;
+  position: relative;
+}
+
+.notes {
+  display: none;
+}
+
+.sources {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+task-source {
+  max-width: 10%;
+}
+task-queues {
+  max-height: 40vh;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

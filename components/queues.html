@@ -32,7 +32,23 @@
     }
 
     addTask(taskType) {
-      this.queues[0].addTask(taskType);
+      const queue = this.findQueue(taskType);      
+      queue.addTask(taskType);
+    }
+
+    findQueue(type) {
+      let defaultQueue;
+
+      for (let queue of this.queues) {
+        if (queue.type === type) {
+          return queue;
+        }
+        if (queue.type === 'default') {
+          defaultQueue = queue;
+        }
+      }
+
+      return defaultQueue;
     }
 
   }
