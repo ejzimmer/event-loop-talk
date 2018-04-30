@@ -115,6 +115,31 @@
         from { transform: rotate(.09turn); }
         to { transform: rotate(.18turn); }
       }
+
+      .promise {
+        width: var(--diameter);
+        height: var(--diameter);
+        background-color: #f7df1e;
+        position: relative;
+      }
+      .promise::after {
+        content: 'then';
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        color: black;
+        font-size: 3vh;
+      }
+
+      .animation {
+        width: var(--diameter);
+        height: var(--diameter);
+        background-image: url('css/cat.png');
+        background-size: contain;
+      }
+      .animation.running {
+        background-image: url('css/cat.gif');
+      }
   </style>
   <div class="container"></div>
 </template>
@@ -159,12 +184,11 @@
         this.arm.style.borderBottomWidth = `${armHeight}px`;
       }
 
-      if (this.type === 'html') {
+      if (this.type === 'html' || this.type === 'promise' || this.type === 'animation') {
         this.container.addEventListener('click', () => {
           this.addTask();
         });
-      }
-      if (this.source && this.type !== 'html') {
+      } else if (this.source && this.type !== 'html') {
         this.source.addEventListener('click', () => {
           this.startAsyncTask();
         });
@@ -223,7 +247,15 @@
     }
 
     addTask() {
-      document.body.dispatchEvent(new CustomEvent('task', { detail: this.type }));     
+      const type = this.type === 'promise' ? 'microtask' : this.type;
+      document.body.dispatchEvent(new CustomEvent('task', { detail: type }));     
+    }
+
+    run() {
+      this.source.classList.add('running');
+    }
+    stop() {
+      this.source.classList.remove('running');
     }
   }
   customElements.define('task-source', TaskSource);

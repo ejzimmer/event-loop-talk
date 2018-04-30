@@ -63,6 +63,18 @@
     .task.drive {
       background-color: hsl(40, 80%, 80%);
     }
+    .task.microtask {
+      background-color: #f7df1e;
+    }
+
+    .task.animation {
+      height: 60px;
+      background-image: url('css/cat.png');
+      background-size: cover;
+    }
+    .task.animation::before {
+      content: '';
+    }
   </style>
   <div class="tasks"></div>
 </template>
@@ -102,26 +114,45 @@
       return this.getTasks()[index];
     }
 
-    runTask() {
-      let resolveTask;
-      const taskPromise = new Promise(resolve => resolveTask = resolve);
+    async runTask() {
+      if (this.type === 'animation') {
+        return this.runAnimationTasks();
+      }
 
       const firstTask = this.getTask(0);
       if (firstTask) {
-        const duration = this.getRandomTime();
-        firstTask.style.transitionDuration = `.5s, .5s, ${duration}s`;
-        firstTask.style.height = 0;
+        await this.startTask(firstTask);
       }
+    }
 
-      firstTask.addEventListener('transitionend', (event) => {
+    startTask(task) {
+      let resolveTask;
+      const taskPromise = new Promise(resolve => resolveTask = resolve);
+
+      const duration = this.getRandomTime();
+      task.style.transitionDuration = `.5s, .5s, ${duration}s`;
+      task.style.height = 0;
+
+      task.addEventListener('transitionend', (event) => {
         if (event.propertyName === 'height') {
-          firstTask.remove();
+          task.remove();
           this.redrawTasks();
           resolveTask();
         }
-      });
+      })
 
       return taskPromise;
+    }
+
+    async runAnimationTasks() {
+      const animationSource = document.querySelector('task-source[type="animation"]');
+      animationSource.run();
+      const currentTasks = this.getTasks();
+      currentTasks.forEach(task => task.style.borderColor = 'white');
+      for (let task of currentTasks) {
+        await this.startTask(task);
+      }
+      animationSource.stop();
     }
 
     redrawTasks() {

@@ -44,33 +44,49 @@
       const bottom = firstQueueRect.bottom;
       this.style.top = `${bottom}px`;
 
-      setInterval(() => { this.readyToPaint = true }, 20000);
+      this.renderingPipeline = this.parentNode.querySelector('rendering-pipeline');
+      this.animationQueue = document.querySelector('task-queue[type="animation"]');
+      this.microtaskQueue = document.querySelector('task-queue[type="microtask"]');      
+
+
+      setInterval(() => { this.readyToPaint = true }, 2000);
     }
 
     async pickQueue() {
       const queue = this.getNextQueue();
-      if (queue) {
-        this.moveToQueue(queue);
-        this.spin();
-        await queue.runTask();
-        this.spin(false);
-        this.pickQueue();
+      if (queue === this.renderingPipeline) {
+        await this.doQueue(this.animationQueue);
+        await this.doQueue(this.renderingPipeline);
+      } else if (queue) {
+        await this.doQueue(queue);
       } else {
         await this.wait();
-        this.pickQueue();
       }
+      this.pickQueue();
+    }
+
+    async doQueue(queue) {
+      this.moveToQueue(queue);
+      this.spin();
+      await queue.runTask();
+      this.spin(false);
     }
 
     getNextQueue() {
+      if (this.microtaskQueue.getTask(0)) {
+        return this.microtaskQueue;
+      } 
       if (this.readyToPaint && this.repaint) {
         this.readyToPaint = false;
         this.repaint = false;
-        return this.parentNode.querySelector('rendering-pipeline');
-      } else {
-        const queues = document.querySelectorAll('task-queue');
-        for (let queue of queues) {
-          if (queue.getTask(0)) {
-            this.repaint = true;
+        return this.renderingPipeline;
+      } 
+      const queues = document.querySelectorAll('task-queue');
+      for (let queue of queues) {
+        if (queue.getTask(0)) {
+          console.log('checking');
+          this.repaint = true;
+          if (queue.type !== 'animation') {
             return queue;
           }
         }
