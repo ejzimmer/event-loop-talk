@@ -55,7 +55,9 @@
     async pickQueue() {
       const queue = this.getNextQueue();
       if (queue === this.renderingPipeline) {
-        await this.doQueue(this.animationQueue);
+        if (this.animationQueue) {
+          await this.doQueue(this.animationQueue);          
+        }
         await this.doQueue(this.renderingPipeline);
       } else if (queue) {
         await this.doQueue(queue);
@@ -73,7 +75,7 @@
     }
 
     getNextQueue() {
-      if (this.microtaskQueue.getTask(0)) {
+      if (this.microtaskQueue && this.microtaskQueue.getTask(0)) {
         return this.microtaskQueue;
       } 
       if (this.readyToPaint && this.repaint) {
@@ -84,7 +86,6 @@
       const queues = document.querySelectorAll('task-queue');
       for (let queue of queues) {
         if (queue.getTask(0)) {
-          console.log('checking');
           this.repaint = true;
           if (queue.type !== 'animation') {
             return queue;

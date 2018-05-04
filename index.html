@@ -15,7 +15,7 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<!-- <section>
+				<section>
 					<div class="mask">
 						<svg class="title" viewBox="0 0 100 50" style="width: 80%">
 							<path id="curve" d="M 10 50 a 40 40 0 0 1 80 0" fill="transparent" />
@@ -48,15 +48,17 @@
 					</div>
 				</section>
 				<section>
-					<div class="statement">The Event Loop is a series of Queues</div>
-				</section> -->
+					Demo - simple event loop
+					Task sources across the top, task queue, rendering pipeline
+					Add a script parsed event to queue, browser decides when to repaint
+					- Is there anything to paint?
+					- Has it been long enough?
+					(This queue is in slow motion)
+					Possible for a few things to happen before repaint - add several tasks
+					If tasks take too long, then the rendering gets delayed a little
+					Do a graph of repaint times
+				</section>
 				<section>
-					<div class="sources">
-						<task-source type="browser"></task-source>
-					</div>
-					<task-queues>
-						<task-queue></task-queue>
-					</task-queues>
 					<div class="notes">The event loop is a series of queues - task queue and we can think of the rendering pipe-line as a kind 
 					of queue that only has one thing in it
 					Describe how things get added to queues</div>
