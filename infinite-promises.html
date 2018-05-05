@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>Infinite promises</title>
+    <link rel="stylesheet" href="css/loops.css">
+    <style>
+      body {
+        flex-direction: column;
+      }
+      button {
+      cursor: pointer;
+      background: hsl(135, 87%, 36%);
+      color: white;
+      border: 1px solid #666;
+      border-radius: 2px;
+      box-shadow: 
+                  0 -2px 2px hsl(215, 80%, 38%) inset,
+                  0 2px 2px hsl(215, 80%, 80%) inset;
+      margin: auto;
+      padding: 20px;
+      font-size: 2em;
+    }
+    button:active {
+      outline: none;
+      box-shadow: 0 -2px 2px hsl(215, 80%, 80%) inset,
+                  0 2px 2px hsl(215, 80%, 38%) inset;
+    }
+    button:focus {
+      outline: none;
+    }
+
+    </style>
+  </head>
+  <body>
+    <script style="display: block; white-space: pre; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 2em;">
+      let numberOfPromises = 0;
+      let running = false;
+
+      function start() {
+        numberOfPromises++;
+        document.getElementById('promises')
+          .innerHTML = numberOfPromises;
+
+        let promise = Promise.resolve();
+        running = true;
+        while (running) {
+          console.log('resolving');
+          promise = promise.then(() => Promise.resolve());
+        }
+      }
+    </script>
+    <script>
+      function stop() {
+        running = false
+      }
+    </script>
+    <div class="text" id="promises" style="height: 3em; margin: auto"></div>
+    <div style="display: flex; justify-content: space-around">
+      <button onclick="start()">Start promising</button>
+      <button style="background-color: red" onclick="stop()">Stop madness</button>
+    </div>
+  </body>
+</html>

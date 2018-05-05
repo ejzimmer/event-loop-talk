@@ -41,27 +41,85 @@
 					<h2>what the heck is the event loop anyway?</h2>
 					<div style="font-size: 2em">@philip_roberts</div>
 					<img src="css/onfire.png" style="max-width: 80vw; margin-top: 40px" />
-					<div class="notes">
-						If you've not seen it - go watch it - it goes into a lot more detail of how the event loop
-						interacts with the stack and other APIs than I'm going to go into here.
-						Instead, I'm going to start with a much closer look at the task queue. Or queues, as it turns out.		
+				</section> 
+				<section>
+					<div style="display: flex; flex-wrap: wrap; justify-content: space-between; height: 50vh; width: 40vw; margin: auto;">
+						<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
+							<div style="flex-grow: 1">stack</div>
+							<div class="task">setTimeout(cb)</div>
+							<div class="task">main()</div>
+						</div>
+						<div class="area" style="width: 55%;">
+							<div>webapis</div>
+						</div>
+						<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
+							<div style="margin: auto 0;">task queue</div>
+							<div class="task" style="margin-left: 5px">cb</div>
+						</div>
 					</div>
 				</section>
 				<section>
-					Demo - simple event loop
-					Task sources across the top, task queue, rendering pipeline
-					Add a script parsed event to queue, browser decides when to repaint
-					- Is there anything to paint?
-					- Has it been long enough?
-					(This queue is in slow motion)
-					Possible for a few things to happen before repaint - add several tasks
-					If tasks take too long, then the rendering gets delayed a little
-					Do a graph of repaint times
+					<a class="text" href="simple.html">Super exciting demo!</a>
+					<div class="notes">
+						- script tag parsed - added to task queue
+						- repaint
+						- repainting is expensive. try not to do it
+						- only repaint if something has changed
+						- only repaint when screen refreshes - aim for 60Hz
+						- 60Hz is hard to see, so we're doing every 16 seconds instead
+						- finish currently executing task before repainting, so long running tasks == jank
+						- also, there are async tasks...
+					</div>
 				</section>
 				<section>
-					<div class="notes">The event loop is a series of queues - task queue and we can think of the rendering pipe-line as a kind 
-					of queue that only has one thing in it
-					Describe how things get added to queues</div>
+					<div class="text">JavaScript is single threaded</div>
+				</section>
+				<section>
+					<div  class="text" style="text-align: left">JavaScript <i>engines</i> have as many threads as they damn-well please</div>
+				</section>
+				<section>
+						<a class="text" href="simple.html">Back to demo...</a>					
+				</section>
+				<section>
+					<div style="font-size: 2em">An <u>event loop</u> has one or more <b>task queues.</b></div>
+				</section>
+				<section>
+					<pre style="text-align: left; font-size: 2em;">
+bool did_work = delegate->DoWork();
+if (!keep_running_)
+	break;
+did_work |= delegate->DoDelayedWork(&delayed_work_time_);
+if (!keep_running_)
+	break;
+if (did_work)
+	continue;
+did_work = delegate->DoIdleWork();
+if (!keep_running_)
+	break;
+					</pre>
+				</section>
+				<section>
+					<a style="font-size: 2em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
+					<div class="notes">
+						- browser built to be super responsive
+						- user generated events in one queue, everything else in the other
+						- user queue gets run first
+						- other ways we could have broken this up - Node: all timers in a single queue
+						- but we will get to Node a bit later
+					</div>
+				</section>
+				<section>
+					<div style="font-size: 3em">Each <a href="microtasks.html">event loop</a> has a <b>microtask queue</b></div>
+					<div class="notes">
+						This is where things get interesting
+						- How do tasks get added to the microtask queue? Mostly by promises resolving
+						- Microtask queue rules are different
+					</div>
+				</section>
+				<section class="text">
+					<a href="infinite-timeouts.html">Infinte timeouts</a>
+					<div style="margin: 10px">vs</div>
+					<a href="infinite-promises.html" target="_blank" rel="noopener">Infinite promises</a>
 				</section>
 				<section>
 					Can have lots of other queues - Node has separate queues for timeouts and I/O callbacks
@@ -130,6 +188,7 @@
 			Reveal.initialize({
 				controls: false,
 				progress: false,
+				history: true,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },

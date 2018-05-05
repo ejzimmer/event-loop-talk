@@ -25,6 +25,16 @@ h2 {
   font-size: 3em;
 }
 
+a {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: inherit;
+  color: white;
+}
+
+.text {
+  font-size: 4em;
+}
+
 .fancy {
   font-family: cursive;
   font-size: 5em;
@@ -60,6 +70,27 @@ svg.title {
   font-size: 3.5em;
 }
 
+.area {
+  border: 1px solid black;
+  background: white;
+  color: black;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.area > div:first {
+  font-size: 1.2em;
+}
+.area:hover {
+  border: 2px solid red;
+  transform: scale(1.2);
+}
+
+.task {
+  font-family: 'Courier New', Courier, monospace;
+  background: gold;
+  padding: 10px;
+  margin-top: 5px;
+}
 .notes {
   display: none;
 }
