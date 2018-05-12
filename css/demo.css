@@ -2,6 +2,7 @@ body {
   --background-start: #4517ed;
   --background-end: #291c59;
   --subtle: #ccf;
+  --queue-width: 80px;
   color: white;
   display: flex;
   background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
@@ -9,6 +10,11 @@ body {
   font-family: "Source Sans Pro", Helvetica, sans-serif;
   margin: 0;
   display: flex;
+  transition: filter 3s;
+}
+
+body.done {
+  filter: grayscale(100%) blur(5px);
 }
 
 section {

@@ -4,6 +4,7 @@
       display: flex;
       position: fixed;
       transition: left .3s;
+      width: var(--queue-width);
     }
     .loop {
       margin: auto;
@@ -44,10 +45,6 @@
     }
 
     connectedCallback() {
-      const diameter = this.previousElementSibling.clientWidth * 0.5;
-      this.style.width = `${diameter}px`;
-      this.style.height = `${diameter}px`;
-
       const firstQueueRect = document.querySelector('task-queue').getBoundingClientRect();
       const bottom = firstQueueRect.bottom;
       this.style.top = `${bottom}px`;
@@ -61,6 +58,8 @@
 
       if (this.eventsWaiting) {
         this.doLoop();
+      } else {
+        document.body.classList.add('done');
       }
     }
 
@@ -83,14 +82,20 @@
 
     async runPhase(queue) {
       while(queue.hasTasks()) {
+        this.moveToQueue(queue);
+        this.spin();
         await queue.runTask();
+        this.spin(false);
         await this.doMicrotaskCheck();
       }
     }
 
     async doMicrotaskCheck() {
       while (this.microtaskQueue.hasTasks()) {
+        this.moveToQueue(this.microtaskQueue);
+        this.spin();
         await this.microtaskQueue.runTask();
+        this.spin(false);
       }
     }
 
@@ -103,6 +108,20 @@
     get queuesWaiting() {
       return Array.from(document.querySelectorAll('task-queue')).some(queue => queue.hasTasks());
     }
+
+    moveToQueue(queue) {
+      const queueRect = queue.getBoundingClientRect();
+      const loopRect = this.getBoundingClientRect();
+
+      const margin = (queueRect.width - loopRect.width) / 2;
+      const left = queueRect.left + margin;
+      this.style.left = `${left}px`;
+    }
+
+    spin(run = true) {
+      this.loop.style.animationPlayState = run ? 'running' : 'paused';
+    }
+
 
   }
   customElements.define('node-queue-selector', NodeQueueSelector);
