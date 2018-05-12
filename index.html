@@ -35,12 +35,12 @@
 				<section data-transition="fade-in" style="transition-duration: 10s">
 					<h2>what the heck is the event loop anyway?</h2>
 					<div style="font-size: 2em">@philip_roberts</div>
-					<img src="css/whattheheck.png" style="max-width: 80vw; margin-top: 40px" />
+					<img src="css/whattheheck.png" style="width: 100%; margin-top: 40px" />
 				</section>
 				<section data-transition="fade-in" style="transition-duration: 1s">
 					<h2>what the heck is the event loop anyway?</h2>
 					<div style="font-size: 2em">@philip_roberts</div>
-					<img src="css/onfire.png" style="max-width: 80vw; margin-top: 40px" />
+					<img src="css/onfire.png" style="width: 100%; margin: auto; margin-top: 40px" />
 				</section> 
 				<section>
 					<div style="display: flex; flex-wrap: wrap; justify-content: space-between; height: 50vh; width: 40vw; margin: auto;">
@@ -76,12 +76,23 @@
 				</section>
 				<section>
 					<div  class="text" style="text-align: left">JavaScript <i>engines</i> have as many threads as they damn-well please</div>
+					<a class="demo-link" href="simple.html">Demo</a>
+					<div class="notes">
+						Timers get added to the queue once their time is up
+						They get executed some time after that
+					</div>		
 				</section>
 				<section>
-						<a class="text" href="simple.html">Back to demo...</a>					
+					<div style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
 				</section>
 				<section>
-					<div style="font-size: 2em">An <u>event loop</u> has one or more <b>task queues.</b></div>
+					<div class="list-container">
+						<ul>
+							<li class="fragment">Queues can be executed in any order</li>
+							<li class="fragment">Tasks from the same source must go in the same queue</li>
+							<li class="fragment">Tasks in the same queue must be executed in the order they arrived</li>
+						</ul>
+					</div>
 				</section>
 				<section>
 					<pre style="text-align: left; font-size: 2em;">
@@ -99,7 +110,7 @@ if (!keep_running_)
 					</pre>
 				</section>
 				<section>
-					<a style="font-size: 2em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
+					<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
 					<div class="notes">
 						- browser built to be super responsive
 						- user generated events in one queue, everything else in the other
@@ -109,7 +120,8 @@ if (!keep_running_)
 					</div>
 				</section>
 				<section>
-					<div style="font-size: 3em">Each <a href="microtasks.html">event loop</a> has a <b>microtask queue</b></div>
+					<div style="font-size: 3em">Each <u>event loop</u> has a <b>microtask queue</b></div>
+					<a class="demo-link" href="microtasks.html">Demo</a>
 					<div class="notes">
 						This is where things get interesting
 						- How do tasks get added to the microtask queue? Mostly by promises resolving
@@ -117,54 +129,71 @@ if (!keep_running_)
 					</div>
 				</section>
 				<section class="text">
-					<a href="infinite-timeouts.html">Infinte timeouts</a>
+					<a href="infinite-timeouts.html">Infinite timeouts</a>
 					<div style="margin: 10px">vs</div>
 					<a href="infinite-promises.html" target="_blank" rel="noopener">Infinite promises</a>
 				</section>
 				<section>
-					Can have lots of other queues - Node has separate queues for timeouts and I/O callbacks
-					Browsers might have separate queues for user-generated callbacks and DOM parsing callbacks
+					<div style="font-size: 3em">
+							Associated with every <u>Document</u> is an <b>animation frame request callback list</b>
+							<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
+					</div>
 				</section>
 				<section>
-					The event loop picks a queues, takes a task from it and runs it to completion, then picks another queue
+					<code>
+						requestAnimationFrame(callback);
+					</code>
+					<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
-						Blocking event loop - add a task that takes a long time so other tasks can't run
-				</section>	
-				<section>
-					More detail of Node queues and how the event loop picks things
-					Difference between Node and browser
-					 - browser: can pick a task from any queue once this task finishes
-					 - Node: runs all the tasks in the current queue before picking another queue
+					<pre style="font-size: 2.5em; text-align: left;">
+requestAnimationFrame(() => {
+  this.browser.classList.remove('go');
+
+  requestAnimationFrame(() => {
+    this.browser.classList.add('go')
+  });
+});				
+					</pre>
+					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					In addition, there are a few special queues that Node and browsers implement
-					Browsers: microtasks and requestAnimationCallback
-					Node: process.nextTick & setImmediate
+					<div class="text">... so what about Node?</div>
 				</section>
 				<section>
-					Microtasks = Promises
+					<div class="list-container">
+						<ul>
+							<li class="fragment">No script parsing events</li>
+							<li class="fragment">No pesky user interactions</li>
+							<li class="fragment">No animation frame callbacks</li>
+							<li class="fragment">No rendering pipeline <i>at all</i></li>
+						</ul>
+					</div>
+					<div class="fragment" style="font-size: 60px">😊</div>
+					<div class="notes">There are some differences to how the event loops run</div>
 				</section>
 				<section>
-					The spec section on microtask checks
+					<h2>Browser</h2>
+					<img style="width: 100%" src="css/corgi-carousel.gif" />
 				</section>
 				<section>
-					Microtasks can add more microtasks
+					<h2>Node</h2>
+					<img style="width: 100%" src="css/thunderbolt.gif" />
 				</section>
 				<section>
-					Animation explanation
+					<a class="text" href="node.html">Node event loop demo</a>
 				</section>
 				<section>
-					What that actually looks like in code
+					<code>setImmediate(callback)</code>
+					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					requestAnimationCallback is similar - before each repaint - can't block event loop
-				</section>
-				<section>
-					process.nextTick - run something as soon as this task finishes - can be called recursively
-				</section>
-				<section>
-					setImmediate - pick this queue once you've finished all the tasks in the current queue
+					<div class="notes">
+						Differences between Node and browser
+							- Node always runs everything in a queue before processing the next queue
+							- Microtask queues are run after the queue is empty, not after each task
+							- There's an extra microtask queue - process.nextTick
+					</div>
 				</section>
 				<section>
 					Then there's the case of multiple event loops
@@ -198,11 +227,13 @@ if (!keep_running_)
 			});
 		</script>
 
+		<link rel="import" href="components/event-loop.html">
 		<link rel="import" href="components/browser.html">
 		<link rel="import" href="components/queues.html">
 		<link rel="import" href="components/rendering-pipeline.html">
 		<link rel="import" href="components/queue-selector.html">
 		<link rel="import" href="components/queue.html">
 		<link rel="import" href="components/task-source.html">
+
 	</body>
 </html>

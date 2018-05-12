@@ -150,6 +150,15 @@
       .animation.running {
         background-image: url('css/cat.gif');
       }
+
+      .immediate::after {
+        content: '!';
+        font-weight: bold;
+        color: white;
+        font-size: 4em;
+        padding: 0 10px;
+        font-family: serif;
+      }
   </style>
   <div class="container"></div>
 </template>
@@ -194,7 +203,7 @@
         this.arm.style.borderBottomWidth = `${armHeight}px`;
       }
 
-      if (this.type === 'html' || this.type === 'promise' || this.type === 'animation') {
+      if (this.type === 'html' || this.type === 'promise' || this.type === 'animation' || this.type === 'immediate') {
         this.container.addEventListener('click', () => {
           this.addTask();
         });
@@ -266,6 +275,12 @@
     }
     stop() {
       this.source.classList.remove('running');
+    }
+
+    hasTasksWaiting() {
+      if (this.thread) {
+        return !!this.thread.children.length;
+      }
     }
   }
   customElements.define('task-source', TaskSource);

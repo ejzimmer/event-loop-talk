@@ -12,8 +12,8 @@ body {
 }
 
 section {
-  width: 80vh;
-  height: 80vh;
+  width: 80vmin;
+  height: 80vmin;
   margin: auto;
   position: relative;
 }
@@ -35,8 +35,8 @@ section {
 task-source {
   max-width: 10%;
 }
-task-queues {
-  max-height: 40vh;
+task-queues, node-queues {
+  max-height: 40vmin;
   position: absolute;
   bottom: 0;
   width: 100%;

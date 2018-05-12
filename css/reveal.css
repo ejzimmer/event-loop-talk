@@ -150,9 +150,6 @@ body {
   z-index: 1; }
 
 /** Prevents layering issues in certain browser/transition combinations */
-.reveal a {
-  position: relative; }
-
 .reveal .stretch {
   max-width: none;
   max-height: none; }

@@ -120,6 +120,9 @@
     getTask(index) {
       return this.getTasks()[index];
     }
+    hasTasks() {
+      return this.getTasks().length;
+    }
 
     async runTask() {
       if (this.type === 'animation') {
@@ -174,7 +177,7 @@
     }
 
     getRandomTime() {
-      return Math.random() * 6 + 2;
+      return Math.random() * 4 + 2;
     }
 
   }

@@ -37,13 +37,12 @@
 
       function start() {
         numberOfPromises++;
-        document.getElementById('promises')
-          .innerHTML = numberOfPromises;
+        const promises = document.getElementById('promises');
 
         let promise = Promise.resolve();
         running = true;
         while (running) {
-          console.log('resolving');
+          promises.innerHTML = numberOfPromises;
           promise = promise.then(() => Promise.resolve());
         }
       }
@@ -53,7 +52,7 @@
         running = false
       }
     </script>
-    <div class="text" id="promises" style="height: 3em; margin: auto"></div>
+    <div class="text" id="promises"></div>
     <div style="display: flex; justify-content: space-around">
       <button onclick="start()">Start promising</button>
       <button style="background-color: red" onclick="stop()">Stop madness</button>

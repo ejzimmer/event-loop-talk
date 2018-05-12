@@ -31,6 +31,24 @@ a {
   color: white;
 }
 
+.list-container {
+  display: flex;
+}
+
+ul {
+  list-style: square;
+  font-size: 2em;
+  margin: auto;
+  text-align: left;
+}
+li {
+  margin-bottom: 1em;
+}
+
+code {
+  font-size: 3em;
+}
+
 .text {
   font-size: 4em;
 }
@@ -91,6 +109,16 @@ svg.title {
   padding: 10px;
   margin-top: 5px;
 }
+
+.demo-link {
+  position: fixed; 
+  right: 1em; 
+  bottom: 0; 
+  color: rgba(206, 190, 190, 0.3); 
+  font-size: 2.5rem;
+}
+
+
 .notes {
   display: none;
 }

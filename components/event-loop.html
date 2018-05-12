@@ -13,7 +13,7 @@
     }
 
     connectedCallback() {
-      this.queues = document.querySelector('task-queues');
+      this.queues = document.querySelector('task-queues, node-queues');
       document.querySelector('body').addEventListener('task', event => this.queues.addTask(event.detail));
     }
   }

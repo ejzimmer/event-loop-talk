@@ -1,0 +1,50 @@
+<template id="node-queues">
+  <style>
+    :host {
+      display: flex;
+      justify-content: space-around;
+      position: relative;
+    }
+  </style>
+  <slot id="queues"></slot>
+  <node-queue-selector></node-queue-selector>
+</template>
+<script>
+  const nodeQueuesDocument = document.currentScript.ownerDocument;
+  class NodeQueues extends HTMLElement {
+    constructor() {
+      super();
+
+      this.shadow = this.attachShadow({ mode: 'open' });
+      const content = nodeQueuesDocument.getElementById('node-queues').content.cloneNode(true);
+      this.shadow.appendChild(content);
+    }
+
+    connectedCallback() {
+      this.selector = this.shadow.querySelector('node-queue-selector');
+      this.queues = this.querySelectorAll('task-queue');
+    }
+
+    addTask(taskType) {
+      const queue = this.findQueue(taskType);      
+      queue.addTask(taskType);
+    }
+
+    findQueue(type) {
+      let defaultQueue;
+
+      for (let queue of this.queues) {
+        if (queue.type === type) {
+          return queue;
+        }
+        if (queue.type === 'default') {
+          defaultQueue = queue;
+        }
+      }
+
+      return defaultQueue;
+    }
+
+  }
+  customElements.define('node-queues', NodeQueues);
+</script>

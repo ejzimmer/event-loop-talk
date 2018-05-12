@@ -1,0 +1,109 @@
+<template id="node-selector">
+  <style>
+    :host {
+      display: flex;
+      position: fixed;
+      transition: left .3s;
+    }
+    .loop {
+      margin: auto;
+      width: 100%;
+      height: 100%;
+      animation: spin 1s .3s linear infinite;
+      animation-play-state: paused;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(-1turn); }
+    }
+    
+  </style>
+  <img class="loop" src="css/circular-arrow.svg" />
+</template>
+<script>
+  const nodeSelectorDocument = document.currentScript.ownerDocument;
+  class NodeQueueSelector extends HTMLElement {
+    constructor() {
+      super();
+
+      this.shadow = this.attachShadow({ mode: 'closed' });
+      const content = nodeSelectorDocument.getElementById('node-selector').content.cloneNode(true);
+      this.shadow.appendChild(content);
+
+      this.loop = this.shadow.querySelector('.loop');
+      this.animationQueue = document.querySelector('task-queue[type="animation"]');
+
+      this.timersQueue = document.querySelector('task-queue[type="timer"]');
+      this.immediateQueue = document.querySelector('task-queue[type="immediate"]');
+      this.eventsQueue = document.querySelector('task-queue:not([type])');
+      this.microtaskQueue = document.querySelector('task-queue[type="microtask"]');
+
+      document.body.addEventListener('click', () => {
+        this.doLoop();
+      }, { once: true });
+    }
+
+    connectedCallback() {
+      const diameter = this.previousElementSibling.clientWidth * 0.5;
+      this.style.width = `${diameter}px`;
+      this.style.height = `${diameter}px`;
+
+      const firstQueueRect = document.querySelector('task-queue').getBoundingClientRect();
+      const bottom = firstQueueRect.bottom;
+      this.style.top = `${bottom}px`;
+    }
+
+    async doLoop() {
+      await this.waitForEvents();
+      await this.runPhase(this.eventsQueue);
+      await this.runPhase(this.immediateQueue);
+      await this.runPhase(this.timersQueue);
+
+      if (this.eventsWaiting) {
+        this.doLoop();
+      }
+    }
+
+    waitForEvents() {
+      const endTime = Date.now() + 5000;
+      return new Promise((resolve) => {
+        this.checkEvents(resolve, endTime);
+      });
+    }
+
+    checkEvents(resolve, endTime) {
+      if (this.eventsQueue.hasTasks()) {
+        resolve(true);
+      } else if (Date.now() > endTime) {
+        resolve(false);
+      } else {
+        setTimeout(() => this.checkEvents(resolve, endTime), 2000);
+      }
+    }
+
+    async runPhase(queue) {
+      while(queue.hasTasks()) {
+        await queue.runTask();
+        await this.doMicrotaskCheck();
+      }
+    }
+
+    async doMicrotaskCheck() {
+      while (this.microtaskQueue.hasTasks()) {
+        await this.microtaskQueue.runTask();
+      }
+    }
+
+    get eventsWaiting() {
+      return this.tasksRunning || this.queuesWaiting;
+    }
+    get tasksRunning() {
+      return Array.from(document.querySelectorAll('task-source')).some(source => source.hasTasksWaiting());
+    }
+    get queuesWaiting() {
+      return Array.from(document.querySelectorAll('task-queue')).some(queue => queue.hasTasks());
+    }
+
+  }
+  customElements.define('node-queue-selector', NodeQueueSelector);
+</script>
