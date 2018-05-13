@@ -49,6 +49,14 @@ code {
   font-size: 3em;
 }
 
+img.border, img.full-page {
+  border: 2px solid white; 
+  box-shadow: 4px 4px 16px 4px rgba(255, 255, 255, 30%);  
+}
+img.full-page {
+  width: 100vmin;
+}
+
 .text {
   font-size: 4em;
 }
