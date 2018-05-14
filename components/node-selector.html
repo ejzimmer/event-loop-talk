@@ -38,6 +38,7 @@
       this.immediateQueue = document.querySelector('task-queue[type="immediate"]');
       this.eventsQueue = document.querySelector('task-queue:not([type])');
       this.microtaskQueue = document.querySelector('task-queue[type="microtask"]');
+      this.nextTickQueue = document.querySelector('task-queue[type="next-tick"]');
 
       document.body.addEventListener('click', () => {
         this.doLoop();
@@ -82,21 +83,25 @@
 
     async runPhase(queue) {
       while(queue.hasTasks()) {
-        this.moveToQueue(queue);
-        this.spin();
-        await queue.runTask();
-        this.spin(false);
+        this.doTask(queue);
         await this.doMicrotaskCheck();
       }
     }
 
     async doMicrotaskCheck() {
-      while (this.microtaskQueue.hasTasks()) {
-        this.moveToQueue(this.microtaskQueue);
-        this.spin();
-        await this.microtaskQueue.runTask();
-        this.spin(false);
+      while (this.nextTickQueue.hasTasks()) {
+        this.doTask(this.nextTickQueue);
       }
+      while (this.microtaskQueue.hasTasks()) {
+        this.doTask(this.microtaskQueue);
+      }
+    }
+
+    doTask(queue) {
+      this.moveToQueue(queue);
+      this.spin();
+      await queue.runTask();
+      this.spin(false);
     }
 
     get eventsWaiting() {

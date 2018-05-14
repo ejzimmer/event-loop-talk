@@ -159,6 +159,25 @@
         padding: 0 10px;
         font-family: serif;
       }
+
+      .next-tick {
+        width: var(--diameter);
+        height: var(--diameter);
+        display: flex;
+        border-radius: 50%;
+      }
+
+      .next-tick::after {
+        content: '';
+        display: block;
+        border: 10px solid green;
+        width: calc(var(--diameter) * .6);
+        height: calc(var(--diameter) * .3);
+        border-top-style: none;
+        border-right-style: none;
+        transform: rotate(-.125turn);
+        margin: auto;
+      }
   </style>
   <div class="container"></div>
 </template>
@@ -203,11 +222,12 @@
         this.arm.style.borderBottomWidth = `${armHeight}px`;
       }
 
-      if (this.type === 'html' || this.type === 'promise' || this.type === 'animation' || this.type === 'immediate') {
+      const syncTasks = ['html', 'promise', 'animation', 'immediate', 'next-tick'];
+      if (syncTasks.includes(this.type)) {
         this.container.addEventListener('click', () => {
           this.addTask();
         });
-      } else if (this.source && this.type !== 'html') {
+      } else {
         this.source.addEventListener('click', () => {
           this.startAsyncTask();
         });

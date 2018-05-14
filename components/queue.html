@@ -42,6 +42,7 @@
       right: 0;
       bottom: 0;
       overflow: hidden;
+      color: black;
     }
     .task::before {
       margin: auto;
@@ -50,7 +51,6 @@
       font-weight: bold;
       overflow: hidden;
       font-size: 2em;
-      color: black;
     }
 
     .task.browser {
@@ -67,6 +67,11 @@
     }
     .task.microtask {
       background-color: #f7df1e;
+    }
+    .task.next-tick {
+      color: white;
+      border-color: white;
+      background-color: red;
     }
 
     .task.animation {
@@ -95,12 +100,19 @@
       const typeAttribute = this.attributes.type;
       this.type = typeAttribute ? typeAttribute.value : 'default';
 
-      if (this.type === 'microtask' || this.type === 'animation') {
-        const colour = this.type === 'microtask' ? '#f7df1e' : '#28a828';
-        this.style.setProperty('--container-colour', colour);
-      }
+      const colour = this.getColour(this.type);
+      this.style.setProperty('--container-colour', colour);
 
       this.addEventListener('do-task', this.runTask);
+    }
+
+    getColour(queueType) {
+      switch (queueType) {
+        case 'microtask': return '#f7df1e';
+        case 'next-tick': return 'green';
+        case 'animation': return '#28a828';
+        default: return 'orange';
+      }
     }
     
     addTask(taskType) {

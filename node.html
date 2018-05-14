@@ -25,12 +25,14 @@
           <task-source type="drive"></task-source>
           <task-source type="immediate"></task-source>
           <task-source type="promise"></task-source>
+          <task-source type="next-tick"></task-source>
         </div>
         <node-queues>
           <task-queue type="timer"></task-queue>  
           <task-queue></task-queue>
           <task-queue type="immediate"></task-queue>
           <task-queue type="microtask"></task-queue>
+          <task-queue type="next-tick"></task-queue>
         </node-queues>
       </event-loop>
     </section>
