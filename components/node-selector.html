@@ -52,6 +52,7 @@
     }
 
     async doLoop() {
+      await this.doMicrotaskCheck();
       await this.waitForEvents();
       await this.runPhase(this.eventsQueue);
       await this.runPhase(this.immediateQueue);
@@ -83,21 +84,24 @@
 
     async runPhase(queue) {
       while(queue.hasTasks()) {
-        this.doTask(queue);
+        await this.doTask(queue);
         await this.doMicrotaskCheck();
       }
     }
 
     async doMicrotaskCheck() {
       while (this.nextTickQueue.hasTasks()) {
-        this.doTask(this.nextTickQueue);
+        await this.doTask(this.nextTickQueue);
       }
       while (this.microtaskQueue.hasTasks()) {
-        this.doTask(this.microtaskQueue);
+        await this.doTask(this.microtaskQueue);
+      }
+      if (this.nextTickQueue.hasTasks() || this.microtaskQueue.hasTasks()) {
+        await this.doMicrotaskCheck();
       }
     }
 
-    doTask(queue) {
+    async doTask(queue) {
       this.moveToQueue(queue);
       this.spin();
       await queue.runTask();
