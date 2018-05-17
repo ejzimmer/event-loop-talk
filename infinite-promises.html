@@ -33,18 +33,14 @@
   <body>
     <script style="display: block; white-space: pre; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 2em;">
       let numberOfPromises = 0;
-      let running = false;
 
       function start() {
-        numberOfPromises++;
-        const promises = document.getElementById('promises');
+        Promise.resolve().then(addThen);
+      }
 
-        let promise = Promise.resolve();
-        running = true;
-        while (running) {
-          promises.innerHTML = numberOfPromises;
-          promise = promise.then(() => Promise.resolve());
-        }
+      function addThen() {
+        console.log(numberOfPromises++);
+        Promise.resolve().then(addThen);  
       }
     </script>
     <script>

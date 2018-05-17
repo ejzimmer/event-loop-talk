@@ -60,16 +60,6 @@
 				</section>
 				<section>
 					<a class="text" href="simple.html">Super exciting demo!</a>
-					<div class="notes">
-						- script tag parsed - added to task queue
-						- repaint
-						- repainting is expensive. try not to do it
-						- only repaint if something has changed
-						- only repaint when screen refreshes - aim for 60Hz
-						- 60Hz is hard to see, so we're doing every 16 seconds instead
-						- finish currently executing task before repainting, so long running tasks == jank
-						- also, there are async tasks...
-					</div>
 				</section>
 				<section>
 					<img class="full-page" src="css/Futurama-Fry.jpg" />
@@ -79,11 +69,13 @@
 				</section>
 				<section>
 					<div  class="text" style="text-align: left">JavaScript <i>engines</i> have as many threads as they damn-well please</div>
+				</section>
+				<section>
+					<img class="full-page" src="css/threads.png" />
+				</section>
+				<section>
+					<img class="full-page" src="css/processes.png" />
 					<a class="demo-link" href="simple.html">Demo</a>
-					<div class="notes">
-						Timers get added to the queue once their time is up
-						They get executed some time after that
-					</div>		
 				</section>
 				<section>
 					<div style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
@@ -99,6 +91,7 @@
 				</section>
 				<section>
 					<pre style="text-align: left; font-size: 2em;">
+						fix code highlighting
 bool did_work = delegate->DoWork();
 if (!keep_running_)
 	break;
@@ -114,13 +107,6 @@ if (!keep_running_)
 				</section>
 				<section>
 					<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
-					<div class="notes">
-						- browser built to be super responsive
-						- user generated events in one queue, everything else in the other
-						- user queue gets run first
-						- other ways we could have broken this up - Node: all timers in a single queue
-						- but we will get to Node a bit later
-					</div>
 				</section>
 				<section>
 					<div style="font-size: 3em">Each <u>event loop</u> has a <b>microtask queue</b></div>
@@ -154,14 +140,24 @@ requestAnimationFrame(() => {
   this.browser.classList.remove('go');
 
   requestAnimationFrame(() => {
-    this.browser.classList.add('go')
+    this.browser.classList.add('go');
   });
 });				
+show the actual frames
 					</pre>
-					<a class="demo-link" href="node.html">Demo</a>
+				</section>
+				<section>
+					<pre style="font-size: 2.5em; text-align: left;">
+this.browser.classList.remove('go');
+this.browser.classList.add('go');					
+					</pre>
+					<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
 					<div class="text">... so what about Node?</div>
+				</section>
+				<section>
+					<img class="border full-page" src="css/good-news-everyone.jpg" />
 				</section>
 				<section>
 					<div class="list-container">
@@ -172,7 +168,6 @@ requestAnimationFrame(() => {
 							<li class="fragment">No rendering pipeline <i>at all</i></li>
 						</ul>
 					</div>
-					<img class="fragment border" src="css/good-news-everyone.jpg" />
 					<div class="notes">There are some differences to how the event loops run</div>
 				</section>
 				<section>
@@ -189,15 +184,22 @@ requestAnimationFrame(() => {
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					<div class="notes">
-						Differences between Node and browser
-							- Node always runs everything in a queue before processing the next queue
-							- Microtask queues are run after the queue is empty, not after each task
-							- There's an extra microtask queue - process.nextTick
-					</div>
+					<code>setTimeout(callback, 0)</code>
+					<img src="hedgehog.png" />
+					<code>setImmedate(callback)</code>
+					<img src="sonic.png" />
+					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					Then there's the case of multiple event loops
+					<div><code>setImmediate</code> = do something on the next tick of the event loop</div>
+					<div class="fragment"><code>process.nextTick()</code> = do something immediately</div>
+					<a class="demo-link" href="node.html">Demo</a>
+				</section>
+				<section>
+					Multiple event loops
+				</section>
+				<section>
+					<i>Not</i> multiple event loops
 				</section>
 				<section>
 					Browsers - iframes & child windows - separate vs same event loop - demonstrate in browser? - postmessage

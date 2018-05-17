@@ -1,48 +1,29 @@
 const fs = require('fs');
 
-// fs.readFile('index.html', () => {
-//   setImmediate(() => {
-//     console.log('immediate');
-//   });
-//   process.nextTick(() => {
-//     console.log('tick1');
-//     Promise.resolve().then(() => {
-//       console.log('then1');
-//     })
-//     Promise.resolve().then(() => {
-//       console.log('then2');
-//       process.nextTick(() => console.log('tick3'))
-//     })
-//     Promise.resolve().then(() => {
-//       console.log('then3');
-//     })
-//     process.nextTick(() => console.log('tick2'));
-//   });
-//   Promise.resolve().then(() => {
-//     console.log('then5');
-//     process.nextTick(() => {
-//       console.log('tick5');
-//     })
-//   });
-
-// });
-
 fs.readFile('index.html', () => {
-  setImmediate(() => {
-    console.log('immediate')
-  })
-  Promise.resolve().then(() => {
-    console.log('then1')
-    process.nextTick(() => console.log('tick1'));
-    process.nextTick(() => {
-      console.log('tick2');
-      Promise.resolve().then(() => console.log('then3'))
-    })
-    process.nextTick(() => console.log('tick3'))
-    Promise.resolve().then(() => console.log('then2'))
-  })
   process.nextTick(() => {
-    console.log('tick5')
-    Promise.resolve().then(() => console.log('then5'))
+    console.log('tick');
+    Promise.resolve().then(() => {
+      console.log('promise');
+      process.nextTick(() => {
+        console.log('promise tick');
+        Promise.resolve().then(() => {
+          console.log('promise 2');
+          process.nextTick(() => {
+            console.log('promise 2 tick');
+          })
+        })
+      });
+    })
+    setImmediate(() => {
+      console.log('immediate');
+      setImmediate(() => console.log('immediate 2'));
+      process.nextTick(() => console.log('immediate 2 tick'));
+    })
   })
-})
+});
+
+const endTime = Date.now() + 1000;
+const h = () => { console.log(Date.now()); if (Date.now() < endTime) setTimeout(h, 0); }
+h();
+
