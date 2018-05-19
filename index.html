@@ -90,8 +90,7 @@
 					</div>
 				</section>
 				<section>
-					<pre style="text-align: left; font-size: 2em;">
-						fix code highlighting
+					<pre><code>
 bool did_work = delegate->DoWork();
 if (!keep_running_)
 	break;
@@ -103,7 +102,7 @@ if (did_work)
 did_work = delegate->DoIdleWork();
 if (!keep_running_)
 	break;
-					</pre>
+					</code></pre>
 				</section>
 				<section>
 					<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
@@ -129,13 +128,13 @@ if (!keep_running_)
 					</div>
 				</section>
 				<section>
-					<code>
-						requestAnimationFrame(callback);
-					</code>
+					<pre><code class="javascript">
+requestAnimationFrame(callback);
+					</code></pre>
 					<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
-					<pre style="font-size: 2.5em; text-align: left;">
+					<pre><code class="javascript">
 requestAnimationFrame(() => {
   this.browser.classList.remove('go');
 
@@ -143,14 +142,13 @@ requestAnimationFrame(() => {
     this.browser.classList.add('go');
   });
 });				
-show the actual frames
-					</pre>
+					</code></pre>
 				</section>
 				<section>
-					<pre style="font-size: 2.5em; text-align: left;">
+					<pre><code class="javascript">
 this.browser.classList.remove('go');
 this.browser.classList.add('go');					
-					</pre>
+					</code></pre>
 					<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
@@ -180,19 +178,23 @@ this.browser.classList.add('go');
 					<a class="text" href="node.html">Node event loop demo</a>
 				</section>
 				<section>
-					<code>setImmediate(callback)</code>
+					<pre><code class="javascript">setImmediate(callback)</code></pre>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					<code>setTimeout(callback, 0)</code>
-					<img src="hedgehog.png" />
-					<code>setImmedate(callback)</code>
-					<img src="sonic.png" />
+					<div style="display: flex; align-items: center">
+						<pre><code>setTimeout(callback, 0)</code></pre>
+						<img style="width: 20vmin" src="css/hedgehog.png" />
+					</div>
+					<div style="display: flex; align-items: center">
+						<pre><code>setImmediate(callback)</code></pre>
+						<img style="width: 20vmin" src="css/sonic.png" />
+					</div>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					<div><code>setImmediate</code> = do something on the next tick of the event loop</div>
-					<div class="fragment"><code>process.nextTick()</code> = do something immediately</div>
+					<div><pre><code class="javascript">setImmediate</code></pre> = do something on the next tick of the event loop</div>
+					<div class="fragment"><pre><code class="javascript">process.nextTick()</code></pre> = do something immediately</div>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
@@ -225,7 +227,7 @@ this.browser.classList.add('go');
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 				]
 			});
 		</script>

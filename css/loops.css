@@ -45,8 +45,13 @@ li {
   margin-bottom: 1em;
 }
 
-code {
+pre code {
   font-size: 3em;
+  text-align: left;
+}
+
+pre code.hljs {
+  background-color: transparent;
 }
 
 img.border, img.full-page {
