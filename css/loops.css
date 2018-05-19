@@ -131,6 +131,45 @@ svg.title {
   font-size: 2.5rem;
 }
 
+.loading-dots {
+  width: 2vmin;
+  height: 2vmin;
+  border-radius: 50%;
+  background-color: white;
+  margin: auto;
+  margin-left: -1vw;
+  animation: add-dots 4s infinite forwards steps(1, end);
+  background-color: transparent;
+  transform: translateX(-5vw);
+}
+
+@keyframes add-dots {
+  from { box-shadow: none; }
+  16% { box-shadow: 5vw 0 0 0 white;  }
+  33% { 
+    box-shadow: 5vw 0 0 0 white,
+    10vw 0 0 0 white;
+  }
+  50% {
+    box-shadow: 5vw 0 0 0 white,
+                10vw 0 0 0 white,
+                15vw 0 0 0 white;
+  }
+  66% {
+    box-shadow: 5vw 0 0 0 white,
+                10vw 0 0 0 white,
+                15vw 0 0 0 white,
+                20vw 0 0 0 white;
+  }
+  82% {
+    box-shadow: 5vw 0 0 0 white,
+                10vw 0 0 0 white,
+                15vw 0 0 0 white,
+                20vw 0 0 0 white,
+                25vw 0 0 0 white;
+  }
+}
+
 
 .notes {
   display: none;
