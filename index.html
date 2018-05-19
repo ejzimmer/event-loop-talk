@@ -59,39 +59,7 @@
 					</div>
 				</section>
 				<section>
-					<div style="display: flex">
-						<div style="display: flex; flex-wrap: wrap; justify-content: space-between; height: 25vh; width: 20vw; margin: auto">
-							<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
-								<div style="flex-grow: 1">stack</div>
-								<div class="task"></div>
-								<div class="task"></div>
-							</div>
-							<div class="area" style="width: 55%;">
-								<div>webapis</div>
-							</div>
-							<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
-								<div style="margin: auto 0;">task queue</div>
-								<div class="task" style="margin-left: 5px">cb</div>
-							</div>
-						</div>
-						<div style="display: flex; width: 20vw;">
-							<div class="loading-dots"></div>
-						</div>
-						<div style="display: flex; flex-wrap: wrap; justify-content: space-between; height: 25vh; width: 20vw; margin: auto;">
-							<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
-								<div style="flex-grow: 1">stack</div>
-								<div class="task"></div>
-								<div class="task"></div>
-							</div>
-							<div class="area" style="width: 55%;">
-								<div>webapis</div>
-							</div>
-							<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
-								<div style="margin: auto 0;">task queue</div>
-								<div class="task" style="margin-left: 5px">cb</div>
-							</div>
-						</div>					
-					</div>
+					interesting cases: Node & web workers
 				</section>
 				<section>
 					<a class="text" href="simple.html">Super exciting demo!</a>
@@ -110,14 +78,20 @@
 					<a class="demo-link" href="simple.html">Demo</a>
 				</section>
 				<section>
+					<img src="css/hooray.png" />
+				</section>
+				<section>
 					<div style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
+				</section>
+				<section>
+					<img class="full-page" src="css/business-class-queue.jpg" />
 				</section>
 				<section>
 					<div class="list-container">
 						<ul>
 							<li class="fragment">Queues can be executed in any order</li>
-							<li class="fragment">Tasks from the same source must go in the same queue</li>
 							<li class="fragment">Tasks in the same queue must be executed in the order they arrived</li>
+							<li class="fragment">Tasks from the same source must go in the same queue</li>
 						</ul>
 					</div>
 				</section>
@@ -184,7 +158,7 @@ this.browser.classList.add('go');
 					<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
-					<div class="text">... so what about Node?</div>
+					<div class="text">... but what about Node?</div>
 				</section>
 				<section>
 					<img class="border full-page" src="css/good-news-everyone.jpg" />
@@ -219,27 +193,30 @@ this.browser.classList.add('go');
 						<img style="width: 20vmin" src="css/hedgehog.png" />
 					</div>
 					<div style="display: flex; align-items: center">
-						<pre><code>setImmediate(callback)</code></pre>
 						<img style="width: 20vmin" src="css/sonic.png" />
+						<pre><code>setImmediate(callback)</code></pre>
 					</div>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					<div><pre><code class="javascript">setImmediate</code></pre> = do something on the next tick of the event loop</div>
-					<div class="fragment"><pre><code class="javascript">process.nextTick()</code></pre> = do something immediately</div>
+					<div style="display: flex">
+						<pre><code class="javascript">setImmediate</code></pre>
+						<div style="padding: .5em; font-size: 2em; align-self: center"> = do something on the next tick</div>
+					</div>
+					<div style="display: flex" class="fragment">
+						<pre><code class="javascript">process.nextTick()</code></pre>
+						<div style="padding: .5em; font-size: 2em; align-self: center"> = do something immediately</div>
+					</div>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					Multiple event loops
+					<div style="position: absolute; top: 50vh; font-size: 3em;">Web workers</div>
+					<img src="css/redback.png" />
 				</section>
 				<section>
-					<i>Not</i> multiple event loops
 				</section>
 				<section>
-					Browsers - iframes & child windows - separate vs same event loop - demonstrate in browser? - postmessage
-				</section>
-				<section>
-					workers - a bit simpler - each worker has its own event loop - communicate via postmessage - same for Node and browser
+					boring
 				</section>
 			</div>
 		</div>

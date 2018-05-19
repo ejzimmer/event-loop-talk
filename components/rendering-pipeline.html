@@ -39,11 +39,22 @@
       top: -6px;
       background: inherit;
     }
+
+    .timer {
+      font-size: 3em;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    .overtime {
+      color: red;
+    }
   </style>
   <browser-window class="go">
     <button>CLICK ME</button>
   </browser-window>
   <div class="pipe"></div>
+  <div class="timer" id="seconds-since-repaint"></div>
 </template>
 <script>
   const pipelineDocument = document.currentScript.ownerDocument;
@@ -56,21 +67,40 @@
       this.shadow.appendChild(content);
 
       this.browser = this.shadow.querySelector('browser-window');
+      this.timer = this.shadow.getElementById('seconds-since-repaint');
+      this.secondsSinceRepaint = 0;
+
+      this.timerCount();
+
+      this.browser.addEventListener('transitionend', (event) => {
+        this.resolveTask();
+        this.timerCount();
+      });
+
     }
 
-    runTask() {
-      let resolveTask;
-      const taskPromise = new Promise(resolve => resolveTask = resolve);
+    timerCount() {
+      this.interval = setInterval(() => {
+        this.timer.innerHTML = ++this.secondsSinceRepaint;
+        if (this.secondsSinceRepaint > 16) {
+          this.timer.classList.add('overtime');
+        } else {
+          this.timer.classList.remove('overtime');
+        }
+      }, 1000);
+    };
 
-      this.browser.addEventListener('transitionend', () => {
-        resolveTask();
-      });
+    runTask() {
+      const taskPromise = new Promise(resolve => this.resolveTask = resolve);
+
+      this.secondsSinceRepaint = 0;
+      clearInterval(this.interval);
 
       requestAnimationFrame(() => {
         this.browser.classList.remove('go');
 
         requestAnimationFrame(() => {
-          this.browser.classList.add('go')
+          this.browser.classList.add('go');
         });
       });
 

@@ -227,11 +227,17 @@
         this.container.addEventListener('click', () => {
           this.addTask();
         });
-      } else {
+      } else if (this.source) {
         this.source.addEventListener('click', () => {
           this.startAsyncTask();
         });
       }
+
+      document.body.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          location.href = '/#/7';
+        }
+      }, { once: true })
     }
 
     startAsyncTask() {

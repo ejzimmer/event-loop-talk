@@ -50,7 +50,7 @@
       this.microtaskQueue = document.querySelector('task-queue[type="microtask"]');      
 
 
-      setInterval(() => { this.readyToPaint = true }, 16000);
+      setTimeout(() => { this.readyToPaint = true }, 16000);
     }
 
     async pickQueue() {
@@ -60,6 +60,7 @@
           await this.doQueue(this.animationQueue);          
         }
         await this.doQueue(this.renderingPipeline);
+        setTimeout(() => this.readyToPaint = true, 16000);
       } else if (queue) {
         await this.doQueue(queue);
       } else {

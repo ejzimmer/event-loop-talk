@@ -138,7 +138,7 @@ svg.title {
   background-color: white;
   margin: auto;
   margin-left: -1vw;
-  animation: add-dots 4s infinite forwards steps(1, end);
+  animation: add-dots 2s infinite forwards steps(1, end);
   background-color: transparent;
   transform: translateX(-5vw);
 }
