@@ -37,10 +37,6 @@
     }
 
     connectedCallback() {
-      const diameter = this.previousElementSibling.clientWidth * 0.5;
-      this.style.width = `${diameter}px`;
-      this.style.height = `${diameter}px`;
-
       const firstQueueRect = document.querySelector('task-queue').getBoundingClientRect();
       const bottom = firstQueueRect.bottom;
       this.style.top = `${bottom}px`;
@@ -49,8 +45,9 @@
       this.animationQueue = document.querySelector('task-queue[type="animation"]');
       this.microtaskQueue = document.querySelector('task-queue[type="microtask"]');      
 
-
-      setTimeout(() => { this.readyToPaint = true }, 16000);
+      document.body.addEventListener('click', () => {
+        setTimeout(() => { this.readyToPaint = true }, 16000);
+      }, { once: true });
     }
 
     async pickQueue() {
@@ -80,7 +77,7 @@
       if (this.microtaskQueue && this.microtaskQueue.getTask(0)) {
         return this.microtaskQueue;
       } 
-      if (this.readyToPaint && this.repaint) {
+      if (this.renderingPipeline.rendering && this.readyToPaint && this.repaint) {
         this.readyToPaint = false;
         this.repaint = false;
         return this.renderingPipeline;

@@ -56,10 +56,10 @@ pre code.hljs {
 
 img.border, img.full-page {
   border: 2px solid white; 
-  box-shadow: 4px 4px 16px 4px rgba(255, 255, 255, 30%);  
+  box-shadow: 4px 4px 16px 4px var(--background-end);;  
 }
 img.full-page {
-  width: 100vmin;
+  width: 90vmin;
 }
 
 .text {
@@ -138,36 +138,83 @@ svg.title {
   background-color: white;
   margin: auto;
   margin-left: -1vw;
-  animation: add-dots 2s infinite forwards steps(1, end);
+  animation: add-dots 4s infinite forwards steps(1, end);
   background-color: transparent;
   transform: translateX(-5vw);
 }
 
 @keyframes add-dots {
   from { box-shadow: none; }
-  16% { box-shadow: 5vw 0 0 0 white;  }
-  33% { 
+  9% { box-shadow: 5vw 0 0 0 white;  }
+  18% { 
     box-shadow: 5vw 0 0 0 white,
-    10vw 0 0 0 white;
+                10vw 0 0 0 white;
   }
-  50% {
+  27% {
     box-shadow: 5vw 0 0 0 white,
                 10vw 0 0 0 white,
                 15vw 0 0 0 white;
   }
-  66% {
+  36% {
     box-shadow: 5vw 0 0 0 white,
                 10vw 0 0 0 white,
                 15vw 0 0 0 white,
                 20vw 0 0 0 white;
   }
-  82% {
+  45% {
     box-shadow: 5vw 0 0 0 white,
                 10vw 0 0 0 white,
                 15vw 0 0 0 white,
                 20vw 0 0 0 white,
                 25vw 0 0 0 white;
   }
+  54% {
+    box-shadow: none;
+  }
+  63% {
+    box-shadow: 25vw 0 0 0 white;
+  }
+  72% {
+    box-shadow: 20vw 0 0 0 white,
+                25vw 0 0 0 white;  
+  }
+  81% {
+    box-shadow: 15vw 0 0 0 white,
+                20vw 0 0 0 white,
+                25vw 0 0 0 white;
+  }
+  90% {
+    box-shadow: 10vw 0 0 0 white,
+                15vw 0 0 0 white,
+                20vw 0 0 0 white,
+                25vw 0 0 0 white;
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+.frosted::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background: url('roller-coaster.jpg');
+  background-size: 100vw 100vh;
+  background-position: center;
+  z-index: -1;
+  filter: blur(15px);
+  margin: -20px;
+}
+
+.frosted {
+  color: var(--background-end);
+  font-size: 3em; 
+  font-weight: bold;
+  position: relative;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 4px 4px 16px 4px var(--background-end);
+  background-color: rgba(255, 255, 255, .2);
 }
 
 

@@ -70,7 +70,9 @@
       this.timer = this.shadow.getElementById('seconds-since-repaint');
       this.secondsSinceRepaint = 0;
 
-      this.timerCount();
+      document.body.addEventListener('click', () => {
+        this.timerCount();
+      }, { once: true });
 
       this.browser.addEventListener('transitionend', (event) => {
         this.resolveTask();

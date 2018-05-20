@@ -178,6 +178,30 @@
         transform: rotate(-.125turn);
         margin: auto;
       }
+
+      .postmessage {
+        width: var(--diameter);
+        height: calc(var(--diameter) / 1.4);
+        margin-top: calc(var(--diameter) * .3);
+        border: 4px solid white;
+        position: relative;
+      }
+
+      .postmessage::after {
+        content: '';
+        display: block;
+        border: inherit;
+        width: calc(var(--diameter) / 1.41 - 1.5px);
+        height: calc(var(--diameter) / 1.41 - 1.5px);
+        transform-origin: top left;
+        transform: rotate(-.125turn);
+        position: absolute;
+        left: -2.5px;
+        top: -.5px;
+        border-top: transparent;
+        border-right: transparent;
+        border-bottom-left-radius: 5px;
+      }
   </style>
   <div class="container"></div>
 </template>
@@ -222,7 +246,7 @@
         this.arm.style.borderBottomWidth = `${armHeight}px`;
       }
 
-      const syncTasks = ['html', 'promise', 'animation', 'immediate', 'next-tick'];
+      const syncTasks = ['html', 'promise', 'animation', 'immediate', 'next-tick', 'postmessage'];
       if (syncTasks.includes(this.type)) {
         this.container.addEventListener('click', () => {
           this.addTask();

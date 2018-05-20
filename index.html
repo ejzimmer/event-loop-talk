@@ -59,34 +59,44 @@
 					</div>
 				</section>
 				<section>
-					interesting cases: Node & web workers
+					<img src="css/nodejs.png" style="filter: drop-shadow(2px 2px 4px var(--background-end)); width: 80%; margin-bottom: 2em;" />
+					<div style="background-image: url('css/cogs.png'); 
+											background-size: contain; 
+											background-repeat: no-repeat; 
+											font-size: 5em; 
+											background-position: center;
+											width: 80%;
+											padding: 5vh;
+											filter: drop-shadow(2px 2px 4px var(--background-end));
+											text-shadow: 2px 2px var(--background-start)">
+						Webworkers
+					</div>
+				</section>
+				<section><a style="font-size: 3em;" href="just-task-queue.html">What is a task queue and what's it for?</a></section>
+				<section>It's a little more complicated than that... repeat this per demo</section>
+				<section>
+					The task queue works in conjunction with the rendering pipeline
+					long running tasks make your browser janky
+				</section>
+				<section>
+					more complicated...
+				</section>
+				<section>
+					multiple queues
 				</section>
 				<section>
 					<a class="text" href="simple.html">Super exciting demo!</a>
 				</section>
 				<section>
-					<img class="full-page" src="css/Futurama-Fry.jpg" />
-				</section>
-				<section>
-					<div class="text">JavaScript is single threaded!</div>
-				</section>
-				<section>
-					<div  class="text" style="text-align: left">JavaScript <i>engines</i> have as many threads as they damn-well please</div>
-				</section>
-				<section>
-					<img class="full-page" src="css/threads.png" />
-					<a class="demo-link" href="simple.html">Demo</a>
-				</section>
-				<section>
-					<img src="css/hooray.png" />
+					Tasks run through to completion
+					Browser repaints at refresh rate
+					Long running tasks make your browser janky
 				</section>
 				<section>
 					<div style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
 				</section>
 				<section>
-					<img class="full-page" src="css/business-class-queue.jpg" />
-				</section>
-				<section>
+					do the demo then the rules
 					<div class="list-container">
 						<ul>
 							<li class="fragment">Queues can be executed in any order</li>
@@ -116,11 +126,6 @@ if (!keep_running_)
 				<section>
 					<div style="font-size: 3em">Each <u>event loop</u> has a <b>microtask queue</b></div>
 					<a class="demo-link" href="microtasks.html">Demo</a>
-					<div class="notes">
-						This is where things get interesting
-						- How do tasks get added to the microtask queue? Mostly by promises resolving
-						- Microtask queue rules are different
-					</div>
 				</section>
 				<section class="text">
 					<a href="infinite-timeouts.html">Infinite timeouts</a>
@@ -130,14 +135,12 @@ if (!keep_running_)
 				<section>
 					<div style="font-size: 3em">
 							Associated with every <u>Document</u> is an <b>animation frame request callback list</b>
-							<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
 					</div>
 				</section>
 				<section>
 					<pre><code class="javascript">
 requestAnimationFrame(callback);
 					</code></pre>
-					<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
 					<pre><code class="javascript">
@@ -158,6 +161,17 @@ this.browser.classList.add('go');
 					<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
+						<pre><code class="javascript">
+	requestAnimationFrame(() => {
+		this.browser.classList.remove('go');  (before you repaint this time, remove the class)
+	
+		requestAnimationFrame(() => {
+			this.browser.classList.add('go'); (before you repaint next time, add the class back)
+		});
+	});				
+						</code></pre>
+					</section>
+					<section>
 					<div class="text">... but what about Node?</div>
 				</section>
 				<section>
@@ -172,7 +186,6 @@ this.browser.classList.add('go');
 							<li class="fragment">No rendering pipeline <i>at all</i></li>
 						</ul>
 					</div>
-					<div class="notes">There are some differences to how the event loops run</div>
 				</section>
 				<section>
 					<img class="full-page" src="css/corgi-carousel.gif" />
@@ -184,7 +197,7 @@ this.browser.classList.add('go');
 					<a class="text" href="node.html">Node event loop demo</a>
 				</section>
 				<section>
-					<pre><code class="javascript">setImmediate(callback)</code></pre>
+					<pre><code class="javascript" style="text-align: center">setImmediate(callback)</code></pre>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
@@ -199,13 +212,17 @@ this.browser.classList.add('go');
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
+					<pre><code style="text-align: center">process.nextTick(callback)</code></pre>
+					<a class="demo-link" href="node.html">Demo</a>
+				</section>
+				<section>
 					<div style="display: flex">
-						<pre><code class="javascript">setImmediate</code></pre>
-						<div style="padding: .5em; font-size: 2em; align-self: center"> = do something on the next tick</div>
+						<pre><code class="javascript">setImmediate():</code></pre>
+						<div style="padding: .5em; font-size: 2em; align-self: center">do something on the next tick</div>
 					</div>
 					<div style="display: flex" class="fragment">
-						<pre><code class="javascript">process.nextTick()</code></pre>
-						<div style="padding: .5em; font-size: 2em; align-self: center"> = do something immediately</div>
+						<pre><code class="javascript">process.nextTick():</code></pre>
+						<div style="padding: .5em; font-size: 2em; align-self: center">do something immediately</div>
 					</div>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
@@ -214,9 +231,95 @@ this.browser.classList.add('go');
 					<img src="css/redback.png" />
 				</section>
 				<section>
+						<div style="width: 45%; position: fixed; top: 5vh; left: 0; border: 4px solid red; padding: 5px">
+							<div style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: auto;">
+								<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
+									<div style="flex-grow: 1">stack</div>
+									<div class="task">setTimeout(cb)</div>
+									<div class="task">main()</div>
+								</div>
+								<div class="area" style="width: 55%;">
+									<div>webapis</div>
+								</div>
+								<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
+									<div style="margin: auto 0;">task queue</div>
+									<div class="task" style="margin-left: 5px">cb</div>
+								</div>
+							</div>
+						</div>
+						<div class="loading-dots" style="position: fixed; top: 30%; left: 45%; right: 25%;"></div>
+						<div style="width: 25%; position: fixed; right: 0; top: 30%; border: 2px solid white; padding: 5px;">
+							<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+								<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
+									<div style="flex-grow: 1">stack</div>
+									<div class="task"></div>
+									<div class="task"></div>
+									<div class="task"></div>
+								</div>
+								<div class="area" style="width: 55%;">
+									<div>webapis</div>
+								</div>
+								<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
+									<div style="margin: auto 0;">task queue</div>
+									<div class="task" style="margin-left: 5px">cb</div>
+								</div>
+							</div>
+						</div>
+						<div class="loading-dots" 
+								style="position: fixed; top: 7em; left: 40%; transform: rotate(.25turn); transform-origin: left;">
+						</div>
+						<div style="width: 25%; position: fixed; left: 25%; bottom: 5vh; border: 2px solid white; padding: 5px;">
+							<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+								<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
+									<div style="flex-grow: 1">stack</div>
+									<div class="task"></div>
+									<div class="task"></div>
+									<div class="task"></div>
+								</div>
+								<div class="area" style="width: 55%;">
+									<div>webapis</div>
+								</div>
+								<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
+									<div style="margin: auto 0;">task queue</div>
+									<div class="task" style="margin-left: 5px">cb</div>
+								</div>
+							</div>
+						</div>
+					</section>								
 				</section>
 				<section>
-					boring
+					<ul>
+						<li class="fragment">No script tags</li>
+						<li class="fragment">No DOM manipulation</li>
+						<li class="fragment">No rendering</li>
+						<li class="fragment">No user interactions</li>
+					</ul>
+					<a class="demo-link" href="web-worker.html">Demo</a>
+				</section>
+				<section>
+					<img class="full-page" src="css/thats-it-too-easy.jpg" />
+				</section>
+				<section>
+					<div style="font-size: 3.6em">The task <i>queue</i> is really task <i><b>queues</b></i></div>
+				</section>
+				<section>
+					<div style="display: flex; flex-direction: column">
+						<div style="font-size: 3em;">All queues are not created equal</div>
+						<ul style="font-size: 2em; margin-top: 1.5em;">
+							<li>promises/microtasks</li>
+							<li>requestAnimationFrame</li>
+							<li>process.nextTick</li>
+						</ul>
+					</div>
+				</section>
+				<section>
+					<div style="font-size: 3.5em;">The event loop is more exciting than you could possibly have imagined</div>
+				</section>
+				<section data-background-image="css/roller-coaster.jpg">
+					<div class="frosted">
+						<div style="margin-bottom: .5em">@erinjzimmer</div>
+						<a href="/package.json" style="color: currentColor">https://ejzimmer.github.io/event-loop-talk</a>
+					</div>
 				</section>
 			</div>
 		</div>
@@ -232,6 +335,7 @@ this.browser.classList.add('go');
 				controls: false,
 				progress: false,
 				history: true,
+				transition: 'fade',
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },

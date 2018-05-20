@@ -13,16 +13,16 @@
       border: 1px solid #666;
       border-radius: 2px;
       box-shadow: 
-                  0 -2px 2px hsl(215, 80%, 38%) inset,
-                  0 2px 2px hsl(215, 80%, 80%) inset;
+                  0 -8px 8px hsl(215, 80%, 38%) inset,
+                  0 8px 8px hsl(215, 80%, 80%) inset;
       margin: auto;
       padding: 20px;
       font-size: 2em;
     }
     button:active {
       outline: none;
-      box-shadow: 0 -2px 2px hsl(215, 80%, 80%) inset,
-                  0 2px 2px hsl(215, 80%, 38%) inset;
+      box-shadow: 0 -8px 8px hsl(215, 80%, 80%) inset,
+                  0 8px 8px hsl(215, 80%, 38%) inset;
     }
     button:focus {
       outline: none;
@@ -39,13 +39,13 @@
       }
 
       function addThen() {
-        console.log(numberOfPromises++);
+        document.getElementById('promises').innerHTML = numberOfPromises++;
         Promise.resolve().then(addThen);  
       }
     </script>
     <script>
       function stop() {
-        running = false
+        window.addThen = () => {};
       }
     </script>
     <div class="text" id="promises"></div>

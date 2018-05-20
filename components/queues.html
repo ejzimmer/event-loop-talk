@@ -9,6 +9,9 @@
       max-width: 25%;
       margin: 0 3vw;
     }
+    rendering-pipeline.no {
+      display: none;
+    }
   </style>
   <slot id="queues"></slot>
   <rendering-pipeline></rendering-pipeline>
@@ -29,6 +32,13 @@
       this.selector = this.shadow.querySelector('queue-selector');
       this.pipeline = this.shadow.querySelector('rendering-pipeline');
       this.queues = this.querySelectorAll('task-queue');
+
+      const rendering = this.getAttribute('rendering');
+      this.pipeline.rendering = rendering === 'false' ? false : true;
+      if (!this.pipeline.rendering) {
+        this.pipeline.classList.add('no');
+      }
+
     }
 
     addTask(taskType) {
