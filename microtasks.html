@@ -33,10 +33,12 @@
         </task-queues>
       </event-loop>
 		</section>
-	
-		<div class="notes">				
-      Can have lots of other queues - Node has separate queues for timeouts and I/O callbacks
-      Browsers might have separate queues for user-generated callbacks and DOM parsing callbacks
-    </div>
+    <script>
+      document.body.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          location.href = '/#/18';
+        }
+      }, { once: true })
+    </script>
 	</body>
 </html>

@@ -72,31 +72,57 @@
 						Webworkers
 					</div>
 				</section>
-				<section><a style="font-size: 3em;" href="just-task-queue.html">What is a task queue and what's it for?</a></section>
-				<section>It's a little more complicated than that... repeat this per demo</section>
-				<section>
-					The task queue works in conjunction with the rendering pipeline
-					long running tasks make your browser janky
+				<section data-background-image="css/glastonbury.jpg">
+					<div class="glastonbury">
+						<a style="font-size: 3em;" href="just-task-queue.html">What is a task queue and what's it for?</a>
+					</div>
 				</section>
 				<section>
-					more complicated...
+					<h2>The Task Queue</h2>
+					<ul>
+						<li class="fragment">The <i>only</i> way to get your JavaScript executed</li>
+						<li class="fragment">Runs tasks in the order they arrive</li>
+						<li class="fragment">Runs each task to completion</li>
+					</ul>
 				</section>
 				<section>
-					multiple queues
+					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
+				</section>
+				<section data-background-image="css/mario.jpg">
+					<h2>The Rendering Pipeline</h2>
+					<a class="demo-link" href="simple.html">Demo</a>
 				</section>
 				<section>
-					<a class="text" href="simple.html">Super exciting demo!</a>
+					<div style="display: flex; justify-content: space-between">
+						<div style="font-size: 3em; max-width: 40vw; margin: auto; text-align: left">Long running tasks can make your page run like...</div>
+						<img class="border" src="css/unco-cat.gif" />
+					</div>
 				</section>
 				<section>
-					Tasks run through to completion
-					Browser repaints at refresh rate
-					Long running tasks make your browser janky
+					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
 				</section>
 				<section>
 					<div style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
 				</section>
 				<section>
-					do the demo then the rules
+						<pre><code>
+	bool did_work = delegate->DoWork();
+	if (!keep_running_)
+		break;
+	did_work |= delegate->DoDelayedWork(&delayed_work_time_);
+	if (!keep_running_)
+		break;
+	if (did_work)
+		continue;
+	did_work = delegate->DoIdleWork();
+	if (!keep_running_)
+		break;
+					</code></pre>
+				</section>
+				<section>
+						<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
+				</section>
+				<section>
 					<div class="list-container">
 						<ul>
 							<li class="fragment">Queues can be executed in any order</li>
@@ -106,39 +132,27 @@
 					</div>
 				</section>
 				<section>
-					<pre><code>
-bool did_work = delegate->DoWork();
-if (!keep_running_)
-	break;
-did_work |= delegate->DoDelayedWork(&delayed_work_time_);
-if (!keep_running_)
-	break;
-if (did_work)
-	continue;
-did_work = delegate->DoIdleWork();
-if (!keep_running_)
-	break;
-					</code></pre>
+					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
 				</section>
-				<section>
-					<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
-				</section>
-				<section>
-					<div style="font-size: 3em">Each <u>event loop</u> has a <b>microtask queue</b></div>
-					<a class="demo-link" href="microtasks.html">Demo</a>
+				<section data-background-image="css/tiny-horse.jpg">
+					<h2 class="microtasks">Microtasks</h2>
+					<div style="font-size: 1em; color: white; background: rgba(206, 190, 190, 0.3); padding: .5em;" 
+					class="demo-link">Image by <a href="https://www.flickr.com/people/9197427@N06">Pete Markham</a></div>
+					<a class="demo-link" style="left: 0; right: unset; color: rgba(206, 190, 190, 0.8)" href="microtasks.html">Demo</a>
 				</section>
 				<section class="text">
 					<a href="infinite-timeouts.html">Infinite timeouts</a>
 					<div style="margin: 10px">vs</div>
-					<a href="infinite-promises.html" target="_blank" rel="noopener">Infinite promises</a>
+					<a href="infinite-promises.html" target="_blank" rel="noopener">Infinite promises</a>	
 				</section>
 				<section>
-					<div style="font-size: 3em">
-							Associated with every <u>Document</u> is an <b>animation frame request callback list</b>
-					</div>
+					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
+				</section>
+				<section data-background-image="css/gallop.jpg">
+					<h2 class="gallop">Request Animation Frame Queue</h2>
 				</section>
 				<section>
-					<pre><code class="javascript">
+					<pre><code style="text-align: center;">
 requestAnimationFrame(callback);
 					</code></pre>
 				</section>
@@ -158,20 +172,10 @@ requestAnimationFrame(() => {
 this.browser.classList.remove('go');
 this.browser.classList.add('go');					
 					</code></pre>
-					<a class="demo-link" href="requestAnimationFrame.html">Demo</a>
+					<img style="position: fixed; right: 0; bottom: 30%" src="css/Clippy.png" />
+					<a class="demo-link" style="left: 0; right: unset" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
-						<pre><code class="javascript">
-	requestAnimationFrame(() => {
-		this.browser.classList.remove('go');  (before you repaint this time, remove the class)
-	
-		requestAnimationFrame(() => {
-			this.browser.classList.add('go'); (before you repaint next time, add the class back)
-		});
-	});				
-						</code></pre>
-					</section>
-					<section>
 					<div class="text">... but what about Node?</div>
 				</section>
 				<section>
@@ -198,7 +202,6 @@ this.browser.classList.add('go');
 				</section>
 				<section>
 					<pre><code class="javascript" style="text-align: center">setImmediate(callback)</code></pre>
-					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
 					<div style="display: flex; align-items: center">
@@ -224,7 +227,6 @@ this.browser.classList.add('go');
 						<pre><code class="javascript">process.nextTick():</code></pre>
 						<div style="padding: .5em; font-size: 2em; align-self: center">do something immediately</div>
 					</div>
-					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
 					<div style="position: absolute; top: 50vh; font-size: 3em;">Web workers</div>
@@ -318,7 +320,7 @@ this.browser.classList.add('go');
 				<section data-background-image="css/roller-coaster.jpg">
 					<div class="frosted">
 						<div style="margin-bottom: .5em">@erinjzimmer</div>
-						<a href="/package.json" style="color: currentColor">https://ejzimmer.github.io/event-loop-talk</a>
+						<a href="/package.json" style="color: currentColor; font-size: .9em">https://ejzimmer.github.io/event-loop-talk</a>
 					</div>
 				</section>
 			</div>

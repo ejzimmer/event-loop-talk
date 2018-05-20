@@ -46,7 +46,7 @@ li {
 }
 
 pre code {
-  font-size: 3em;
+  font-size: 2em;
   text-align: left;
 }
 
@@ -194,27 +194,58 @@ svg.title {
   }
 }
 
-.frosted::before {
+.frosted::before, .glastonbury::before, .microtasks::before, .gallop::before {
   content: '';
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0;
-  background: url('roller-coaster.jpg');
   background-size: 100vw 100vh;
   background-position: center;
   z-index: -1;
   filter: blur(15px);
-  margin: -20px;
 }
 
-.frosted {
-  color: var(--background-end);
-  font-size: 3em; 
+.frosted::before {
+  background-image: url('roller-coaster.jpg');
+  margin: -20px;
+}
+.glastonbury::before {
+  background: url('glastonbury.jpg');
+  margin: -10px;
+}
+.microtasks::before {
+  background: url('tiny-horse.jpg');
+  margin: -10px;
+}
+.gallop::before {
+  background: url('gallop.jpg');
+  margin: -10px;
+}
+
+.frosted, .glastonbury {
   font-weight: bold;
   position: relative;
   padding: 20px;
   border-radius: 4px;
-  box-shadow: 4px 4px 16px 4px var(--background-end);
   background-color: rgba(255, 255, 255, .2);
+}
+
+.microtasks {
+  text-align: left;
+  display: inline;
+  position: relative;
+  left: -2.5em;
+  top: -.5em;
+  font-size: 4em;
+}
+
+.frosted {
+  color: var(--background-end);
+  font-size: 3em;
+  box-shadow: 4px 4px 16px 4px rgba(32, 79, 104, .5); 
+}
+
+.gallop {
+  color: var(--background-start);
 }
 
 

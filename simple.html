@@ -31,4 +31,11 @@
 		</section>
 		<div class="repaint-timer" id="seconds-since-repaint"></div>
 	</body>
+	<script>
+		document.body.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowRight') {
+				location.href = '/#/10';
+			}
+		}, { once: true });
+	</script>
 </html>
