@@ -78,14 +78,6 @@
 					</div>
 				</section>
 				<section>
-					<h2>The Task Queue</h2>
-					<ul>
-						<li class="fragment">The <i>only</i> way to get your JavaScript executed</li>
-						<li class="fragment">Runs tasks in the order they arrive</li>
-						<li class="fragment">Runs each task to completion</li>
-					</ul>
-				</section>
-				<section>
 					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
 				</section>
 				<section data-background-image="css/mario.jpg">
@@ -106,17 +98,17 @@
 				</section>
 				<section>
 						<pre><code>
-	bool did_work = delegate->DoWork();
-	if (!keep_running_)
-		break;
-	did_work |= delegate->DoDelayedWork(&delayed_work_time_);
-	if (!keep_running_)
-		break;
-	if (did_work)
-		continue;
-	did_work = delegate->DoIdleWork();
-	if (!keep_running_)
-		break;
+bool did_work = delegate->DoWork();
+if (!keep_running_)
+	break;
+did_work |= delegate->DoDelayedWork(&delayed_work_time_);
+if (!keep_running_)
+	break;
+if (did_work)
+	continue;
+did_work = delegate->DoIdleWork();
+if (!keep_running_)
+	break;
 					</code></pre>
 				</section>
 				<section>
@@ -292,9 +284,9 @@ this.browser.classList.add('go');
 				<section>
 					<ul>
 						<li class="fragment">No script tags</li>
-						<li class="fragment">No DOM manipulation</li>
-						<li class="fragment">No rendering</li>
 						<li class="fragment">No user interactions</li>
+						<li class="fragment">No request animation frames</li>
+						<li class="fragment">No rendering pipeline</li>
 					</ul>
 					<a class="demo-link" href="web-worker.html">Demo</a>
 				</section>
@@ -302,17 +294,13 @@ this.browser.classList.add('go');
 					<img class="full-page" src="css/thats-it-too-easy.jpg" />
 				</section>
 				<section>
-					<div style="font-size: 3.6em">The task <i>queue</i> is really task <i><b>queues</b></i></div>
+					<div style="font-size: 3.9em;">Long running tasks will make your web page run like a wonky cat</div>
 				</section>
 				<section>
-					<div style="display: flex; flex-direction: column">
-						<div style="font-size: 3em;">All queues are not created equal</div>
-						<ul style="font-size: 2em; margin-top: 1.5em;">
-							<li>promises/microtasks</li>
-							<li>requestAnimationFrame</li>
-							<li>process.nextTick</li>
-						</ul>
-					</div>
+					<div style="font-size: 4em">Promises and nextTick callbacks get special treatment</div>
+				</section>
+				<section>
+					<div style="font-size: 4em">Use requestAnimationFrame to fine-tune your animations</div>
 				</section>
 				<section>
 					<div style="font-size: 3.5em;">The event loop is more exciting than you could possibly have imagined</div>
