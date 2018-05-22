@@ -4,6 +4,8 @@
     <style>
       body {
         flex-direction: column;
+        margin: 10vmin;
+        max-height: 100vh;
       }
       button {
       cursor: pointer;
@@ -45,7 +47,7 @@
         start = function () {}
       }
     </script>
-    <div class="text" id="timeouts" style="height: 3em; margin: auto"></div>
+    <div class="text" id="timeouts" style="margin: 1em;"></div>
     <div style="display: flex; justify-content: space-around">
       <button onclick="start()">Start timeouts</button>
       <button style="background-color: red" onclick="stop()">Stop madness</button>

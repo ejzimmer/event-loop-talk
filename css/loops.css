@@ -31,6 +31,10 @@ a {
   color: white;
 }
 
+.heading {
+  font-size: 3em;
+}
+
 .list-container {
   display: flex;
 }
