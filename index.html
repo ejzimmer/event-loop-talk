@@ -41,24 +41,35 @@
 					<h2>what the heck is the event loop anyway?</h2>
 					<div style="font-size: 2em">@philip_roberts</div>
 					<img src="css/onfire.png" style="width: 100%; margin: auto; margin-top: 40px" />
-				</section> 
-				<section>
-					<div style="display: flex; flex-wrap: wrap; justify-content: space-between; height: 50vh; width: 40vw; margin: auto;">
-						<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
-							<div style="flex-grow: 1">stack</div>
-							<div class="task">setTimeout(cb)</div>
-							<div class="task">main()</div>
-						</div>
-						<div class="area" style="width: 55%;">
-							<div>webapis</div>
-						</div>
-						<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
-							<div style="margin: auto 0;">task queue</div>
-							<div class="task" style="margin-left: 5px">cb</div>
-						</div>
-					</div>
 				</section>
 				<section>
+					super quick recap: what is the event loop
+				</section>
+				<section>
+					the event loop is basically the main function of the browser engine
+					<pre><code>
+while (true) {
+	let task = taskQueue.pop();
+	execute(task);
+}
+					</code></pre>
+				</section>
+				<section>
+					<highlight>let task</highlight>
+					any bit of JS that is executed
+					- script tag
+					- import statement
+					- callback: event, xhr, setTimeout
+				</section>
+				<section>
+					<highlight>execute(task)</highlight>
+					get the task off the task queue and put it on the stack
+				</section>
+				<section>
+					<highlight>taskQueue.pop()</highlight> - what we're about to talk about
+				</section>
+				<section>
+					browsers - browser logos i guess?
 					<img src="css/nodejs.png" style="filter: drop-shadow(2px 2px 4px var(--background-end)); width: 80%; margin-bottom: 2em;" />
 					<div style="background-image: url('css/cogs.png'); 
 											background-size: contain; 
@@ -78,6 +89,14 @@
 					</div>
 				</section>
 				<section>
+					<pre><code>
+while (true) {
+	let task = taskQueue.pop();
+	execute(task);
+}							
+					</code></pre>
+				</section>
+				<section>
 					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
 				</section>
 				<section data-background-image="css/mario.jpg">
@@ -88,6 +107,14 @@
 						<div style="font-size: 3em; max-width: 40vw; margin: auto; text-align: left">Long running tasks can make your page run like...</div>
 						<img class="border" src="css/unco-cat.gif" />
 					</div>
+				</section>
+				<section>
+while (true) {
+	let task = taskQueue.pop();
+	execute(task);
+
+	if (isRepaintTime()) repaint();
+}
 				</section>
 				<section>
 					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
@@ -123,6 +150,17 @@ if (!keep_running_)
 					</div>
 				</section>
 				<section>
+					<pre><code>
+while (true) {
+	let queue = getNextQueue();
+	let task = queue.pop();
+	execute(task);
+
+	if (isRepaintTime()) repaint();
+}
+					</code></pre>
+				</section>
+				<section>
 					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
 				</section>
 				<section data-background-image="css/tiny-horse.jpg">
@@ -131,9 +169,20 @@ if (!keep_running_)
 					class="demo-link">Image by <a href="https://www.flickr.com/people/9197427@N06">Pete Markham</a></div>
 				</section>
 				<section class="text">
-					<a href="infinite-timeouts.html">Infinite timeouts</a>
+					<a href="infinite-timeouts.html">Tasks</a>
 					<div style="margin: 10px">vs</div>
-					<a href="infinite-promises.html" target="_blank" rel="noopener">Infinite promises</a>	
+					<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>	
+				</section>
+				<section>
+while (true) {
+	let queue = getNextQueue();
+	let task = queue.pop();
+	execute(task);
+
+	while (microtaskQueue.hasTasks()) doMicrotask();
+
+	if (isRepaintTime()) repaint();
+}
 				</section>
 				<section>
 					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
@@ -164,6 +213,24 @@ this.browser.classList.add('go');
 					</code></pre>
 					<img style="position: fixed; right: 0; bottom: 30%" src="css/Clippy.png" />
 					<a class="demo-link" style="left: 0; right: unset" href="requestAnimationFrame.html">Demo</a>
+				</section>
+				<section>
+					<pre><code>
+while (true) {
+	let queue = getNextQueue();
+	let task = queue.pop();
+	execute(task);
+
+	while (microtaskQueue.hasTasks()) doMicrotask();
+
+	if (isRepaintTime()) {
+		let animationTasks = animationQueue.getTasks().slice();
+		for (let task in animationTasks) doAnimationTask(task);
+
+		repaint();
+	}
+}
+					</code></pre>
 				</section>
 				<section>
 					<div class="text">... but what about Node?</div>
@@ -217,6 +284,16 @@ this.browser.classList.add('go');
 						<pre><code class="javascript">process.nextTick():</code></pre>
 						<div style="padding: .5em; font-size: 2em; align-self: center">do something immediately</div>
 					</div>
+				</section>
+				<section>
+while (tasksAreWaiting()) {
+	let queue = getNextQueue();
+	let task = queue.pop();
+	execute(task);
+
+	while (nextTickQueue.hasTasks()) doNextTickTask();
+	while (microtaskQueue.hasTasks()) doMicrotask();
+}
 				</section>
 				<section>
 					<div style="position: absolute; top: 50vh; font-size: 3em;">Web workers</div>

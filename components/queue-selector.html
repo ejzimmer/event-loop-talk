@@ -46,7 +46,7 @@
       this.microtaskQueue = document.querySelector('task-queue[type="microtask"]');      
 
       document.body.addEventListener('click', () => {
-        setTimeout(() => { this.readyToPaint = true }, 16000);
+        setTimeout(() => { this.readyToPaint = true }, 8000);
       }, { once: true });
     }
 
@@ -57,7 +57,7 @@
           await this.doQueue(this.animationQueue);          
         }
         await this.doQueue(this.renderingPipeline);
-        setTimeout(() => this.readyToPaint = true, 16000);
+        setTimeout(() => this.readyToPaint = true, 8000);
       } else if (queue) {
         await this.doQueue(queue);
       } else {
@@ -107,7 +107,7 @@
     }
 
     wait() {
-      return new Promise(resolve => setTimeout(resolve, 1000));
+      return new Promise(resolve => setTimeout(resolve, 500));
     }
   }
   customElements.define('queue-selector', QueueSelector);
