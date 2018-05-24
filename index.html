@@ -9,6 +9,18 @@
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/loops.css">
 
+		<style>
+			.task1 {
+				background-color: #444;
+			}
+			.task2 {
+				background-color: rgb(170, 230, 238);
+				color: fuchsia;
+			}
+			.task2 .hljs-string {
+				color: #444;
+			}
+		</style>
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 	</head>
@@ -43,35 +55,58 @@
 					<img src="css/onfire.png" style="width: 100%; margin: auto; margin-top: 40px" />
 				</section>
 				<section>
-					super quick recap: what is the event loop
+					<pre><code data-noescape class="js" style="font-size: 4em">
+while (true) {
+ <span class="variable-name">task</span> = taskQueue.pop();
+ execute(<span class="variable-name">task</span>);
+}
+					</code></pre>
+					<div class="notes">
+						In case you missed Phil's talk, let's do a super quick overview
+						The event loop is basically the main function of the JavaScript engine
+					</div>
 				</section>
 				<section>
-					the event loop is basically the main function of the browser engine
-					<pre><code>
-while (true) {
-	let task = taskQueue.pop();
-	execute(task);
-}
+					<div class="text">What's a <code style="font-size: 1.5em" class="variable-name">task</code>?</div>
+				</section>
+				<section>
+					<pre><code data-noescape>
+&lt;script&gt;
+ <div class="task1">
+const foo = bar;
+foo.doSomething();
+
+document.body.addEventListener('keydown', (event) => {</div>
+<div class="task2"> if (event.key === 'ArrowRight') {
+   location.href = "/#/36";
+	}</div>
+ <div class="task1">});</div>
+&lt;/script&gt;
 					</code></pre>
 				</section>
 				<section>
-					<highlight>let task</highlight>
-					any bit of JS that is executed
-					- script tag
-					- import statement
-					- callback: event, xhr, setTimeout
+					<div class="text">What does <code style="font-size: 1.2em">execute(<span class="variable-name">task</span>)</code> do?</div>
+					<div class="notes">
+						short answer: it puts the task on the stack and runs it
+						long answer: go watch Phil's video
+					</div>
 				</section>
 				<section>
-					<highlight>execute(task)</highlight>
-					get the task off the task queue and put it on the stack
+					<div class="text">And what about <code style="font-size: 1.5em" class="variable-name">taskQueue</code>?</div>
+					<div class="notes">
+						That's what we're here to talk about
+					</div>
 				</section>
 				<section>
-					<highlight>taskQueue.pop()</highlight> - what we're about to talk about
-				</section>
-				<section>
-					browsers - browser logos i guess?
-					<img src="css/nodejs.png" style="filter: drop-shadow(2px 2px 4px var(--background-end)); width: 80%; margin-bottom: 2em;" />
-					<div style="background-image: url('css/cogs.png'); 
+					<div class="browser-list">
+						<img src="css/chrome-logo.png" />
+						<img src="css/ie-logo.png" />
+						<img src="css/firefox-logo.png" />
+						<img src="css/netscape-logo.png" />
+						<img src="css/safari-logo.png" />
+					</div>
+					<img class="fragment" src="css/nodejs.png" style="filter: drop-shadow(2px 2px 4px var(--background-end)); width: 80%; margin-bottom: 2em;" />
+					<div class="fragment" style="background-image: url('css/cogs.png'); 
 											background-size: contain; 
 											background-repeat: no-repeat; 
 											font-size: 5em; 
@@ -89,11 +124,11 @@ while (true) {
 					</div>
 				</section>
 				<section>
-					<pre><code>
+						<pre><code data-noescape class="js" style="font-size: 4em">
 while (true) {
-	let task = taskQueue.pop();
-	execute(task);
-}							
+ <span class="variable-name">task</span> = taskQueue.pop();
+ execute(<span class="variable-name">task</span>);
+}
 					</code></pre>
 				</section>
 				<section>
@@ -109,12 +144,14 @@ while (true) {
 					</div>
 				</section>
 				<section>
+						<pre><code data-noescape class="js" style="font-size: 3.7em">
 while (true) {
-	let task = taskQueue.pop();
-	execute(task);
+ <span class="variable-name">task</span> = taskQueue.pop();
+ execute(<span class="variable-name">task</span>);
 
-	if (isRepaintTime()) repaint();
+ if (isRepaintTime()) repaint();
 }
+					</code></pre>
 				</section>
 				<section>
 					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
@@ -141,22 +178,22 @@ if (!keep_running_)
 						<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
 				</section>
 				<section>
-					<div class="list-container">
+					<div class="list-container" style="font-size: 1.5em">
 						<ul>
 							<li class="fragment">Queues can be executed in any order</li>
 							<li class="fragment">Tasks in the same queue must be executed in the order they arrived</li>
-							<li class="fragment">Tasks from the same source must go in the same queue</li>
+							<li class="fragment">Tasks from the same source<br> must go in the same queue</li>
 						</ul>
 					</div>
 				</section>
 				<section>
-					<pre><code>
+						<pre><code data-noescape class="js" style="font-size: 3.7em">
 while (true) {
-	let queue = getNextQueue();
-	let task = queue.pop();
-	execute(task);
+ <span class="variable-name">queue</span> = getNextQueue();
+ <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
+ execute(<span class="variable-name">task</span>);
 
-	if (isRepaintTime()) repaint();
+ if (isRepaintTime()) repaint();
 }
 					</code></pre>
 				</section>
@@ -174,15 +211,18 @@ while (true) {
 					<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>	
 				</section>
 				<section>
+					<pre><code data-noescape class="js" style="font-size: 3.5em">
 while (true) {
-	let queue = getNextQueue();
-	let task = queue.pop();
-	execute(task);
+ <span class="variable-name">queue</span> = getNextQueue();
+ <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
+ execute(<span class="variable-name">task</span>);
 
-	while (microtaskQueue.hasTasks()) doMicrotask();
+ while (<span class="variable-name">microtaskQueue</span>.hasTasks())
+  doMicrotask();
 
-	if (isRepaintTime()) repaint();
+ if (isRepaintTime()) repaint();
 }
+					</code></pre>
 				</section>
 				<section>
 					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
@@ -191,12 +231,12 @@ while (true) {
 					<h2 class="gallop">Animation Frame Callback Queue</h2>
 				</section>
 				<section>
-					<pre><code style="text-align: center;">
+					<pre><code style="text-align: center; font-size: 3.7em;">
 requestAnimationFrame(callback);
 					</code></pre>
 				</section>
 				<section>
-					<pre><code class="javascript">
+					<pre><code class="javascript" style="font-size: 3em">
 requestAnimationFrame(() => {
   this.browser.classList.remove('go');
 
@@ -207,28 +247,30 @@ requestAnimationFrame(() => {
 					</code></pre>
 				</section>
 				<section>
-					<pre><code class="javascript">
+					<pre><code class="javascript" style="font-size: 3em">
 this.browser.classList.remove('go');
 this.browser.classList.add('go');					
 					</code></pre>
-					<img style="position: fixed; right: 0; bottom: 30%" src="css/Clippy.png" />
+					<img src="css/Clippy.png" />
 					<a class="demo-link" style="left: 0; right: unset" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>
-					<pre><code>
+						<pre><code data-noescape class="js" style="font-size: 2.6em">
 while (true) {
-	let queue = getNextQueue();
-	let task = queue.pop();
-	execute(task);
+ <span class="variable-name">queue</span> = getNextQueue();
+ <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
+ execute(<span class="variable-name">task</span>);
 
-	while (microtaskQueue.hasTasks()) doMicrotask();
+ while (<span class="variable-name">microtaskQueue</span>.hasTasks()) 
+  doMicrotask();
 
-	if (isRepaintTime()) {
-		let animationTasks = animationQueue.getTasks().slice();
-		for (let task in animationTasks) doAnimationTask(task);
-
-		repaint();
-	}
+ if (isRepaintTime()) {
+  <span class="variable-name">animationTasks</span> = <span class="variable-name">animationQueue</span>.copyTasks();
+  for (<span class="variable-name">task</span> in <span class="variable-name">animationTasks</span>) 
+   doAnimationTask(<span class="variable-name">task</span>);
+		
+  repaint();
+ }
 }
 					</code></pre>
 				</section>
@@ -239,7 +281,7 @@ while (true) {
 					<img class="border full-page" src="css/good-news-everyone.jpg" />
 				</section>
 				<section>
-					<div class="list-container">
+					<div class="list-container" style="font-size: 2em;">
 						<ul>
 							<li class="fragment">No script parsing events</li>
 							<li class="fragment">No pesky user interactions</li>
@@ -258,42 +300,47 @@ while (true) {
 					<a class="text" href="node.html">Node event loop demo</a>
 				</section>
 				<section>
-					<pre><code class="javascript" style="text-align: center">setImmediate(callback)</code></pre>
+					<pre><code style="text-align: center; font-size: 4em" class="lisp">setImmediate(callback)</code></pre>
 				</section>
 				<section>
-					<div style="display: flex; align-items: center">
+					<div style="display: flex; align-items: center; font-size: 2em">
 						<pre><code>setTimeout(callback, 0)</code></pre>
 						<img style="width: 20vmin" src="css/hedgehog.png" />
 					</div>
-					<div style="display: flex; align-items: center">
+					<div style="display: flex; align-items: center; font-size: 2em">
 						<img style="width: 20vmin" src="css/sonic.png" />
 						<pre><code>setImmediate(callback)</code></pre>
 					</div>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
-					<pre><code style="text-align: center">process.nextTick(callback)</code></pre>
+					<pre><code style="text-align: center; font-size: 4em" class="lisp">process.nextTick(callback)</code></pre>
 					<a class="demo-link" href="node.html">Demo</a>
 				</section>
 				<section>
 					<div style="display: flex">
-						<pre><code class="javascript">setImmediate():</code></pre>
-						<div style="padding: .5em; font-size: 2em; align-self: center">do something on the next tick</div>
+						<pre><code style="font-size: 3em">setImmediate():</code></pre>
+						<div style="padding: .5em; font-size: 2.2em; align-self: center">do something on the next tick</div>
 					</div>
-					<div style="display: flex" class="fragment">
-						<pre><code class="javascript">process.nextTick():</code></pre>
-						<div style="padding: .5em; font-size: 2em; align-self: center">do something immediately</div>
+					<div style="display: flex;" class="fragment">
+						<pre><code style="font-size: 3em">process.nextTick():</code></pre>
+						<div style="padding: .5em; font-size: 2.2em; align-self: center">do something immediately</div>
 					</div>
 				</section>
 				<section>
+						<pre><code data-noescape class="js" style="font-size: 2.6em">
 while (tasksAreWaiting()) {
-	let queue = getNextQueue();
-	let task = queue.pop();
-	execute(task);
+ <span class="variable-name">queue</span> = getNextQueue();
+ <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
+ execute(<span class="variable-name">task</span>);
 
-	while (nextTickQueue.hasTasks()) doNextTickTask();
-	while (microtaskQueue.hasTasks()) doMicrotask();
+ while (<span class="variable-name">nextTickQueue</span>.hasTasks()) 
+  doNextTickTask();
+
+ while (<span class="variable-name">microtaskQueue</span>.hasTasks()) 
+  doMicrotask();
 }
+					</code></pre>
 				</section>
 				<section>
 					<div style="position: absolute; top: 50vh; font-size: 3em;">Web workers</div>
@@ -357,7 +404,7 @@ while (tasksAreWaiting()) {
 					</section>								
 				</section>
 				<section>
-					<ul>
+					<ul style="font-size: 4em">
 						<li class="fragment">No script tags</li>
 						<li class="fragment">No user interactions</li>
 						<li class="fragment">No request animation frames</li>

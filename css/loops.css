@@ -105,6 +105,19 @@ svg.title {
   font-size: 3.5em;
 }
 
+.browser-list {
+  display: flex; 
+  height: 10vh;
+  width: 80%;
+  margin: auto;
+  margin-bottom: 2em;
+  justify-content: space-between;
+}
+.browser-list img {
+  align-self: center;
+  max-height: 100%;
+}
+
 .area {
   border: 1px solid black;
   background: white;
@@ -255,5 +268,9 @@ svg.title {
 
 .notes {
   display: none;
+}
+
+.variable-name {
+  color: #a6e22e;
 }
 

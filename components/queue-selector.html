@@ -39,7 +39,7 @@
     connectedCallback() {
       const firstQueueRect = document.querySelector('task-queue').getBoundingClientRect();
       const bottom = firstQueueRect.bottom;
-      this.style.top = `${bottom}px`;
+      this.style.top = `${bottom + 80}px`;
 
       this.renderingPipeline = this.parentNode.querySelector('rendering-pipeline');
       this.animationQueue = document.querySelector('task-queue[type="animation"]');

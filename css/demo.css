@@ -21,7 +21,9 @@ section {
   width: 80vmin;
   height: 80vmin;
   margin: auto;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .notes {
@@ -33,17 +35,15 @@ section {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  position: absolute;
-  top: 0;
   width: 100%;
+  position: relative;
 }
 
 task-source {
   max-width: 10%;
 }
 task-queues, node-queues {
-  max-height: 40vmin;
-  position: absolute;
-  bottom: 0;
+  max-height: 50vmin;
   width: 100%;
+  position: relative;
 }

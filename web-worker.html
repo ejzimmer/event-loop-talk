@@ -24,15 +24,16 @@
 					<task-source type="postmessage"></task-source>
 					<task-source type="promise"></task-source>
 				</div>
-				<node-queues>
+				<node-queues style="margin-top: 30vh">
 					<task-queue></task-queue>
+					<task-queue type="microtask"></task-queue>
 				</node-queues>
 			</event-loop>
 		</section>
 		<script>
 			document.body.addEventListener('keydown', (event) => {
 				if (event.key === 'ArrowRight') {
-					location.href = "/#/36";
+					location.href = "/#/46";
 				}
 			})
 		</script>
