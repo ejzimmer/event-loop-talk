@@ -10,6 +10,7 @@
       border-top-color: transparent;
       align-self: flex-end;
       margin: 0 auto;
+      filter: drop-shadow(2px 2px 1px var(--shadow-colour));
     }
     :host::before, :host::after {
       content: '';
@@ -104,6 +105,9 @@
       const colour = this.getColour(this.type);
       this.style.setProperty('--container-colour', colour);
 
+      const shadowColour = this.getShadowColour(this.type);
+      this.style.setProperty('--shadow-colour', shadowColour);
+
       this.addEventListener('do-task', this.runTask);
     }
 
@@ -115,7 +119,15 @@
         default: return 'orange';
       }
     }
-    
+
+    getShadowColour(queueType) {
+      if (queueType === 'animation' || queueType === 'next-tick') {
+        return '#006000';
+      }
+
+      return '#93510b';
+    }
+
     addTask(taskType) {
       const task = document.createElement('div');
       task.classList.add('task');

@@ -1,7 +1,7 @@
 body {
-  --background-start: #4517ed;
-  --background-end: #291c59;
-  --subtle: #ccf;
+  --background-end: #8ca9d8;
+  --background-start: #626f91;
+  --subtle: rgb(224, 224, 241);
   color: white;
   display: flex;
   background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
@@ -60,7 +60,7 @@ pre code.hljs {
 
 img.border, img.full-page {
   border: 2px solid white; 
-  box-shadow: 4px 4px 16px 4px var(--background-end);;  
+  box-shadow: 4px 4px 16px 4px var(--background-start);
 }
 img.full-page {
   width: 90vmin;
@@ -101,10 +101,6 @@ svg.title {
   font-size: 2em;
 }
 
-.statement {
-  font-size: 3.5em;
-}
-
 .browser-list {
   display: flex; 
   height: 10vh;
@@ -116,6 +112,9 @@ svg.title {
 .browser-list img {
   align-self: center;
   max-height: 100%;
+}
+.browser-list img, .logo {
+  filter: drop-shadow(2px 2px 4px var(--background-start));
 }
 
 .area {
@@ -256,13 +255,13 @@ svg.title {
 }
 
 .frosted {
-  color: var(--background-end);
+  color: var(--background-start);
   font-size: 3em;
   box-shadow: 4px 4px 16px 4px rgba(32, 79, 104, .5); 
 }
 
 .gallop {
-  color: var(--background-start);
+  text-shadow: 1px 1px black;
 }
 
 
@@ -273,4 +272,5 @@ svg.title {
 .variable-name {
   color: #a6e22e;
 }
+
 

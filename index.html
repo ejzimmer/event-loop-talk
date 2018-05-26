@@ -61,10 +61,6 @@ while (true) {
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
-					<div class="notes">
-						In case you missed Phil's talk, let's do a super quick overview
-						The event loop is basically the main function of the JavaScript engine
-					</div>
 				</section>
 				<section>
 					<div class="text">What's a <code style="font-size: 1.5em" class="variable-name">task</code>?</div>
@@ -86,16 +82,9 @@ document.body.addEventListener('keydown', (event) => {</div>
 				</section>
 				<section>
 					<div class="text">What does <code style="font-size: 1.2em">execute(<span class="variable-name">task</span>)</code> do?</div>
-					<div class="notes">
-						short answer: it puts the task on the stack and runs it
-						long answer: go watch Phil's video
-					</div>
 				</section>
 				<section>
 					<div class="text">And what about <code style="font-size: 1.5em" class="variable-name">taskQueue</code>?</div>
-					<div class="notes">
-						That's what we're here to talk about
-					</div>
 				</section>
 				<section>
 					<div class="browser-list">
@@ -105,16 +94,15 @@ document.body.addEventListener('keydown', (event) => {</div>
 						<img src="css/netscape-logo.png" />
 						<img src="css/safari-logo.png" />
 					</div>
-					<img class="fragment" src="css/nodejs.png" style="filter: drop-shadow(2px 2px 4px var(--background-end)); width: 80%; margin-bottom: 2em;" />
-					<div class="fragment" style="background-image: url('css/cogs.png'); 
+					<img class="fragment logo" src="css/nodejs.png" style="width: 80%; margin-bottom: 2em;" />
+					<div class="fragment logo" style="background-image: url('css/cogs.png'); 
 											background-size: contain; 
 											background-repeat: no-repeat; 
 											font-size: 5em; 
 											background-position: center;
 											width: 80%;
 											padding: 5vh;
-											filter: drop-shadow(2px 2px 4px var(--background-end));
-											text-shadow: 2px 2px var(--background-start)">
+											text-shadow: 2px 2px var(--background-end)">
 						Webworkers
 					</div>
 				</section>
@@ -130,9 +118,6 @@ while (true) {
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
-				</section>
-				<section>
-					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
 				</section>
 				<section data-background-image="css/mario.jpg">
 					<a class="heading" href="simple.html">The Rendering Pipeline</a>
@@ -154,9 +139,6 @@ while (true) {
 					</code></pre>
 				</section>
 				<section>
-					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
-				</section>
-				<section>
 					<div style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
 				</section>
 				<section>
@@ -175,7 +157,7 @@ if (!keep_running_)
 					</code></pre>
 				</section>
 				<section>
-						<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
+					<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
 				</section>
 				<section>
 					<div class="list-container" style="font-size: 1.5em">
@@ -196,9 +178,6 @@ while (true) {
  if (isRepaintTime()) repaint();
 }
 					</code></pre>
-				</section>
-				<section>
-					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
 				</section>
 				<section data-background-image="css/tiny-horse.jpg">
 					<a class="headings microtasks" href="microtasks.html">Microtasks</a>
@@ -224,9 +203,6 @@ while (true) {
 }
 					</code></pre>
 				</section>
-				<section>
-					<div style="font-family: cursive; font-size: 3em">It's a little more complicated than that...</div>
-				</section>
 				<section data-background-image="css/gallop.jpg">
 					<h2 class="gallop">Animation Frame Callback Queue</h2>
 				</section>
@@ -251,7 +227,7 @@ requestAnimationFrame(() => {
 this.browser.classList.remove('go');
 this.browser.classList.add('go');					
 					</code></pre>
-					<img src="css/Clippy.png" />
+					<img style="filter: drop-shadow(2px 2px 1px var(--background-start));" src="css/Clippy.png" />
 					<a class="demo-link" style="left: 0; right: unset" href="requestAnimationFrame.html">Demo</a>
 				</section>
 				<section>

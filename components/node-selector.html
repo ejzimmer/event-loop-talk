@@ -5,6 +5,7 @@
       position: fixed;
       transition: left .3s;
       width: var(--queue-width);
+      filter: drop-shadow(2px 2px 1px var(--background-start));
     }
     .loop {
       margin: auto;
@@ -48,7 +49,7 @@
     connectedCallback() {
       const firstQueueRect = document.querySelector('task-queue').getBoundingClientRect();
       const bottom = firstQueueRect.bottom;
-      this.style.top = `${bottom}px`;
+      this.style.top = `${bottom + 80}px`;
     }
 
     async doLoop() {

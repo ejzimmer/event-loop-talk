@@ -1,6 +1,6 @@
 body {
-  --background-start: #4517ed;
-  --background-end: #291c59;
+  --background-end: #8ca9d8;
+  --background-start: #626f91;
   --subtle: #ccf;
   --queue-width: 80px;
   color: white;
@@ -46,4 +46,8 @@ task-queues, node-queues {
   max-height: 50vmin;
   width: 100%;
   position: relative;
+}
+
+node-queues {
+  padding-top: 25vh;
 }
