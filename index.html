@@ -233,18 +233,18 @@ requestAnimationFrame(callback);
 				<section>
 					<pre><code class="javascript" style="font-size: 3em">
 requestAnimationFrame(() => {
-  this.browser.classList.remove('go');
+  this.browser.classList.remove('slide');
 
   requestAnimationFrame(() => {
-    this.browser.classList.add('go');
+    this.browser.classList.add('slide');
   });
 });				
 					</code></pre>
 				</section>
 				<section>
 					<pre><code class="javascript" style="font-size: 3em">
-this.browser.classList.remove('go');
-this.browser.classList.add('go');					
+this.browser.classList.remove('slide');
+this.browser.classList.add('slide');					
 					</code></pre>
 					<img style="filter: drop-shadow(2px 2px 1px var(--background-start));" src="css/Clippy.png" />
 					<a class="demo-link" style="left: 0; right: unset" href="requestAnimationFrame.html">Demo</a>

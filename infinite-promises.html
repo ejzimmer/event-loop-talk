@@ -32,14 +32,14 @@
   </head>
   <body>
     <script style="display: block; white-space: pre; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 2em;">
-      let numberOfPromises = 0;
+      let numberOfMicrotasks = 0;
 
       function start() {
         Promise.resolve().then(addThen);
       }
 
       function addThen() {
-        document.getElementById('promises').innerHTML = numberOfPromises++;
+        document.getElementById('promises').innerHTML = numberOfMicrotasks++;
         Promise.resolve().then(addThen);  
       }
     </script>

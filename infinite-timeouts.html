@@ -33,12 +33,10 @@
   </head>
   <body>
     <script style="display: block; white-space: pre; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 2em;">
-      let numberOfTimeouts = 0;
+      let numberOfTasks = 0;
 
       function start() {
-        numberOfTimeouts++;
-        document.getElementById('timeouts')
-          .innerHTML = numberOfTimeouts;
+        document.getElementById('timeouts').innerHTML = numberOfTasks++;
         setTimeout(start);
       }
     </script>
