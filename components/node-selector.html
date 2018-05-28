@@ -84,20 +84,20 @@
     }
 
     async runPhase(queue) {
-      while(queue.hasTasks()) {
+      while(queue && queue.hasTasks()) {
         await this.doTask(queue);
         await this.doMicrotaskCheck();
       }
     }
 
     async doMicrotaskCheck() {
-      while (this.nextTickQueue.hasTasks()) {
+      while (this.nextTickQueue && this.nextTickQueue.hasTasks()) {
         await this.doTask(this.nextTickQueue);
       }
       while (this.microtaskQueue.hasTasks()) {
         await this.doTask(this.microtaskQueue);
       }
-      if (this.nextTickQueue.hasTasks() || this.microtaskQueue.hasTasks()) {
+      if (this.microtaskQueue.hasTasks() || (this.nextTickQueue && this.nextTickQueue.hasTasks())) {
         await this.doMicrotaskCheck();
       }
     }

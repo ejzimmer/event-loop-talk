@@ -10,13 +10,24 @@
 		<link rel="stylesheet" href="css/loops.css">
 
 		<style>
-			.task1 {
-				background-color: #444;
-			}
+      .task1, .task2 {
+        background-size: 400% 400%;
+        background-image: radial-gradient(circle at left, var(--background-colour), transparent 50%, transparent);
+        background-position: bottom right;
+        transition: background-position 1s, color 1s;
+      }
+			.highlighted .task1, .highlighted .task2 {
+        background-position: top left;
+      }
+      .highlighted .task2 {
+        color: fuchsia;
+      }
+      .task1 {
+        --background-colour: #444;
+      }
 			.task2 {
-				background-color: rgb(170, 230, 238);
-				color: fuchsia;
-			}
+				--background-colour: rgb(170, 230, 238);
+      }
 			.task2 .hljs-string {
 				color: #444;
 			}
@@ -66,7 +77,7 @@ while (true) {
 					<div class="text">What's a <code style="font-size: 1.5em" class="variable-name">task</code>?</div>
 				</section>
 				<section>
-					<pre><code data-noescape>
+					<pre class="tasks"><code data-noescape>
 &lt;script&gt;
  <div class="task1">
 const foo = bar;
@@ -75,7 +86,7 @@ foo.doSomething();
 document.body.addEventListener('keydown', (event) => {</div>
 <div class="task2"> if (event.key === 'ArrowRight') {
    location.href = "/#/36";
-	}</div>
+ }</div>
  <div class="task1">});</div>
 &lt;/script&gt;
 					</code></pre>
@@ -127,7 +138,15 @@ while (true) {
 						<div style="font-size: 3em; max-width: 40vw; margin: auto; text-align: left">Long running tasks can make your page run like...</div>
 						<img class="border" src="css/unco-cat.gif" />
 					</div>
-				</section>
+        </section>
+        <section>
+          <pre><code style="font-size: 4em;">
+function veryLongTask() {
+  firstPartOfTask();
+  setTimeout(restOfTheTask);
+}
+          </code></pre>
+        </section>
 				<section>
 						<pre><code data-noescape class="js" style="font-size: 3.7em">
 while (true) {
@@ -439,7 +458,14 @@ while (tasksAreWaiting()) {
 		<link rel="import" href="components/rendering-pipeline.html">
 		<link rel="import" href="components/queue-selector.html">
 		<link rel="import" href="components/queue.html">
-		<link rel="import" href="components/task-source.html">
+    <link rel="import" href="components/task-source.html">
+    
+    <script>
+      const task = document.querySelector('.tasks');
+      task.addEventListener('click', function () {
+        this.classList.add('highlighted');
+      });
+    </script>
 
 	</body>
 </html>
