@@ -84,7 +84,7 @@ const foo = bar;
 foo.doSomething();
 
 document.body.addEventListener('keydown', (event) => {</div>
-<div class="task2"> if (event.key === 'ArrowRight') {
+<div class="task2"> if (event.key === 'PageDown') {
    location.href = "/#/36";
  }</div>
  <div class="task1">});</div>
@@ -326,14 +326,17 @@ while (true) {
 						<pre><code data-noescape class="js" style="font-size: 2.6em">
 while (tasksAreWaiting()) {
  <span class="variable-name">queue</span> = getNextQueue();
- <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
- execute(<span class="variable-name">task</span>);
 
- while (<span class="variable-name">nextTickQueue</span>.hasTasks()) 
-  doNextTickTask();
+ while (queue.hasTasks()) {
+  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
+  execute(<span class="variable-name">task</span>);
 
- while (<span class="variable-name">microtaskQueue</span>.hasTasks()) 
-  doMicrotask();
+  while (<span class="variable-name">nextTickQueue</span>.hasTasks()) 
+   doNextTickTask();
+
+  while (<span class="variable-name">promiseQueue</span>.hasTasks()) 
+   doPromiseTask();
+ }
 }
 					</code></pre>
 				</section>
@@ -402,8 +405,7 @@ while (tasksAreWaiting()) {
 					<ul style="font-size: 4em">
 						<li class="fragment">No script tags</li>
 						<li class="fragment">No user interactions</li>
-						<li class="fragment">No request animation frames</li>
-						<li class="fragment">No rendering pipeline</li>
+						<li class="fragment">No DOM manipulation</li>
 					</ul>
 					<a class="demo-link" href="web-worker.html">Demo</a>
 				</section>
@@ -414,10 +416,13 @@ while (tasksAreWaiting()) {
 					<div style="font-size: 3.9em;">Long running tasks will make your web page run like a wonky cat</div>
 				</section>
 				<section>
-					<div style="font-size: 4em">Promises and nextTick callbacks get special treatment</div>
+					<div style="font-size: 4em">Promises and nextTick tasks can make it run like a dead cat</div>
 				</section>
 				<section>
-					<div style="font-size: 4em">Use requestAnimationFrame to fine-tune your animations</div>
+					<div style="font-size: 4em">Node is a bit different</div>
+				</section>
+				<section>
+					<div style="font-size: 4em">Web workers do their own thing</div>
 				</section>
 				<section>
 					<div style="font-size: 3.5em;">The event loop is more exciting than you could possibly have imagined</div>
@@ -465,7 +470,9 @@ while (tasksAreWaiting()) {
       task.addEventListener('click', function () {
         this.classList.add('highlighted');
       });
-    </script>
-
+      document.body.addEventListener('keydown', (event) => {
+        console.log(event.key);
+      });
+		</script>
 	</body>
 </html>
