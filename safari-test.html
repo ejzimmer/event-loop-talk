@@ -1,0 +1,32 @@
+<html>
+  <body>
+
+    Timeouts <div id="timeouts"></div>
+    Intervals <div id="intervals"></div>
+    Seconds <div id="seconds"></div>
+    <script>
+      const timeoutsDiv = document.getElementById('timeouts');
+      const intervalsDiv = document.getElementById('intervals');
+      const secondsDiv = document.getElementById('seconds');
+
+      let timeouts, intervals;
+      timeouts =  intervals = 0;
+      const startTime = new Date();
+
+      function timeout() {
+        timeoutsDiv.innerHTML = ++timeouts;
+        setTimeout(timeout, 1000);
+      }
+      setTimeout(timeout, 1000);
+
+      setInterval(() => {
+        intervalsDiv.innerHTML = ++intervals;
+      }, 1000);
+
+      setInterval(() => {
+        time = new Date();
+        secondsDiv.innerHTML = (time - startTime) / 1000;
+      }, 1000);
+    </script>
+  </body>
+</html>
