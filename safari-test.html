@@ -4,17 +4,23 @@
     Timeouts <div id="timeouts"></div>
     Intervals <div id="intervals"></div>
     Seconds <div id="seconds"></div>
+    Fetches <div id="fetches"></div>
     <script>
       const timeoutsDiv = document.getElementById('timeouts');
       const intervalsDiv = document.getElementById('intervals');
+      const fetchesDiv = document.getElementById('fetches');
       const secondsDiv = document.getElementById('seconds');
 
-      let timeouts, intervals;
-      timeouts =  intervals = 0;
+      let timeouts, intervals, fetches;
+      timeouts =  intervals = fetches = 0;
       const startTime = new Date();
 
       function timeout() {
         timeoutsDiv.innerHTML = ++timeouts;
+        fetch('http://www.amiiboapi.com/api/amiibo/?name=zelda').then(() => {
+          fetchesDiv.innerHTML = fetches++;
+        })
+
         setTimeout(timeout, 1000);
       }
       setTimeout(timeout, 1000);
