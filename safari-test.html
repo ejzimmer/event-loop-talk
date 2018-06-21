@@ -5,11 +5,13 @@
     Intervals <div id="intervals"></div>
     Seconds <div id="seconds"></div>
     Fetches <div id="fetches"></div>
+    Last fetch <div id="last-fetch"></div>
     <script>
       const timeoutsDiv = document.getElementById('timeouts');
       const intervalsDiv = document.getElementById('intervals');
       const fetchesDiv = document.getElementById('fetches');
       const secondsDiv = document.getElementById('seconds');
+      const lastFetchDiv = document.getElementById('last-fetch');
 
       let timeouts, intervals, fetches;
       timeouts =  intervals = fetches = 0;
@@ -19,7 +21,8 @@
         timeoutsDiv.innerHTML = ++timeouts;
         fetch('/css/cat.gif').then(() => {
           fetchesDiv.innerHTML = fetches++;
-        })
+          lastFetchDiv.innerHTML = new Date().toString();
+        });
 
         setTimeout(timeout, 1000);
       }
