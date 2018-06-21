@@ -19,7 +19,7 @@
 
       function timeout() {
         timeoutsDiv.innerHTML = ++timeouts;
-        fetch('http://safar-test.getsandbox.com/hello', { mode: 'cors' }).then(() => {
+        fetch('https://safar-test.getsandbox.com/hello', { mode: 'cors' }).then(() => {
           fetchesDiv.innerHTML = fetches++;
           lastFetchDiv.innerHTML = new Date().toString();
         });
