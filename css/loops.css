@@ -1,6 +1,6 @@
 body {
-  --background-end: #8ca9d8;
-  --background-start: #626f91;
+  --background-end: #333;
+  --background-start: #555;
   --subtle: rgb(224, 224, 241);
   color: white;
   display: flex;
