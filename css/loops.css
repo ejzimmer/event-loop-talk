@@ -1,29 +1,153 @@
 body {
-  --background-end: #333;
-  --background-start: #555;
+  --background-end: #222;
+  --background-start: #333;
   --subtle: rgb(224, 224, 241);
+  --green: 166, 226, 46;
+  --pink: 249, 38, 114;
+  --code-font: monospace;
   color: white;
-  display: flex;
   background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
-  height: 100vh;
   font-family: "Source Sans Pro", Helvetica, sans-serif;
   margin: 0;
 }
 
 h1 {
   margin: 0 0 20px 0;
-  font-weight: 600;
   line-height: 1.2;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  word-wrap: break-word; 
+  text-transform: uppercase; 
   font-size: 5em;
-  text-shadow: 4px 4px var(--background-start);
+  text-shadow: 4px 4px rgba(var(--green), .5);
 }
 
 h2 {
-  font-size: 3em;
+  font-size: 4em;
 }
+
+.full-height {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+}
+
+
+
+svg.title {
+  transform: rotate(.5turn);
+  transform-origin: bottom;
+  animation: spin 3s ease-out forwards;
+  width: 80%;
+  fill: rgb(var(--green));
+}
+
+@keyframes spin {
+  to { transform: rotate(1turn) }
+}
+
+.mask {
+  overflow: hidden;
+  width: 90%;
+  margin: auto;
+}
+
+
+.browser-internals {
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  border: 4px solid white;
+  padding: 1.5em 2em;
+  position: relative;
+}
+.browser-internals legend {
+  font-size: 2em;
+  padding: .25em;
+}
+.browser-internals .browser-bits {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  height: 90%;
+}
+.browser-internals img {
+  width: 20%;
+  margin: 0 4.5vmin;
+  padding: .75em;
+}
+.browser-internals task-source {
+  transform: scale(2);
+  margin: 0 5vmin;
+  padding: .75em;
+}
+.browser-internals .html {
+  margin: 1em;
+  padding: .75em;
+}
+.browser-internals .html::before {
+  content: '</>';
+  display: block;
+  color: rgb(var(--green));
+  font-size: 8em;
+  font-family: var(--code-font);
+  font-weight: bold;
+}
+.browser-internals .html::after {
+  content: 'HTML & CSS';
+  font-size: 2em;
+}
+.browser-internals.web-apis .browser-bits *:not(#engine), .engine #engine.highlighted {
+  animation: pink-background-flash 1s cubic-bezier(0.555, 0.140, 0.390, 1.040) forwards;
+}
+@keyframes pink-background-flash {
+  50% {
+    background-color: rgba(var(--pink), 1);
+  }
+  to {
+    background-color: rgba(var(--pink), .75);
+  }
+}
+#web-apis, #engines {
+  font-size: 5em;
+  background-color: rgb(var(--pink));
+  box-shadow: 4px 4px 4px rgba(3, 3, 3, 0.4);
+  position: absolute;
+  opacity: 0;
+  transition: opacity .5s;
+  padding: .5em;
+}
+#web-apis {
+  right: 20%;
+  bottom: 40%;
+}
+#engines {
+  right: 5%;
+  bottom: 30%;
+}
+
+.libuv {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: rgb(var(--pink));
+  font-family: var(--code-font);
+  font-size: 5em;
+}
+
+.engine-logos {
+  display: flex;
+  align-items: center;
+}
+.engine-logos img {
+  width: 33%;
+}
+
+
+
+
+
+
+
+
 
 a {
   font-family: "Source Sans Pro", Helvetica, sans-serif;
@@ -75,23 +199,6 @@ img.full-page {
   font-size: 5em;
 }
 
-svg.title {
-  transform: rotate(.5turn);
-  transform-origin: bottom;
-  animation: spin 3s ease-out forwards;
-  width: 80%;
-  fill: var(--subtle); 
-}
-
-@keyframes spin {
-  to { transform: rotate(1turn) }
-}
-
-.mask {
-  overflow: hidden;
-  width: 90%;
-  margin: auto;
-}
 
 .twitter {
   position: fixed;

@@ -53,33 +53,97 @@
 					<div class="twitter">@erinjzimmer</div>
 				</section>
 				<section>
-					What is the Event Loop?
+					<h2>What even is the Event Loop?</h2>
+					<div class="notes">
+						To understand what the event loop is, first it might be helpful to understand what it is not.
+					</div>
+				</section>
+				<section class="full-height">
+					<fieldset class="browser-internals">
+						<legend>The Browser</legend>
+						<div class="browser-bits">
+							<img id="engine" src="css/JavaScript-logo.png" class="fragment" style="margin-left: 0" />
+							<task-source type="network" class="fragment"></task-source>
+							<task-source type="timer" class="fragment"></task-source>
+							<task-source type="drive" class="fragment"></task-source>
+							<img src="css/mouse-pointer.svg" class="fragment" style="margin: .75em" />
+							<div class="html fragment"></div>
+							<div id="web-apis" style="animation: unset">Web APIs</div>
+						</div>
+					</fieldset>
+					<div class="notes">
+						- You see, browsers have a bunch of different bits in them
+						- One is the bit that runs from JavaScript
+						- But there's also another bit that takes care of network requests
+						- And a bit that looks after timers
+						- A bit that can do disk I/O
+						- A bit that listens for user interactions
+						- And a heap of bits that interact with the DOM and CSS.
+						- Collectively, these bits that aren't the bit that runs JavaScript are called...
+						- ... Web APIs. The event loop isn't a web API.
+					</div>
+					<script>
+						document.querySelector('.browser-internals').addEventListener('click', function () {
+							this.classList.add('web-apis');
+							this.addEventListener('click', () => {
+								document.querySelector('#web-apis').style.opacity = 1;
+							}, { once: true });
+						}, { once: true });
+					</script>
 				</section>
 				<section>
-					To understand what the event loop is, first it's helpful to understand
-					what the event loop is not.
-					Browsers are made up of a bunch of different bits.
-					One bit is the bit that runs your JavaScript.
-					But, there's also another bit that takes care of network requests.
-					And a bit that looks after timers.
-					A bit that can read from and write to disk.
-					A bit that listens for user interactions.
-					And a heap of bits that interact with the DOM and CSS.
-					Collectively, these bits that aren't the bit that runs JavaScript are called the Web APIs.
-					The event loop isn't a Web API.
+					<span style="position: relative">
+						<img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
+						<div class="libuv">libuv</div>
+					</span>
+					<div class="notes">
+						Node equivalent == unicorn velocity library.
+						Because of course it is.
+						The event loop also isn't libuv.
+					</div>
 				</section>
 				<section>
-					Node also has its own version of Web APIs called the unicorn velociraptor library.
-					Because of course it is.
-					(libuv logo)
-					The event loop also isn't libuv.
+					<fieldset class="browser-internals engine">
+						<legend>The Browser</legend>
+						<div class="browser-bits">
+							<img id="engine" src="css/JavaScript-logo.png" style="margin-left: 0" />
+							<task-source type="network"></task-source>
+							<task-source type="timer"></task-source>
+							<task-source type="drive"></task-source>
+							<img src="css/mouse-pointer.svg" style="margin: .75em" />
+							<div class="html"></div>
+							<div id="engines" style="animation: unset">JavaScript Engine</div>
+						</div>
+					</fieldset>
+					<script>
+						document.querySelector('.browser-internals.engine').addEventListener('click', function () {
+							this.querySelector('#engine').classList.add('highlighted');
+							this.addEventListener('click', () => {
+								document.getElementById('engines').style.opacity = 1;
+							})
+						}, { once: true });
+					</script>
+					<div class="notes">
+						The bit that is the bit that runs JavaScript is called the JavaScript engine.
+					</div>
 				</section>
 				<section>
-					The bit that is the bit that runs JavaScript is called the JavaScript engine.
-					There are a bunch of JavaScript engines running around - Chakra, SpiderMonkey, V8, SquirrelMonkey/JavaScriptCore/Nitro some IoT ones
-					The event loop lives in JavaScript engines. Not all JavaScript engines, but most of the ones you
-					would be familiar with - all the browser ones and Node.
-					Maybe JavaScript engine === JS VM. 
+					<div class="engine-logos">
+						<img class="fragment" src="css/v8-logo.png" />
+						<img class="fragment" src="css/edge-logo.png" style="transform: scale(.6)" />
+						<img class="fragment" src="css/squirrelfish.png" />
+					</div>
+					<img class="fragment" src="css/spider-monkey.jpg" style="width: 80%" />
+					<div class="notes">
+						There are a bunch of different JS engines kicking around
+						- V8, in Chrome and Node
+						- Chakra which powers Edge
+						- er, Safari's SquirrelFish
+						- and SpiderMonkey from Mozilla, which I couldn't find a logo for,
+						so here's a picture of an actual SpiderMonkey
+						spider monkey photo from Ewa https://www.flickr.com/photos/ewas-world/
+						The event loop lives in JavaScript engines.
+					</div>
 				</section>
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 4em">
@@ -527,13 +591,13 @@ while (tasksAreWaiting()) {
     <link rel="import" href="components/task-source.html">
     
     <script>
-      const task = document.querySelector('.tasks');
-      task.addEventListener('click', function () {
-        this.classList.add('highlighted');
-      });
-      document.body.addEventListener('keydown', (event) => {
-        console.log(event.key);
-      });
+      // const task = document.querySelector('.tasks');
+      // task.addEventListener('click', function () {
+      //   this.classList.add('highlighted');
+      // });
+      // document.body.addEventListener('keydown', (event) => {
+      //   console.log(event.key);
+      // });
 		</script>
 	</body>
 </html>
