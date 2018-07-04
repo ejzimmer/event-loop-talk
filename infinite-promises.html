@@ -35,10 +35,10 @@
       let numberOfMicrotasks = 0;
 
       function start() {
-        Promise.resolve().then(addThen);
+        andThen();
       }
 
-      function addThen() {
+      function andThen() {
         document.getElementById('promises').innerHTML = numberOfMicrotasks++;
         Promise.resolve().then(addThen);  
       }

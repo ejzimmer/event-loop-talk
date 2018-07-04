@@ -56,9 +56,30 @@
 					What is the Event Loop?
 				</section>
 				<section>
-					WHATWG spec, Event Loop definitions
-					To coordinate events, user interaction, scripts, rendering, networking, and so forth, user agents must use event loops as described in this section.
-					
+					To understand what the event loop is, first it's helpful to understand
+					what the event loop is not.
+					Browsers are made up of a bunch of different bits.
+					One bit is the bit that runs your JavaScript.
+					But, there's also another bit that takes care of network requests.
+					And a bit that looks after timers.
+					A bit that can read from and write to disk.
+					A bit that listens for user interactions.
+					And a heap of bits that interact with the DOM and CSS.
+					Collectively, these bits that aren't the bit that runs JavaScript are called the Web APIs.
+					The event loop isn't a Web API.
+				</section>
+				<section>
+					Node also has its own version of Web APIs called the unicorn velociraptor library.
+					Because of course it is.
+					(libuv logo)
+					The event loop also isn't libuv.
+				</section>
+				<section>
+					The bit that is the bit that runs JavaScript is called the JavaScript engine.
+					There are a bunch of JavaScript engines running around - Chakra, SpiderMonkey, V8, SquirrelMonkey/JavaScriptCore/Nitro some IoT ones
+					The event loop lives in JavaScript engines. Not all JavaScript engines, but most of the ones you
+					would be familiar with - all the browser ones and Node.
+					Maybe JavaScript engine === JS VM. 
 				</section>
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 4em">
@@ -67,50 +88,68 @@ while (true) {
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
+					<div class="notes">
+						The main function of the JS engine
+						In its simplest form, would look something like this
+						Now, while I'm sure we all understand how the loop part works, I think
+						this code snippet probably raises a couple of other questions, like...
+					</div>
+				</section>
+				<section>
+					<ul>
+						<li class="fragment">What's a task?</li>
+						<li class="fragment">What's a task queue?</li>
+						<li class="fragment">How does one execute a task?</li>
+					</ul>
+					<img src="quizzical-raptor" />	
 				</section>
 				<section>
 					<div class="text">What's a <code style="font-size: 1.5em" class="variable-name">task</code>?</div>
+					And where do they come from?
 				</section>
 				<section>
-					<pre class="tasks"><code data-noescape>
-&lt;script&gt;
- <div class="task1">
-const foo = bar;
-foo.doSomething();
-
-document.body.addEventListener('keydown', (event) => {</div>
-<div class="task2"> if (event.key === 'PageDown') {
-   location.href = "/#/36";
- }</div>
- <div class="task1">});</div>
-&lt;/script&gt;
-					</code></pre>
+					A task is basically any bit of JavaScript that's going to get executed.
+					Example of script tag -> task -> task queue
+					Another example with callback that's going to be in two tasks
 				</section>
 				<section>
-					<div class="text">What does <code style="font-size: 1.2em">execute(<span class="variable-name">task</span>)</code> do?</div>
+					To understand why JS uses tasks (and task queues), we should have a quick look at something everyone 
+					knows about JS and how that relates to the bits of the browser (or Node) that aren't the JS engine
 				</section>
 				<section>
-					<div class="text">And what about <code style="font-size: 1.5em" class="variable-name">taskQueue</code>?</div>
-				</section>
-				<section>
-					<div class="browser-list">
-						<img src="css/chrome-logo.png" />
-						<img src="css/ie-logo.png" />
-						<img src="css/firefox-logo.png" />
-						<img src="css/netscape-logo.png" />
-						<img src="css/safari-logo.png" />
+					<div>JavaScript is single-threaded</div>
+					<div class="notes">
+						So this is a thing that most people know about JS, or at least have heard.
+						An example of some code that looks like it could be broken by multithreading, but can't
+						We know if we start running this code, all of it is going to run without anything else 
+						happening part way through
 					</div>
-					<img class="fragment logo" src="css/nodejs.png" style="width: 80%; margin-bottom: 2em;" />
-					<div class="fragment logo" style="background-image: url('css/cogs.png'); 
-											background-size: contain; 
-											background-repeat: no-repeat; 
-											font-size: 5em; 
-											background-position: center;
-											width: 80%;
-											padding: 5vh;
-											text-shadow: 2px 2px var(--background-start)">
-						Webworkers
+				</section>
+				<section>
+					<div>Browsers have as many threads as they like</div>
+					<div class="notes">
+						Browser window might have threads for 
+						 - keeping track of mouse and keyboard events
+						 - making network requests
+						 - handling timers
+						 - disk operations
+						 Chrome has a separate thread (actually a whole separate process) for the browser
+						 chrome and each of the tabs, which is why your task manager ends up full of Chrome
 					</div>
+				</section>
+				<section>
+					All of the asynchronous tasks that you kick off from your JS run in a different thread
+					than your author code.
+					xhr request -> new thread for network request -> request completes, callback 
+					is ready to run
+					BUT the rest of your code is still running and the new callback can't interrupt it
+					So it gets added to a queue to wait until its turn
+					Do an interactive example with async tasks being added to queues
+				</section>
+				<section>
+					And this is where the event loop comes in.
+					Remember our code from before?
+					The event loop is responsible for picking tasks off the task queue and executing them
 				</section>
 				<section data-background-image="css/glastonbury.jpg">
 					<div class="glastonbury">
@@ -124,24 +163,35 @@ while (true) {
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
+					<div class="notes">
+						The thing is, it's a little more complicated than that
+					</div>
 				</section>
 				<section data-background-image="css/mario.jpg">
 					<a class="heading" href="simple.html">The Rendering Pipeline</a>
 				</section>
 				<section>
 					<div style="display: flex; justify-content: space-between">
-						<div style="font-size: 3em; max-width: 40vw; margin: auto; text-align: left">Long running tasks can make your page run like...</div>
-						<img class="border" src="css/unco-cat.gif" />
+						<img class="border" src="css/unco-cat.gif" />\
+						<div class="notes">
+							Long running tasks will cause your browser to start dropping frames
+							and, much like this cat, your app just won't run right
+						</div>
 					</div>
         </section>
         <section>
           <pre><code style="font-size: 4em;">
+						make this into a realistic example
 function veryLongTask() {
   firstPartOfTask();
   setTimeout(restOfTheTask);
 }
           </code></pre>
-        </section>
+				</section>
+				<section>
+					Or you could use a webworker, seeing as that's literally what they're 
+					Put the code for starting a web worker
+				</section>
 				<section>
 						<pre><code data-noescape class="js" style="font-size: 3.7em">
 while (true) {
@@ -194,6 +244,7 @@ while (true) {
 					</code></pre>
 				</section>
 				<section data-background-image="css/tiny-horse.jpg">
+					make this little foot and his mum
 					<a class="headings microtasks" href="microtasks.html">Microtasks</a>
 					<div style="font-size: 1em; color: white; background: rgba(206, 190, 190, 0.3); padding: .5em;" 
 					class="demo-link">Image by <a href="https://www.flickr.com/people/9197427@N06">Pete Markham</a></div>
@@ -202,6 +253,9 @@ while (true) {
 					<a href="infinite-timeouts.html">Tasks</a>
 					<div style="margin: 10px">vs</div>
 					<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>	
+				</section>
+				<section>
+					do the live demo again showing the promises blocking
 				</section>
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 3.5em">
@@ -224,6 +278,18 @@ while (true) {
 					<pre><code style="text-align: center; font-size: 3.7em;">
 requestAnimationFrame(callback);
 					</code></pre>
+				</section>
+				<section>
+					make a dinosaur themed animation demo
+					show what happens with no requestAnimationFrame
+					both frames end up in the same render phase, so the animation doesn't work
+					we need a way to ensure the first line executes, then the screen repaints,
+					then the second line executes
+					show demo
+					so if we change our code to use requestAnimationFrame like so 
+					(remember we need two calls to requestAnimationFrame, else both lines 
+					could still end up in the same loop)
+					now it works!
 				</section>
 				<section>
 					<pre><code class="javascript" style="font-size: 3em">
