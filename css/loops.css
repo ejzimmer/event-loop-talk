@@ -141,9 +141,16 @@ svg.title {
   width: 33%;
 }
 
-
-
-
+.list-and-image {
+  display: flex;
+  font-size: 2em;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1em;
+}
+.list-and-image img {
+  max-width: 33%
+}
 
 
 

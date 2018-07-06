@@ -160,16 +160,40 @@ while (true) {
 					</div>
 				</section>
 				<section>
-					<ul>
-						<li class="fragment">What's a task?</li>
-						<li class="fragment">What's a task queue?</li>
-						<li class="fragment">How does one execute a task?</li>
-					</ul>
-					<img src="quizzical-raptor" />	
+					<div class="list-and-image">
+						<ul>
+							<li class="fragment">What's a task?</li>
+							<li class="fragment">What's a task&nbsp;queue?</li>
+						</ul>
+						<img src="css/Philosoraptor.jpg" />
+					</div>
+					<div class="notes">
+						What is a task? And what could it possibly be queueing up for?
+					</div>
 				</section>
 				<section>
-					<div class="text">What's a <code style="font-size: 1.5em" class="variable-name">task</code>?</div>
-					And where do they come from?
+					<div style="display: flex">
+					<pre><code>
+<script>
+ const intrepidAdventurers = [
+  'Little Foot',
+  'Cera',
+  'Ducky',
+  'Petrie',
+  'Spike'
+ ];
+
+ function rawr() {
+  console.log('rawr!')
+ }
+ 
+ intrepidAdventurers.forEach(rawr);
+</script>
+					</code></pre>
+<div class="arrow-right"></div>
+<div class="task"></div>
+</div>
+<a href="parser-only.html"></a>
 				</section>
 				<section>
 					A task is basically any bit of JavaScript that's going to get executed.
