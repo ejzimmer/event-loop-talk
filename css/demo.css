@@ -1,46 +1,18 @@
-body {
-  --background-end: #8ca9d8;
-  --background-start: #626f91;
-  --subtle: #ccf;
-  --queue-width: 80px;
-  color: white;
-  display: flex;
-  background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
-  height: 100vh;
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
-  margin: 0;
-  display: flex;
-  transition: filter 3s;
-}
-
 body.done {
   filter: grayscale(100%) blur(5px);
-}
-
-section {
-  width: 80vmin;
-  height: 80vmin;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-.notes {
-  display: none;
 }
 
 .sources {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   position: relative;
 }
 
 task-source {
-  max-width: 10%;
+  margin: auto;
 }
 task-queues, node-queues {
   max-height: 50vmin;

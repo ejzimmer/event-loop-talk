@@ -7,29 +7,28 @@
     <title>Parser and Task Queue</title>
     
     <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/common.css">
 
     <link rel="import" href="components/event-loop.html">
 		<link rel="import" href="components/browser.html">
 		<link rel="import" href="components/queues.html">
 		<link rel="import" href="components/queue-selector.html">
 		<link rel="import" href="components/queue.html">
-		<link rel="import" href="components/task-source.html">
+    <link rel="import" href="components/task-source.html">
 	</head>
 	<body>
-		<section>
-      <event-loop>
-        <div class="sources">
-          <task-source type="html"></task-source>
-        </div>
-        <task-queues>
-          <task-queue></task-queue>  
-        </task-queues>
-      </event-loop>
-		</section>
+    <event-loop>
+      <div class="sources">
+        <task-source type="html"></task-source>
+      </div>
+      <task-queues rendering="false">
+        <task-queue></task-queue>  
+      </task-queues>
+    </event-loop>
     <script>
       document.body.addEventListener('keydown', (event) => {
         if (event.key === 'PageDown') {
-          location.href = '/#/7';
+          location.href = '/#/9';
         }
       }, { once: true })
     </script>

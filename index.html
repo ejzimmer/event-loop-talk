@@ -8,30 +8,8 @@
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/loops.css">
+		<link rel="stylesheet" href="css/common.css">
 
-		<style>
-      .task1, .task2 {
-        background-size: 400% 400%;
-        background-image: radial-gradient(circle at left, var(--background-colour), transparent 50%, transparent);
-        background-position: bottom right;
-        transition: background-position 1s, color 1s;
-      }
-			.highlighted .task1, .highlighted .task2 {
-        background-position: top left;
-      }
-      .highlighted .task2 {
-        color: fuchsia;
-      }
-      .task1 {
-        --background-colour: #444;
-      }
-			.task2 {
-				--background-colour: rgb(170, 230, 238);
-      }
-			.task2 .hljs-string {
-				color: #444;
-			}
-		</style>
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 	</head>
@@ -124,7 +102,7 @@
 						}, { once: true });
 					</script>
 					<div class="notes">
-						The bit that is the bit that runs JavaScript is called the JavaScript engine.
+						The bit that runs JavaScript is called the JavaScript engine.
 					</div>
 				</section>
 				<section>
@@ -172,7 +150,7 @@ while (true) {
 					</div>
 				</section>
 				<section>
-					<div style="display: flex">
+					<div class="columns">
 					<pre><code>
 <script>
  const intrepidAdventurers = [
@@ -190,40 +168,79 @@ while (true) {
  intrepidAdventurers.forEach(rawr);
 </script>
 					</code></pre>
-<div class="arrow-right"></div>
-<div class="task"></div>
+<div class="arrow-right fragment" data-fragment-index="1">^</div>
+<div class="task fragment" data-fragment-index="1"></div>
 </div>
-<a href="parser-only.html"></a>
+<a class="demo-link" href="parser-only.html">Demo</a>
 				</section>
 				<section>
-					A task is basically any bit of JavaScript that's going to get executed.
-					Example of script tag -> task -> task queue
+					<h2><div style="font-size: .9em">JavaScript, why are you like that?</div></h2>
+					<div class="notes">
+						The answer is due to two things
+					</div>
+				</section>
+				<section>
+					<h2>JavaScript is single-threaded</h2>
+					<div class="notes">
+						- This is a thing most people probably know
+						- Important because DOM
+						- So each task runs to completion before another task can start
+						- But remember, the JS engine is only one part of the browser
+					</div>
+				</section>
+				<section>
+					<h2><i>Browsers</i> are multi-threaded</h2>
+					<div class="notes">
+						As well as running your JavaScript, a browser could be 
+						- keeping track of mouse and keyboard events
+						- making network requests
+						- handling timers
+						- disk operations 
+						And any of these things could be generating tasks, via callbacks
+					</div>
+				</section>
+				<section>
+					<fieldset class="browser-internals">
+							<legend>The Browser</legend>
+							<div class="browser-bits">
+								<img id="engine" src="css/JavaScript-logo.png" style="margin-left: 0" />
+								<task-source type="network"></task-source>
+								<task-source type="timer"></task-source>
+								<task-source type="drive"></task-source>
+								<img src="css/mouse-pointer.svg" style="margin: .75em" />
+								<div class="html"></div>
+								<div id="engines" style="animation: unset">JavaScript Engine</div>
+							</div>
+						</fieldset>						
+				</section>
+				<section>
+					<div class="columns">
+						<pre class="script-task"><code data-noescape>const btn = document.createElement('button');
+document.body.appendChild(btn);
+
+btn.addEventListener('click', function () {
+ <span class="click-task">console.log('CHOMP!');</span>
+});</code></pre>
+						<div class="vertical">
+							<div class="task" style="background-color: rgb(var(--pink))"></div>
+							<div class="task" style="background-color: rgb(var(--green))"></div>
+						</div>
+					</div>
+					<a class="demo-link" href="simple.html">Demo</a>
+				<script>
+					document.body.addEventListener('click', () => {
+						document.querySelector('.script-task').classList.add('highlighted');
+						document.querySelector('.vertical .task').style.opacity = 1;
+
+						document.body.addEventListener('click', () => {
+							document.querySelector('.click-task').classList.add('highlighted');
+							document.querySelector('.vertical .task:nth-child(2)').style.opacity = 2;
+						}, { once: true });
+					}, { once: true });
+				</script>
+				</section>
+				<section>
 					Another example with callback that's going to be in two tasks
-				</section>
-				<section>
-					To understand why JS uses tasks (and task queues), we should have a quick look at something everyone 
-					knows about JS and how that relates to the bits of the browser (or Node) that aren't the JS engine
-				</section>
-				<section>
-					<div>JavaScript is single-threaded</div>
-					<div class="notes">
-						So this is a thing that most people know about JS, or at least have heard.
-						An example of some code that looks like it could be broken by multithreading, but can't
-						We know if we start running this code, all of it is going to run without anything else 
-						happening part way through
-					</div>
-				</section>
-				<section>
-					<div>Browsers have as many threads as they like</div>
-					<div class="notes">
-						Browser window might have threads for 
-						 - keeping track of mouse and keyboard events
-						 - making network requests
-						 - handling timers
-						 - disk operations
-						 Chrome has a separate thread (actually a whole separate process) for the browser
-						 chrome and each of the tabs, which is why your task manager ends up full of Chrome
-					</div>
 				</section>
 				<section>
 					All of the asynchronous tasks that you kick off from your JS run in a different thread

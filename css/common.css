@@ -1,0 +1,18 @@
+body {
+  --background: #333;
+  --subtle: rgb(224, 224, 241);
+  --green: 166, 226, 46;
+  --pink: 249, 38, 114;
+  --orange: 255, 139, 15;
+  --blue: 102, 217, 239;
+  --code-font: monospace;
+  color: white;
+  background: var(--background);
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+.notes {
+  display: none;
+}

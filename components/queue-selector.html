@@ -2,10 +2,10 @@
   <style>
     :host {
       display: flex;
-      position: fixed;
+      position: absolute;
       transition: left .3s;
       width: var(--queue-width);
-      filter: drop-shadow(2px 2px 1px var(--background-start));
+      top: var(--queue-width);
     }
     .loop {
       margin: auto;
@@ -38,10 +38,6 @@
     }
 
     connectedCallback() {
-      const firstQueueRect = document.querySelector('task-queue').getBoundingClientRect();
-      const bottom = firstQueueRect.bottom;
-      this.style.top = `${bottom + 80}px`;
-
       this.renderingPipeline = this.parentNode.querySelector('rendering-pipeline');
       this.animationQueue = document.querySelector('task-queue[type="animation"]');
       this.microtaskQueue = document.querySelector('task-queue[type="microtask"]');      
@@ -95,12 +91,12 @@
     }
 
     moveToQueue(queue) {
-      const queueRect = queue.getBoundingClientRect();
-      const loopRect = this.getBoundingClientRect();
+      const container = document.querySelector('task-queues');
+      const containerLeft = container.getBoundingClientRect().left;
+      const queueLeft = queue.getBoundingClientRect().left;
 
-      const margin = (queueRect.width - loopRect.width) / 2;
-      const left = queueRect.left + margin;
-      this.style.left = `${left}px`;
+      const leftDistance = queueLeft - containerLeft;
+      this.style.left = `${leftDistance - 55}px`; 
     }
 
     spin(run = true) {

@@ -1,8 +1,29 @@
 <template id="event-loop">
   <slot></slot>
+  <style>
+    :host {
+      width: 960px;
+      height: 700px;
+      padding: 50px;
+      padding-bottom: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      transform-origin: center;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
 </template>
 <script>
   const eventLoopDocument = document.currentScript.ownerDocument;
+
+  const width = 960;
+  const height = 700;
+
   class EventLoop extends HTMLElement {
     constructor() {
       super();
@@ -15,6 +36,16 @@
     connectedCallback() {
       this.queues = document.querySelector('task-queues, node-queues');
       document.querySelector('body').addEventListener('task', event => this.queues.addTask(event.detail));
+
+      window.addEventListener('resize', this.resize.bind(this));
+      this.resize();
+    }
+
+    resize() {
+      const windowHeight = window.innerHeight - 8; // body just gives itself a margin of 8px
+      const windowWidth = window.innerWidth - 8;
+      const scale = Math.min(windowWidth / width, windowHeight / height);
+      this.style.transform = `translate(-50%, calc(-50% - 8px)) scale(${scale})`;
     }
   }
   customElements.define('event-loop', EventLoop);

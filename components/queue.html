@@ -1,27 +1,25 @@
 <template id="queue">
   <style>
     :host {
-      --container-colour: orange;
       display: block;
       width: var(--queue-width);
-      height: 4vw;
+      height: calc(var(--queue-width) * .5);
       position: relative;
-      border: 4px solid var(--container-colour);
+      border: 16px solid rgb(var(--orange));
       border-top-color: transparent;
-      align-self: flex-end;
       margin: 0 auto;
-      filter: drop-shadow(2px 2px 1px var(--shadow-colour));
     }
     :host::before, :host::after {
       content: '';
-      width: 2vw;
-      height: 2vw;
+      --curl-width: calc(var(--queue-width) / 4);
+      width: var(--curl-width);
+      height: var(--curl-width);
       display: block;
-      border: 4px solid var(--container-colour);
+      border: 16px solid rgb(var(--orange));
       border-radius: 50%;
       border-bottom-color: transparent;
       border-right-color: transparent;
-      transform: rotate(.125turn);
+      transform: translateY(16px) rotate(.125turn);
       position: absolute;
       bottom: calc(100% - 1vw - 4px);
     }
@@ -33,10 +31,10 @@
     }
 
     .task {
-      width: 60px;
-      height: 80px;
+      width: 80px;
+      height: 100px;
       background-color: white;
-      border: 2px solid black;
+      border: 4px solid black;
       flex-shrink: 0;
       display: flex;
       transition: left .5s linear, bottom .5s linear, height 3s linear;
@@ -52,7 +50,7 @@
       font-family: 'Courier New', Courier, monospace;
       font-weight: bold;
       overflow: hidden;
-      font-size: 2em;
+      font-size: 3em;
     }
 
     .task.browser {
@@ -196,8 +194,8 @@
     }
 
     positionTask(task, index) {
-      task.style.right = `${index * 5}px`;
-      task.style.bottom = `${index * 5}px`;
+      task.style.right = `${index * 8}px`;
+      task.style.bottom = `${index * 8}px`;
       task.style.zIndex = index * -1;			
     }
 

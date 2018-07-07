@@ -1,16 +1,3 @@
-body {
-  --background-end: #222;
-  --background-start: #333;
-  --subtle: rgb(224, 224, 241);
-  --green: 166, 226, 46;
-  --pink: 249, 38, 114;
-  --code-font: monospace;
-  color: white;
-  background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
-  margin: 0;
-}
-
 h1 {
   margin: 0 0 20px 0;
   line-height: 1.2;
@@ -75,7 +62,6 @@ svg.title {
   padding: .75em;
 }
 .browser-internals task-source {
-  transform: scale(2);
   margin: 0 5vmin;
   padding: .75em;
 }
@@ -151,6 +137,74 @@ svg.title {
 .list-and-image img {
   max-width: 33%
 }
+
+.columns {
+  display: flex;
+  align-items: center;
+}
+.arrow-right {
+  transform: rotate(.25turn);
+  font-size: 10em;
+  font-family: 'Courier New', 'Courier New', Courier, monospace;
+  font-weight: bold;
+  padding-top: 200px;
+  -webkit-text-stroke: 8px black;
+}
+.task {
+  background-color: white;
+  border: 10px solid black;
+  flex-shrink: 0;
+  display: flex;
+  overflow: hidden;
+  color: black;
+  width: 200px;
+  height: 280px;
+}
+.task::before {
+  content: '{}';
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  overflow: hidden;
+  font-size: 10em;
+  margin: auto;
+}
+.demo-link {
+  position: fixed; 
+  right: 1em; 
+  bottom: 0; 
+  color: rgba(206, 190, 190, 0.3); 
+  font-size: 2.5rem;
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+}
+.vertical .task {
+  transform: scale(.7);
+  opacity: 0;
+  transition: opacity .5s 1.5s;
+}
+.script-task.highlighted {
+  --highlight-colour: rgb(var(--pink));
+}
+.script-task.highlighted .click-task {
+  background-color: var(--background);
+}
+.click-task.highlighted {
+  --highlight-colour: rgb(var(--green));
+}
+.script-task, .click-task {
+  background-size: 400% 400%;
+  background-image: radial-gradient(circle at left, var(--highlight-colour), var(--highlight-colour) 50%, transparent 50%);
+  background-position: bottom right;
+  transition: background-position 3s;
+}
+.highlighted.script-task, .highlighted.click-task {
+  background-position: top left;
+}
+
+
 
 
 
@@ -246,20 +300,6 @@ img.full-page {
   transform: scale(1.2);
 }
 
-.task {
-  font-family: 'Courier New', Courier, monospace;
-  background: gold;
-  padding: 10px;
-  margin-top: 5px;
-}
-
-.demo-link {
-  position: fixed; 
-  right: 1em; 
-  bottom: 0; 
-  color: rgba(206, 190, 190, 0.3); 
-  font-size: 2.5rem;
-}
 
 .loading-dots {
   width: 2vmin;
@@ -376,11 +416,6 @@ img.full-page {
 
 .gallop {
   text-shadow: 1px 1px black;
-}
-
-
-.notes {
-  display: none;
 }
 
 .variable-name {
