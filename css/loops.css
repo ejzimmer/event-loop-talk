@@ -251,15 +251,6 @@ img.full-page {
   width: 90vmin;
 }
 
-.text {
-  font-size: 4em;
-}
-
-.fancy {
-  font-family: cursive;
-  font-size: 5em;
-}
-
 
 .twitter {
   position: fixed;
@@ -268,38 +259,6 @@ img.full-page {
   color: var(--subtle);
   font-size: 2em;
 }
-
-.browser-list {
-  display: flex; 
-  height: 10vh;
-  width: 80%;
-  margin: auto;
-  margin-bottom: 2em;
-  justify-content: space-between;
-}
-.browser-list img {
-  align-self: center;
-  max-height: 100%;
-}
-.browser-list img, .logo {
-  filter: drop-shadow(2px 2px 4px var(--background-start));
-}
-
-.area {
-  border: 1px solid black;
-  background: white;
-  color: black;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.area > div:first {
-  font-size: 1.2em;
-}
-.area:hover {
-  border: 2px solid red;
-  transform: scale(1.2);
-}
-
 
 .loading-dots {
   width: 2vmin;
@@ -364,7 +323,7 @@ img.full-page {
   }
 }
 
-.frosted::before, .glastonbury::before, .microtasks::before, .gallop::before {
+.frosted::before, .microtasks::before, .gallop::before {
   content: '';
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0;
@@ -378,10 +337,6 @@ img.full-page {
   background-image: url('roller-coaster.jpg');
   margin: -20px;
 }
-.glastonbury::before {
-  background: url('glastonbury.jpg');
-  margin: -10px;
-}
 .microtasks::before {
   background: url('tiny-horse.jpg');
   margin: -10px;
@@ -391,7 +346,7 @@ img.full-page {
   margin: -10px;
 }
 
-.frosted, .glastonbury {
+.frosted {
   font-weight: bold;
   position: relative;
   padding: 20px;

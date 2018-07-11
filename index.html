@@ -31,7 +31,7 @@
 					<div class="twitter">@erinjzimmer</div>
 				</section>
 				<section>
-					<h2>What even is the Event Loop?</h2>
+					<h2>What actually is the Event Loop?</h2>
 					<div class="notes">
 						To understand what the event loop is, first it might be helpful to understand what it is not.
 					</div>
@@ -240,36 +240,15 @@ btn.addEventListener('click', function () {
 				</script>
 				</section>
 				<section>
-					Another example with callback that's going to be in two tasks
-				</section>
-				<section>
-					All of the asynchronous tasks that you kick off from your JS run in a different thread
-					than your author code.
-					xhr request -> new thread for network request -> request completes, callback 
-					is ready to run
-					BUT the rest of your code is still running and the new callback can't interrupt it
-					So it gets added to a queue to wait until its turn
-					Do an interactive example with async tasks being added to queues
-				</section>
-				<section>
-					And this is where the event loop comes in.
-					Remember our code from before?
-					The event loop is responsible for picking tasks off the task queue and executing them
-				</section>
-				<section data-background-image="css/glastonbury.jpg">
-					<div class="glastonbury">
-						<a class="heading" href="just-task-queue.html">What is a task queue and what's it for?</a>
-					</div>
-				</section>
-				<section>
-						<pre><code data-noescape class="js" style="font-size: 4em">
+					<pre><code data-noescape class="js" style="font-size: 4em">
 while (true) {
  <span class="variable-name">task</span> = taskQueue.pop();
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
 					<div class="notes">
-						The thing is, it's a little more complicated than that
+						So that's basically how tasks and task queues work.
+						Of course, in real life, it's a bit more complicated than that
 					</div>
 				</section>
 				<section data-background-image="css/mario.jpg">
