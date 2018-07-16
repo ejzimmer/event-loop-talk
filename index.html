@@ -164,7 +164,7 @@ while (true) {
  function rawr() {
   console.log('rawr!')
  }
- 
+
  intrepidAdventurers.forEach(rawr);
 </script>
 					</code></pre>
@@ -488,6 +488,44 @@ while (tasksAreWaiting()) {
 				<section>
 					<div style="position: absolute; top: 50vh; font-size: 3em;">Web workers</div>
 					<img src="css/redback.png" />
+				</section>
+				<section>
+					... but what about multiple event loops?
+				</section>
+				<section>
+					So the obvious situation where you might have multiple event loops is where you're
+					running multiple web pages in the one browser, either in different tabs/windows, or
+					in iFrames. Generally speaking, it's up to the browser to decide how many event 
+					loops it wants to run in this situation.
+					Check whether iframes run in same process or different
+					Chrome spins up another event loop if you look at it sideways
+					Each window/tab/iframe runs in its own thread/process, which is why you end up with your task manager full of Chrome processes. This approach makes Chrome more secure?
+					Firefox takes a restrained approach, and will spin up up to four new processes
+					(check this), each with their own event loop. Beyond that, new windows/tabs/iframes 
+					share existing processes. This has the advantage of not requiring 16GB of RAM just to
+					run your browser.
+					I don't know what Safari and Edge do. I don't have a windows machine to test Edge on
+					and Safari and I haven't been on speaking terms since an incident with flexbox in Safari 10.
+					Some kind of demo. Maybe Firefox blocking up other windows while Chrome is fine.
+					But then the flip side of how much memory Chrome is using vs Firefox.
+				</section>
+				<section>
+					There is one rule though - pages that share data MUST share an event loop.
+					iframes?
+					parent/child window
+				</section>
+				<section>
+					- how iframes work
+					- how child windows work
+					- how to allow them to be on separate event loops
+				</section>
+				<section>
+					There is one other situation where multiple event loops are a thing - workers
+					- web workers, service workers, whatever kind of worker Node has
+					Workers run in parallel to the main thread, so they must have their own event loop
+					As a result, they're completely separate from the main thread - no DOM access
+					While a child window can access its parent directly, workers can only send and receive 
+					postmessage events
 				</section>
 				<section>
 						<div style="width: 45%; position: fixed; top: 5vh; left: 0; border: 4px solid red; padding: 5px">
