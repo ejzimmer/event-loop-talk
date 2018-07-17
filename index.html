@@ -350,9 +350,7 @@ while (true) {
 							<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>
 						</h2>
 					</div>
-				</section>
-				<section>
-					do the live demo again showing the promises blocking
+					<a class="demo-link" href="microtasks.html">Demo</a>
 				</section>
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 3.5em">
@@ -368,8 +366,8 @@ while (true) {
 }
 					</code></pre>
 				</section>
-				<section data-background-image="css/gallop.jpg">
-					<h2 class="gallop">Animation Frame Callback Queue</h2>
+				<section data-background-image="css/ducky-walking.gif">
+					<h2 class="heading-card reverse" style="display: block">Animation Frame Callback Queue</h2>
 				</section>
 				<section>
 					<pre><code style="text-align: center; font-size: 3.7em;">
@@ -426,6 +424,22 @@ while (true) {
  }
 }
 					</code></pre>
+				</section>
+				<section>
+					<h2 style="text-align: left">Why don't web workers interfere with rendering?</h2>
+					<div class="notes">
+						You all remember when we were talking about long-running tasks and I said you could
+						use web workers, because they were guaranteed not to interfere with the rendering pipeline?
+						So, given everything we now know about how the event loop works in browsers, how can I be so secure?
+						Because I read the spec...
+					</div>
+				</section>
+				<section data-transition="fade-out">
+					<div style="font-size: 3em; text-align: left">Each <b><i>WorkerGlobalScope</i></b> object has a distinct <u>event loop</u>, 
+						separate from those used by <u>units of related similar-origin browsing contexts.</u></div>
+				</section>
+				<section data-transition="fade-in">
+					<h2>Each web worker has its own event loop.</h2>
 				</section>
 				<section>
 					<div class="text">... but what about Node?</div>
@@ -504,6 +518,8 @@ while (tasksAreWaiting()) {
 				</section>
 				<section>
 					... but what about multiple event loops?
+				</section>
+				<section>
 				</section>
 				<section>
 					So the obvious situation where you might have multiple event loops is where you're
@@ -643,7 +659,6 @@ while (tasksAreWaiting()) {
 				controls: false,
 				progress: false,
 				history: true,
-				transition: 'fade',
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
