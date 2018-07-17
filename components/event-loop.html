@@ -46,6 +46,7 @@
       const windowWidth = window.innerWidth - 8;
       const scale = Math.min(windowWidth / width, windowHeight / height);
       this.style.transform = `translate(-50%, calc(-50% - 8px)) scale(${scale})`;
+      window.scale = scale;
     }
   }
   customElements.define('event-loop', EventLoop);

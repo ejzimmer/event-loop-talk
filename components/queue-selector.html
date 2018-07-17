@@ -5,7 +5,7 @@
       position: absolute;
       transition: left .3s;
       width: var(--queue-width);
-      top: var(--queue-width);
+      bottom: calc(-1 * var(--queue-width));
     }
     .loop {
       margin: auto;
@@ -96,7 +96,7 @@
       const queueLeft = queue.getBoundingClientRect().left;
 
       const leftDistance = queueLeft - containerLeft;
-      this.style.left = `${leftDistance - 55}px`; 
+      this.style.left = `${(leftDistance + 16) / window.scale}px`; 
     }
 
     spin(run = true) {

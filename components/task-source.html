@@ -290,7 +290,7 @@
         asyncTask.style.transitionDuration = `${this.getRandomTime()}ms`;
         asyncTask.addEventListener('transitionend', () => {
           this.addTask();
-          asyncTask.remove();
+          task.remove();
         });
       } else if (this.type === 'drive') {
         const isPlaying = this.arm.style.animationPlayState === 'running';
@@ -300,7 +300,7 @@
           this.finishDriveTask();
         }
       } else {
-        this.finishTask(asyncTask);
+        this.finishTask(task);
       }
     }
 
