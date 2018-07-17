@@ -254,27 +254,38 @@ while (true) {
 				<section data-background-image="css/mario.jpg">
 					<a class="heading" href="rendering-pipeline.html">The Rendering Pipeline</a>
 				</section>
-				<section>
-					<div style="display: flex; justify-content: space-between">
-						<img class="border" src="css/unco-cat.gif" />\
-						<div class="notes">
-							Long running tasks will cause your browser to start dropping frames
-							and, much like this cat, your app just won't run right
-						</div>
+				<section class="center">
+					<img src="css/unco-cat.gif" class="stretch" />
+					<div class="notes">
+						Long running tasks will cause your browser to start dropping frames
+						and, much like this cat, your app just won't run right
 					</div>
-        </section>
-        <section>
-          <pre><code style="font-size: 4em;">
-						make this into a realistic example
-function veryLongTask() {
-  firstPartOfTask();
-  setTimeout(restOfTheTask);
+				</section>
+				<section class="center">
+					<pre><code style="font-size: 3em">
+function repeat(reps, action) {
+ const batchSize = Math.min(reps, 1000);
+ for (let i = 0; i < batchSize; i++) {
+  action();
+ }
+
+ const repsLeft = reps - batchSize;
+ if (repsLeft) {
+  setTimeout(() => {
+   repeat(repsLeft, action)
+  });
+ }
 }
-          </code></pre>
+					</code></pre>
 				</section>
 				<section>
-					Or you could use a webworker, seeing as that's literally what they're 
-					Put the code for starting a web worker
+					<pre><code style="font-size: 3em" class="js">
+const worker = new Worker('job.js');
+					</code></pre>
+					<div class="notes">
+						Or you could use a webworker, which is guaranteed not to interfere with your rendering
+						for reasons we'll get into a bit later.
+					</div>
 				</section>
 				<section>
 						<pre><code data-noescape class="js" style="font-size: 3.7em">
