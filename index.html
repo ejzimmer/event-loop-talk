@@ -282,7 +282,7 @@ function repeat(reps, action) {
 					<pre><code style="font-size: 3em" class="js">
 const worker = new Worker('job.js');
 					</code></pre>
-					<div class="fragment" style="font-size: 8em; text-align: center"	>🎉</div>
+					<div class="fragment" style="font-size: 8em; text-align: center">🎉</div>
 					<div class="notes">
 						Or you could use a webworker, which is guaranteed not to interfere with your rendering
 						for reasons we'll get into a bit later.
@@ -299,7 +299,7 @@ while (true) {
 					</code></pre>
 				</section>
 				<section>
-					<div style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
+					<div class="spec-text">An <u>event loop</u> has one or more <b>task queues.</b></div>
 				</section>
 				<section>
 						<pre><code>
@@ -434,12 +434,27 @@ while (true) {
 						Because I read the spec...
 					</div>
 				</section>
-				<section data-transition="fade-out">
-					<div style="font-size: 3em; text-align: left">Each <b><i>WorkerGlobalScope</i></b> object has a distinct <u>event loop</u>, 
-						separate from those used by <u>units of related similar-origin browsing contexts.</u></div>
+				<section data-transition="fade-out" style="transition-duration: 5s">
+					<div class="spec-text">
+						Each <b><i>WorkerGlobalScope</i></b> object has a distinct <u>event loop</u>, 
+						separate from those used by <u>units of related similar-origin browsing contexts</u>.
+					</div>
 				</section>
-				<section data-transition="fade-in">
-					<h2>Each web worker has its own event loop.</h2>
+				<section data-transition="fade-in" style="transition-duration: 5s">
+					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
+				</section>
+				<section>
+					<img src="css/good-news-everyone.jpg" alt="" class="stretch border">
+				</section>
+				<section>
+					<div class="spec-text">
+						This event loop has no associated browsing context, and its task queues only have events, callbacks, and networking activity as tasks.
+					</div>
+				</section>
+				<section>
+					<h2>No rendering pipeline!</h2>
+					<div class="fragment" style="font-size: 8em">🎉</div>
+					<a href="web-worker.html" class="demo-link">Demo</a>
 				</section>
 				<section>
 					<div class="text">... but what about Node?</div>
