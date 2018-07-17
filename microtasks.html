@@ -7,6 +7,7 @@
     <title>Event Loop with Microtasks</title>
     
     <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/common.css">
 
     <link rel="import" href="components/event-loop.html">
 		<link rel="import" href="components/browser.html">
@@ -17,26 +18,24 @@
 		<link rel="import" href="components/task-source.html">
 	</head>
 	<body>
-		<section>
-      <event-loop>
-        <div class="sources">
-          <task-source type="html"></task-source>
-          <task-source type="browser"></task-source>
-          <task-source type="timer"></task-source>
-          <task-source type="network"></task-source>
-          <task-source type="promise"></task-source>
-        </div>
-        <task-queues>
-          <task-queue type="browser"></task-queue>
-          <task-queue></task-queue>  
-          <task-queue type="microtask"></task-queue>
-        </task-queues>
-      </event-loop>
-		</section>
+    <event-loop>
+      <div class="sources">
+        <task-source type="html"></task-source>
+        <task-source type="browser"></task-source>
+        <task-source type="timer"></task-source>
+        <task-source type="network"></task-source>
+        <task-source type="promise"></task-source>
+      </div>
+      <task-queues>
+        <task-queue type="browser"></task-queue>
+        <task-queue></task-queue>  
+        <task-queue type="microtask"></task-queue>
+      </task-queues>
+    </event-loop>
     <script>
       document.body.addEventListener('keydown', (event) => {
         if (event.key === 'PageDown') {
-          location.href = '/#/22';
+          location.href = '/#/26';
         }
       }, { once: true })
     </script>

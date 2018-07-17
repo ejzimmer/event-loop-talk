@@ -1,0 +1,22 @@
+button {
+  --hue: 135;
+  --saturation: 87%;
+  --contrast: hsl(var(--hue), var(--saturation), 20%);
+  cursor: pointer;
+  background: hsl(var(--hue), var(--saturation), 36%);
+  border: 2px solid var(--contrast);
+  color: white;
+  margin: auto;
+  padding: 20px;
+  font-size: 2em;
+  box-shadow: 10px 10px var(--contrast);
+  transition: transform .5s, box-shadow .5s;
+}
+button:active {
+  outline: none;
+  box-shadow: none;
+  transform: translate(10px, 10px);
+}
+button:focus {
+  outline: none;
+}

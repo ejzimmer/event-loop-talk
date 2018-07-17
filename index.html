@@ -255,7 +255,7 @@ while (true) {
 					<a class="heading" href="rendering-pipeline.html">The Rendering Pipeline</a>
 				</section>
 				<section class="center">
-					<img src="css/unco-cat.gif" class="stretch" />
+					<img src="css/unco-cat.gif" class="stretch border" />
 					<div class="notes">
 						Long running tasks will cause your browser to start dropping frames
 						and, much like this cat, your app just won't run right
@@ -282,6 +282,7 @@ function repeat(reps, action) {
 					<pre><code style="font-size: 3em" class="js">
 const worker = new Worker('job.js');
 					</code></pre>
+					<div class="fragment" style="font-size: 8em; text-align: center"	>🎉</div>
 					<div class="notes">
 						Or you could use a webworker, which is guaranteed not to interfere with your rendering
 						for reasons we'll get into a bit later.
@@ -338,16 +339,17 @@ while (true) {
 }
 					</code></pre>
 				</section>
-				<section data-background-image="css/tiny-horse.jpg">
-					make this little foot and his mum
-					<a class="headings microtasks" href="microtasks.html">Microtasks</a>
-					<div style="font-size: 1em; color: white; background: rgba(206, 190, 190, 0.3); padding: .5em;" 
-					class="demo-link">Image by <a href="https://www.flickr.com/people/9197427@N06">Pete Markham</a></div>
+				<section data-background-image="css/littlefoot-and-mum.jpg">
+					<h2 class="heading-card" style="position: relative; top: 20px"><a href="microtasks.html">Microtasks</a></h2>
 				</section>
-				<section class="text">
-					<a href="infinite-timeouts.html">Tasks</a>
-					<div style="margin: 10px">vs</div>
-					<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>	
+				<section data-background-image="css/dinos-fightin.jpg">
+					<div style="display: flex">
+						<h2 class="heading-card" style="display: block; margin: auto">
+							<a href="infinite-timeouts.html">Tasks</a>
+							<div style="margin: 10px">vs</div>
+							<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>
+						</h2>
+					</div>
 				</section>
 				<section>
 					do the live demo again showing the promises blocking

@@ -1,34 +1,14 @@
 <html>
   <head>
     <link rel="stylesheet" href="css/loops.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/3d-buttons.css">
     <style>
       body {
         flex-direction: column;
         margin: 10vmin;
         max-height: 100vh;
       }
-      button {
-      cursor: pointer;
-      background: hsl(135, 87%, 36%);
-      color: white;
-      border: 1px solid #666;
-      border-radius: 2px;
-      box-shadow: 
-                  0 -2px 2px hsl(215, 80%, 38%) inset,
-                  0 2px 2px hsl(215, 80%, 80%) inset;
-      margin: auto;
-      padding: 20px;
-      font-size: 2em;
-    }
-    button:active {
-      outline: none;
-      box-shadow: 0 -2px 2px hsl(215, 80%, 80%) inset,
-                  0 2px 2px hsl(215, 80%, 38%) inset;
-    }
-    button:focus {
-      outline: none;
-    }
-
     </style>
   </head>
   <body>
@@ -36,7 +16,8 @@
       let numberOfTasks = 0;
 
       function start() {
-        document.getElementById('timeouts').innerHTML = numberOfTasks++;
+        const count = document.getElementById('count');
+        count.innerHTML = numberOfTasks++;
         setTimeout(start);
       }
     </script>
@@ -45,10 +26,10 @@
         start = function () {}
       }
     </script>
-    <div class="text" id="timeouts" style="margin: 1em;"></div>
+    <h2 id="count" style="min-height: 2em"></h2>
     <div style="display: flex; justify-content: space-around">
       <button onclick="start()">Start timeouts</button>
-      <button style="background-color: red" onclick="stop()">Stop madness</button>
+      <button style="--hue: 0" onclick="stop()">Stop madness</button>
     </div>
   </body>
 </html>

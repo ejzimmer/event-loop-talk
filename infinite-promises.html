@@ -2,32 +2,12 @@
   <head>
     <title>Infinite promises</title>
     <link rel="stylesheet" href="css/loops.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/3d-buttons.css">
     <style>
       body {
         flex-direction: column;
       }
-      button {
-      cursor: pointer;
-      background: hsl(135, 87%, 36%);
-      color: white;
-      border: 1px solid #666;
-      border-radius: 2px;
-      box-shadow: 
-                  0 -8px 8px hsl(215, 80%, 38%) inset,
-                  0 8px 8px hsl(215, 80%, 80%) inset;
-      margin: auto;
-      padding: 20px;
-      font-size: 2em;
-    }
-    button:active {
-      outline: none;
-      box-shadow: 0 -8px 8px hsl(215, 80%, 80%) inset,
-                  0 8px 8px hsl(215, 80%, 38%) inset;
-    }
-    button:focus {
-      outline: none;
-    }
-
     </style>
   </head>
   <body>
@@ -35,23 +15,20 @@
       let numberOfMicrotasks = 0;
 
       function start() {
-        andThen();
-      }
-
-      function andThen() {
-        document.getElementById('promises').innerHTML = numberOfMicrotasks++;
-        Promise.resolve().then(addThen);  
+        const count = document.getElementById('count');
+        count.innerHTML = numberOfMicrotasks++;
+        Promise.resolve().then(start);
       }
     </script>
     <script>
       function stop() {
-        window.addThen = () => {};
+        window.andThen = () => {};
       }
     </script>
-    <div class="text" id="promises"></div>
+    <div class="text" id="count"></div>
     <div style="display: flex; justify-content: space-around">
       <button onclick="start()">Start promising</button>
-      <button style="background-color: red" onclick="stop()">Stop madness</button>
+      <button style="--hue: 0" onclick="stop()">Stop madness</button>
     </div>
   </body>
 </html>
