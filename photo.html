@@ -2,6 +2,10 @@
 <html>
   <head>
     <style>
+      form {
+        display: flex;
+        flex-direction: column;
+      }
       label {
         font-family: sans-serif;
       }
@@ -13,20 +17,27 @@
       }
     </style>
   </head>
-  <body style="display: flex; flex-direction: column; margin: 3em">
-    <div>
-      <label>Take a photo!</label>
-      <input type="file" accept="image/*" capture>
-    </div>
+  <body style="margin: 3em">
+    <form action="server.cgi" method="post" enctype="multipart/form-data">
+      <div>
+        <label>Take a photo or upload a file</label>
+        <input type="file" accept="image/*">
+      </div>
+      
+      <div>
+        <label>Take a photo!</label>
+        <input type="file" accept="image/*" capture>
+      </div>
 
-    <div>
-      <label>Take a photo with your back camera</label>
-      <input type="file" accept="image/*" capture="environment" />
-    </div>
+      <div>
+        <label>Take a photo with your back camera</label>
+        <input type="file" accept="image/*" capture="environment" />
+      </div>
 
-    <div>
-      <label>Take a selfie</label>
-      <input type="file" accept="image/*" capture="user" />
-    </div>
+      <div>
+        <label>Take a selfie</label>
+        <input type="file" accept="image/*" capture="user" />
+      </div>
+    </form>
   </body>
 </html>
