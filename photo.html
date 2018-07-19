@@ -1,14 +1,32 @@
 <!doctype html>
 <html>
-  <head></head>
-  <body>
-    <label>Take a photo!</label>
-    <input type="file" accept="image/*" capture>
+  <head>
+    <style>
+      label {
+        font-family: sans-serif;
+      }
 
-    <label>Take a photo with your back camera</label>
-    <input type="file" accept="image/*" capture="environment" />
+      div {
+        border: 1px solid #333;
+        margin: 1em;
+        padding: 1.5em;
+      }
+    </style>
+  </head>
+  <body style="display: flex; flex-direction: column; margin: 3em">
+    <div>
+      <label>Take a photo!</label>
+      <input type="file" accept="image/*" capture>
+    </div>
 
-    <label>Take a selfie</label>
-    <input type="file" accept="image/*" capture="user" />
+    <div>
+      <label>Take a photo with your back camera</label>
+      <input type="file" accept="image/*" capture="environment" />
+    </div>
+
+    <div>
+      <label>Take a selfie</label>
+      <input type="file" accept="image/*" capture="user" />
+    </div>
   </body>
 </html>
