@@ -1,15 +1,17 @@
 button {
   --hue: 135;
-  --saturation: 87%;
+  --saturation: 95%;
   --contrast: hsl(var(--hue), var(--saturation), 20%);
   cursor: pointer;
-  background: hsl(var(--hue), var(--saturation), 36%);
+  background: hsl(var(--hue), var(--saturation), 40%);
   border: 2px solid var(--contrast);
   color: white;
   margin: auto;
   padding: 20px;
   font-size: 2em;
+  font-weight: bold;
   box-shadow: 10px 10px var(--contrast);
+  -webkit-text-stroke: 1px var(--contrast);
   transition: transform .5s, box-shadow .5s;
 }
 button:active {

@@ -299,7 +299,7 @@ while (true) {
 					</code></pre>
 				</section>
 				<section>
-					<div class="spec-text">An <u>event loop</u> has one or more <b>task queues.</b></div>
+					<div class="spec-text" style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
 				</section>
 				<section>
 						<pre><code>
@@ -430,7 +430,7 @@ while (true) {
 					<div class="notes">
 						You all remember when we were talking about long-running tasks and I said you could
 						use web workers, because they were guaranteed not to interfere with the rendering pipeline?
-						So, given everything we now know about how the event loop works in browsers, how can I be so secure?
+						So, given everything we now know about how the event loop works in browsers, how can I be so sure?
 						Because I read the spec...
 					</div>
 				</section>
@@ -442,14 +442,62 @@ while (true) {
 				</section>
 				<section data-transition="fade-in" style="transition-duration: 5s">
 					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
-				</section>
-				<section>
-					<img src="css/good-news-everyone.jpg" alt="" class="stretch border">
+					<a class="demo-link" href="browser-worker.html">Demo</a>
 				</section>
 				<section>
 					<div class="spec-text">
 						This event loop has no associated browsing context, and its task queues only have events, callbacks, and networking activity as tasks.
 					</div>
+				</section>
+				<section>
+					<div class="list-and-image">
+						<ul>
+							<li class="fragment">No user interactions</li>
+							<li class="fragment">No rendering pipeline</li>
+							<li class="fragment">No DOM at all!</li>
+						</ul>
+						<img src="css/top-hat-t-rex.gif" class="fragment" />
+				</section>
+				<section>
+					<div class="communication">
+						<fieldset class="worker">
+							<legend>Worker</legend>
+							<button id="rawr-button">Send Message</button>
+							<pre><code style="padding: 0">postMessage('rawr!');</code></pre>
+						</fieldset>
+						<fieldset>
+							<legend>Browser</legend>
+							<pre><code><script style="display: block">
+const myWorker = new Worker('worker.js');
+myWorker.addEventListener('message', 
+function (message) {
+ response.innerHTML = message.data;
+});
+</script>
+</code></pre>
+							<div id="response"></div>
+						</fieldset>
+					</div>
+					<script>
+							const rawrButton = document.getElementById('rawr-button');
+							rawrButton.addEventListener('click', () => {
+								myWorker.postMessage('hello');
+							});	
+							const response = document.getElementById('response');
+						</script>
+				</section>
+
+
+
+
+
+
+
+
+
+
+				<section>
+					<img src="css/good-news-everyone.jpg" alt="" class="stretch border">
 				</section>
 				<section>
 					<h2>No rendering pipeline!</h2>

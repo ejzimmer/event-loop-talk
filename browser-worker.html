@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+      .loops {
+        display: flex;
+        height: 100vh;
+      }
+      fieldset {
+        width: 40vw;
+        height: 80vh;
+        border: 4px solid white;
+        margin: auto;
+      }
+      legend {
+        font-size: 2em;
+        padding: 0 1em;
+      }
+      iframe {
+        width: 100%;
+        height: 90%;
+        border: none;
+      }
+    </style>
+
+		<title>Web Worker Event Loop</title>
+	</head>
+	<body>
+    <div class="loops">
+      <fieldset>
+        <legend align="center">Main browser window</legend>
+        <iframe src="microtasks.html"></iframe>
+      </fieldset>
+      <fieldset>
+        <legend align="center">job.js</legend>
+        <iframe src="web-worker.html"></iframe>    
+      </fieldset>
+    </div>
+    <script>
+      document.body.addEventListener('keydown', (event) => {
+				if (event.key === 'PageDown') {
+					location.href = "/#/37";
+				}
+			});
+</script>
+	</body>
+</html>

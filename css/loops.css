@@ -226,6 +226,49 @@ svg.title {
   text-align: left;
 }
 
+.communication {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.communication fieldset {
+  border: 4px solid white;
+  position: relative;
+}
+.communication legend {
+  font-size: 1.5em;
+  padding: 0 1em;
+}
+.worker {
+  display: flex;
+  align-self: flex-start;
+}
+.worker button {
+  font-size: 1em;
+  padding: .5em;
+  background: transparent;
+  border: 3px solid white;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.worker button:hover {
+  color: var(--background);
+  background: white;
+}
+.worker button:active, .worker button:focus {
+  outline: 0;
+} 
+.communication #response {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: rgb(var(--green));
+  color: white;
+  font-size: 4em;
+  -webkit-text-stroke: 1px var(--background);
+}
+
 
 
 
