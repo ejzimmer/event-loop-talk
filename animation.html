@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+      #dino {
+        position: fixed;
+        left: -80px;
+        bottom: 33vh;
+        transition: transform 1s;
+      }
+    </style>
+  </head>
+  <body>
+    <img id="dino" src="css/mozilla.png" />
+    <script>
+      const dino = document.getElementById('dino');
+      const start = dino.getBoundingClientRect().left;
+      let startTime = 0;
+      const finish = document.querySelector('body').getBoundingClientRect().right - 100;
+
+      (function animate() {
+        requestAnimationFrame((time) => {
+          const left = start + ((time - startTime) / 8);
+          dino.style.left = `${left}px`;
+
+          if (left > finish) {
+            dino.style.left = `${start}px`;
+            startTime = time;
+          } 
+          
+          animate();
+          
+        });
+      })();
+    </script>
+  </body>
+</html>

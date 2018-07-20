@@ -479,12 +479,40 @@ function (message) {
 						</fieldset>
 					</div>
 					<script>
-							const rawrButton = document.getElementById('rawr-button');
-							rawrButton.addEventListener('click', () => {
-								myWorker.postMessage('hello');
-							});	
-							const response = document.getElementById('response');
-						</script>
+						const rawrButton = document.getElementById('rawr-button');
+						rawrButton.addEventListener('click', () => {
+							myWorker.postMessage('hello');
+						});	
+						const response = document.getElementById('response');
+					</script>
+					<div class="notes">
+						Segue - web workers aren't the time a browser might have multiple event loops
+					</div>
+				</section>
+				<section>
+					<img src="css/chrome-processes.png" class="stretch border" />
+					<div class="notes">
+						If you've ever had a look at your Activity Monitor or Task Manager while Chrome is running,
+						you probably saw something like this...
+						Chrome likes to run things in lots of different processes. 
+						If you have a look at the Chrome Task Manager, you can see what each of those processes is actually doing.
+						(Do it)
+						And you would see that you've got a process for each tab, each browser extension, and a couple of extras.
+						The important thing here, is that we have a process for each tab.
+						Because each of those tabs is running in a separate process, they must have their own event loop.
+						This means that if we start some resource heavy process in one tab, none of the others are affected.
+						This is a big advantage of this process per tab model.
+						Each tab is isolated so it doesn't affect the security or performance of the other tabs.
+					</div>
+				</section>
+				<section>
+					<img src="css/firefox-processes.png" class="stretch border" />
+					<div class="notes">
+						It doesn't have to be this way though. If you open all the same tabs in Firefox and check out the task 
+						manager, you see something like this: just four processes for all of your tabs.
+						This has some disadvantages - demo of bad tab slowing down other tabs
+						The big advantage is that it leaves some RAM left over for running other applications
+					</div>
 				</section>
 
 
