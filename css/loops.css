@@ -208,6 +208,9 @@ svg.title {
   border: 4px solid white;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, .5);
 }
+.shadow {
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, .75);
+}
 
 .heading-card {
   background-color: rgba(0, 0, 0, .3);
@@ -268,6 +271,33 @@ svg.title {
   font-size: 4em;
   -webkit-text-stroke: 1px var(--background);
 }
+
+.sharing-or-not {
+  display: flex;
+  align-items: center;
+}
+.sharing-or-not img {
+  width: 45%;
+  margin: 40px;
+  transition: transform .5s;
+}
+.offscreen {
+  transform: translateX(100vw);
+}
+
+.dino-animation {
+  width: 100%;
+  min-height: 66vh;
+  border: none;
+}
+.opener-link {
+  display: block;
+  text-align: left;
+  font-size: 2em;
+  text-decoration: none;
+  padding: .5em;
+}
+
 
 
 

@@ -58,7 +58,7 @@
 						- A bit that listens for user interactions
 						- And a heap of bits that interact with the DOM and CSS.
 						- Collectively, these bits that aren't the bit that runs JavaScript are called...
-						- ... Web APIs. The event loop isn't a web API.
+						- ... Web APIs. 
 					</div>
 					<script>
 						document.querySelector('.browser-internals').addEventListener('click', function () {
@@ -68,17 +68,6 @@
 							}, { once: true });
 						}, { once: true });
 					</script>
-				</section>
-				<section>
-					<span style="position: relative">
-						<img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
-						<div class="libuv">libuv</div>
-					</span>
-					<div class="notes">
-						Node equivalent == unicorn velocity library.
-						Because of course it is.
-						The event loop also isn't libuv.
-					</div>
 				</section>
 				<section>
 					<fieldset class="browser-internals engine">
@@ -120,7 +109,7 @@
 						- and SpiderMonkey from Mozilla, which I couldn't find a logo for,
 						so here's a picture of an actual SpiderMonkey
 						spider monkey photo from Ewa https://www.flickr.com/photos/ewas-world/
-						The event loop lives in JavaScript engines.
+						The event loop co-ordinates communication between the web APIs and the JS engine
 					</div>
 				</section>
 				<section>
@@ -131,7 +120,7 @@ while (true) {
 }
 					</code></pre>
 					<div class="notes">
-						The main function of the JS engine
+						The main function of the browser
 						In its simplest form, would look something like this
 						Now, while I'm sure we all understand how the loop part works, I think
 						this code snippet probably raises a couple of other questions, like...
@@ -434,20 +423,15 @@ while (true) {
 						Because I read the spec...
 					</div>
 				</section>
-				<section data-transition="fade-out" style="transition-duration: 5s">
+				<section>
 					<div class="spec-text">
 						Each <b><i>WorkerGlobalScope</i></b> object has a distinct <u>event loop</u>, 
 						separate from those used by <u>units of related similar-origin browsing contexts</u>.
 					</div>
 				</section>
-				<section data-transition="fade-in" style="transition-duration: 5s">
+				<section>
 					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
 					<a class="demo-link" href="browser-worker.html">Demo</a>
-				</section>
-				<section>
-					<div class="spec-text">
-						This event loop has no associated browsing context, and its task queues only have events, callbacks, and networking activity as tasks.
-					</div>
 				</section>
 				<section>
 					<div class="list-and-image">
@@ -490,7 +474,7 @@ function (message) {
 					</div>
 				</section>
 				<section>
-					<img src="css/chrome-processes.png" class="stretch border" />
+					<img src="css/chrome-processes.png" class="stretch shadow" />
 					<div class="notes">
 						If you've ever had a look at your Activity Monitor or Task Manager while Chrome is running,
 						you probably saw something like this...
@@ -506,27 +490,84 @@ function (message) {
 					</div>
 				</section>
 				<section>
-					<img src="css/firefox-processes.png" class="stretch border" />
+					<img src="css/firefox-processes.png" class="stretch shadow" />
 					<div class="notes">
 						It doesn't have to be this way though. If you open all the same tabs in Firefox and check out the task 
 						manager, you see something like this: just four processes for all of your tabs.
-						This has some disadvantages - demo of bad tab slowing down other tabs
-						The big advantage is that it leaves some RAM left over for running other applications
+						This means, if you've got a bunch of tabs open, some of them will be sharing an event loop.
+						So, there is potential for some badly behaved tab to interfere with the performance of other tabs,
+						but it also means you've got some RAM left over to do other things.
 					</div>
 				</section>
-
-
-
-
-
-
-
-
-
-
 				<section>
-					<img src="css/good-news-everyone.jpg" alt="" class="stretch border">
+					<div class="sharing-or-not">
+						<img src="css/sharing-is-caring.jpg" class="shadow offscreen" />
+						<img src="css/isolated-dinosaurs.jpg" class="shadow offscreen" />
+					</div>
+					<div class="notes">
+						So, generally speaking, it's up the browser whether it runs your JS in its own event loop, or makes you
+						share with other apps.
+						There is an important exception to this rule - shared browsing contexts always share an event loop
+					</div>
+					<script>
+						function showOffscreenElement() {
+							const hiddenElement = document.querySelector('.offscreen');
+							hiddenElement.classList.remove('offscreen');
+
+							const moreHiddenElements = document.querySelector('.offscreen');
+							if (!moreHiddenElements) {
+								document.body.removeEventListener('click', showOffscreenElement);
+							}
+						}
+						document.body.addEventListener('click', showOffscreenElement);
+					</script>
 				</section>
+				<section>
+					<a target="_blank" href="slow.html" class="opener-link">
+						&lt;a target="_blank" href="button.html"&gt;&lt;/a&gt;
+					</a>
+					<iframe src="animation.html" class="dino-animation"></iframe>
+					<div class="notes">
+						There's a good reason for this - these windows have access to each others'
+						DOM - demo changing background colour on opener - so they need to be on the same
+						event loop, else there would be issues
+						window.opener.document.body.style.backgroundColor & 
+						window.opener.document.querySelector('iframe').contentWindow.document.body.style.backgroundColor
+						This isn't a security issue, because it only works on same-origin windows and frames - if you try it
+						on cross-origin windows...
+					</div>
+				</section>
+				<section>
+					<img src="css/no.gif" class="stretch shadow" />
+					<div class="notes">
+						the browser will stop you from accessing the other windows' document. The two windows will still
+						run on the same event loop though, so it is still a potential performance issue.
+					</div>
+				</section>
+				<section>
+					<img src="css/good-news-everyone.jpg" alt="" class="stretch shadow">
+					<div class="notes">
+						The good news is, there is a solution.
+					</div>
+				</section>
+				<section>
+						<a target="_blank" href="slow.html" rel="noopener" class="opener-link">
+							&lt;a target="_blank" <span style="color: rgb(var(--pink))">rel="noopener"</span> href="button.html"&gt;&lt;/a&gt;
+						</a>
+						<iframe src="animation.html" class="dino-animation"></iframe>		
+				</section>
+	
+
+
+
+
+
+
+
+
+
+
+
 				<section>
 					<h2>No rendering pipeline!</h2>
 					<div class="fragment" style="font-size: 8em">🎉</div>
@@ -535,6 +576,18 @@ function (message) {
 				<section>
 					<div class="text">... but what about Node?</div>
 				</section>
+				<section>
+						<span style="position: relative">
+							<img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
+							<div class="libuv">libuv</div>
+						</span>
+						<div class="notes">
+							Node equivalent == unicorn velocity library.
+							Because of course it is.
+							The event loop also isn't libuv.
+						</div>
+					</section>
+	
 				<section>
 					<img class="border full-page" src="css/good-news-everyone.jpg" />
 				</section>
