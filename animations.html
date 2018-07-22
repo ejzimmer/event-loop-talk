@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        cursor: pointer;
+        margin-top: 25vh;
+      }
+      .box.animation-frame {
+        background-color: rgb(var(--green));
+      }
+      .box.timeout {
+        background-color: rgb(var(--pink));
+      }
+      .count {
+        font-size: 3em;
+        margin: auto 0;
+      }
+      #request-animation-frame-count {
+        color: rgb(var(--green));
+      }
+      #timeout-count {
+        color: rgb(var(--pink));
+      }
+    </style>
+  </head>
+  <body style="display: flex">
+    <div style="display: flex; flex-direction: column; position: absolute; height: 100%">
+      <div id="request-animation-frame-count" class="count"></div>
+      <div id="timeout-count" class="count"></div>
+    </div>
+    <div>
+      <div class="box animation-frame"></div>
+      <div class="box timeout"></div>
+    </div>
+  </body>
+  <script>
+    const animationFrameBox = document.querySelector('.animation-frame');
+    const timeoutBox = document.querySelector('.timeout');
+    let animationStartTime;
+    let timeoutStartTime;
+
+    let animationFrames = 0;
+    let timeouts = 0; 
+    let done = false;
+
+    const rate = 10;
+
+    const animationCount = document.getElementById('request-animation-frame-count');
+    const timeoutCount = document.getElementById('timeout-count');
+
+    function animationFrame(currentTime) {
+      animationFrames++;
+      sine({
+        timeElapsed: currentTime - animationStartTime,
+        box: animationFrameBox,
+        callback: requestAnimationFrame.bind(this, animationFrame),
+      })
+    }
+
+    function timeout() {
+      timeouts++;
+      sine({
+        timeElapsed: Date.now() - timeoutStartTime,
+        box: timeoutBox,
+        callback: setTimeout.bind(this, timeout)
+      });
+    }
+
+    function sine(opts) {
+      const x = opts.timeElapsed / rate;
+      const y = Math.sin(opts.timeElapsed / 500) * 100;
+
+      opts.box.style.left = `${x}px`;
+      opts.box.style.top = `${y}px`;
+
+      if ((x + 50) < window.innerWidth) {
+        opts.callback()
+      } else {
+        if (done) {
+          animationCount.innerHTML = animationFrames;
+          timeoutCount.innerHTML = timeouts;
+        } else {
+          done = true;
+        }
+      }
+    }
+
+    document.querySelector('body').addEventListener('click', () => {
+      requestAnimationFrame(time => animationStartTime = time);
+      timeoutStartTime = Date.now();
+
+      requestAnimationFrame(animationFrame);
+      setTimeout(timeout);
+    });
+  </script>
+</html>

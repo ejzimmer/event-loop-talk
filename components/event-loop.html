@@ -41,12 +41,27 @@
       this.resize();
     }
 
+    startTimer() {
+      this.queues.startTimer();
+    }
+
+    addTask(taskType) {
+      this.queues.addTask(taskType);
+    }
+
     resize() {
-      const windowHeight = window.innerHeight - 8; // body just gives itself a margin of 8px
-      const windowWidth = window.innerWidth - 8;
-      const scale = Math.min(windowWidth / width, windowHeight / height);
-      this.style.transform = `translate(-50%, calc(-50% - 8px)) scale(${scale})`;
-      window.scale = scale;
+      // const body = document.querySelector('body');
+      // getComputedStyle(body);
+      // const frameHeight = body.style.height;
+      // const frameWidth = body.style.width;
+      // const scale = Math.min(frameWidth / width, frameHeight / height);
+
+      // console.log(document.querySelector('body').style.height);
+
+      // if (scale) {
+      //   this.style.transform = `translate(-50%, calc(-50% - 8px)) scale(${scale})`;
+      //   window.scale = scale;
+      // }
     }
   }
   customElements.define('event-loop', EventLoop);

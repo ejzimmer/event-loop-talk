@@ -31,8 +31,8 @@
     }
 
     .task {
-      width: 80px;
-      height: 100px;
+      width: calc(var(--queue-width) * .8);
+      height: var(--queue-width);
       background-color: white;
       border: 4px solid black;
       flex-shrink: 0;
@@ -72,6 +72,12 @@
       color: white;
       border-color: white;
       background-color: red;
+    }
+    .task.necessary {
+      background-color: rgb(var(--green));
+    }
+    .task.unnecessary {
+      border-color: #aaa;
     }
 
     .task.animation {
@@ -154,15 +160,19 @@
 
       const firstTask = this.getTask(0);
       if (firstTask) {
-        await this.startTask(firstTask);
+        let duration = this.getRandomTime();
+        if (firstTask.classList.contains('repeating')) {
+          this.addTask('repeating');
+          duration = 2;
+        }
+        await this.startTask(firstTask, duration);
       }
     }
 
-    startTask(task) {
+    startTask(task, duration) {
       let resolveTask;
       const taskPromise = new Promise(resolve => resolveTask = resolve);
 
-      const duration = this.getRandomTime();
       task.style.transitionDuration = `.5s, .5s, ${duration}s`;
       task.style.height = 0;
 

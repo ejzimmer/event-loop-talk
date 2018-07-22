@@ -4,8 +4,11 @@
       display: flex;
       justify-content: space-around;
       position: relative;
+      --queue-width: 100px;
+      margin: 0 auto;
+      min-height: calc(var(--queue-width * 2));
     }
-  </style>
+  </style>    
   <slot id="queues"></slot>
   <node-queue-selector></node-queue-selector>
 </template>

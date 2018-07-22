@@ -28,15 +28,12 @@
 						</svg>
 					</div>
 					<h1>The Event Loop</h1>
-					<div class="twitter">@erinjzimmer</div>
+					<div class="demo-link">@erinjzimmer</div>
 				</section>
 				<section>
-					<h2>What actually is the Event Loop?</h2>
-					<div class="notes">
-						To understand what the event loop is, first it might be helpful to understand what it is not.
-					</div>
+					<h2 style="font-size: 3.5em">What actually is the Event Loop?</h2>
 				</section>
-				<section class="full-height">
+				<section>
 					<fieldset class="browser-internals">
 						<legend>The Browser</legend>
 						<div class="browser-bits">
@@ -140,7 +137,7 @@ while (true) {
 				</section>
 				<section>
 					<div class="columns">
-					<pre><code>
+						<pre><code>
 <script>
  const intrepidAdventurers = [
   'Little Foot',
@@ -157,10 +154,12 @@ while (true) {
  intrepidAdventurers.forEach(rawr);
 </script>
 					</code></pre>
-<div class="arrow-right fragment" data-fragment-index="1">^</div>
-<div class="task fragment" data-fragment-index="1"></div>
-</div>
-<a class="demo-link" href="parser-only.html">Demo</a>
+						<div class="arrow-right fragment" data-fragment-index="1">^</div>
+						<div class="task fragment" data-fragment-index="1"></div>
+					</div>
+				</section>
+				<section>
+					<iframe src="parser-only.html"></iframe>
 				</section>
 				<section>
 					<h2><div style="font-size: .9em">JavaScript, why are you like that?</div></h2>
@@ -215,7 +214,6 @@ btn.addEventListener('click', function () {
 							<div class="task" style="background-color: rgb(var(--green))"></div>
 						</div>
 					</div>
-					<a class="demo-link" href="simple.html">Demo</a>
 				<script>
 					document.body.addEventListener('click', () => {
 						document.querySelector('.script-task').classList.add('highlighted');
@@ -227,6 +225,9 @@ btn.addEventListener('click', function () {
 						}, { once: true });
 					}, { once: true });
 				</script>
+				</section>
+				<section>
+					<iframe src="simple.html"></iframe>
 				</section>
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 4em">
@@ -241,7 +242,10 @@ while (true) {
 					</div>
 				</section>
 				<section data-background-image="css/mario.jpg">
-					<a class="heading" href="rendering-pipeline.html">The Rendering Pipeline</a>
+					<h2 class="heading-card">The Rendering Pipeline</h2>
+				</section>
+				<section>
+					<iframe src="rendering-pipeline.html"></iframe>
 				</section>
 				<section class="center">
 					<img src="css/unco-cat.gif" class="stretch border" />
@@ -305,11 +309,14 @@ if (!keep_running_)
 	break;
 					</code></pre>
 				</section>
-				<section>
-					<a style="font-size: 2.5em;" href="multiple-queues.html">Theoretical browser with multiple task queues</a>
+				<section data-background-image="css/dinosaur-queues.jpg">
+					<h2 class="heading-card">Multiple task queues</h2>
 				</section>
 				<section>
-					<div class="list-container" style="font-size: 1.5em">
+					<iframe src="multiple-queues.html"></iframe>
+				</section>
+				<section>
+					<div style="font-size: 1.5em">
 						<ul>
 							<li class="fragment">Queues can be executed in any order</li>
 							<li class="fragment">Tasks in the same queue must be executed in the order they arrived</li>
@@ -329,7 +336,10 @@ while (true) {
 					</code></pre>
 				</section>
 				<section data-background-image="css/littlefoot-and-mum.jpg">
-					<h2 class="heading-card" style="position: relative; top: 20px"><a href="microtasks.html">Microtasks</a></h2>
+					<h2 class="heading-card" style="position: relative; top: 20px">Microtasks</h2>
+				</section>
+				<section>
+					<iframe src="microtasks.html"></iframe>
 				</section>
 				<section data-background-image="css/dinos-fightin.jpg">
 					<div style="display: flex">
@@ -339,7 +349,9 @@ while (true) {
 							<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>
 						</h2>
 					</div>
-					<a class="demo-link" href="microtasks.html">Demo</a>
+				</section>
+				<section>
+					<iframe src="microtasks.html"></iframe>
 				</section>
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 3.5em">
@@ -364,35 +376,97 @@ requestAnimationFrame(callback);
 					</code></pre>
 				</section>
 				<section>
-					make a dinosaur themed animation demo
-					show what happens with no requestAnimationFrame
-					both frames end up in the same render phase, so the animation doesn't work
-					we need a way to ensure the first line executes, then the screen repaints,
-					then the second line executes
-					show demo
-					so if we change our code to use requestAnimationFrame like so 
-					(remember we need two calls to requestAnimationFrame, else both lines 
-					could still end up in the same loop)
-					now it works!
+					<iframe style="width: 100%; min-height: 80vh; border: none" src="single-box-animation.html"></iframe>
+					<div class="notes">
+						Why would we want to do this?
+						Well, imagine we wanted to make a nice animation of a box moving along a path.
+					</div>
 				</section>
 				<section>
-					<pre><code class="javascript" style="font-size: 3em">
-requestAnimationFrame(() => {
-  this.browser.classList.remove('slide');
+					<ul style="font-size: 3em">
+						<li class="fragment">x depends on time</li>
+						<li class="fragment">y depends on sine(time)</li>
+					</ul>
+					<img src="css/sine-wave.png" class="fragment shadow" />
+				</section>
+				<section>
+					<pre style="font-size: 1.3em;"><code>while ((x + 50) < screen.width) {
+ const elapsedTime = Date.now() - startTime;
+ box.style.left = calculateX(elapsedTime);
+ box.style.top = calculateY(elapsedTime)
+}
 
-  requestAnimationFrame(() => {
-    this.browser.classList.add('slide');
-  });
-});				
 					</code></pre>
 				</section>
 				<section>
-					<pre><code class="javascript" style="font-size: 3em">
-this.browser.classList.remove('slide');
-this.browser.classList.add('slide');					
+					<div style="width: 100px; height: 100px; background-color: rgb(var(--green)); position: fixed; right: -50px"></div>
+					<div class="notes">
+						If you did that, what you would get is this...
+					</div>
+				</section>
+				<section>
+					<div style="display: flex; align-items: flex-end;">
+						<div style="margin: 0 auto; position: relative">
+							<div class="task" id="naive-animation" 
+								style="position: absolute; right: 12px; top: -180px; bottom: 12px; height: auto; transition: top 10s linear;">
+							</div>
+							<task-queue style="--queue-width: 150px; margin-left: 50px;">
+							</task-queue>
+						</div>
+						<rendering-pipeline style="transform: scaleX(1.5); margin: 0 auto"></rendering-pipeline>
+					</div>
+					<script>
+						const naiveAnimationTask = document.getElementById('naive-animation');
+						naiveAnimationTask.addEventListener('click', () => {
+							naiveAnimationTask.style.top = '50px';
+							naiveAnimationTask.addEventListener('transitionend', () => {
+								naiveAnimationTask.style.display = 'none';
+								document.querySelector('rendering-pipeline').runTask();
+							})
+						});
+					</script>
+				</section>
+				<section>
+					<pre style="font-size: 1.9em"><code class="js">(function move() {
+ box.style.left = calculateX();
+ box.style.top = calculateY();
+ if (x < screen.width)
+  <span style="color: rgb(var(--green))">setTimeout(move);</span>
+})();
 					</code></pre>
-					<img style="filter: drop-shadow(2px 2px 1px var(--background-start));" src="css/Clippy.png" />
-					<a class="demo-link" style="left: 0; right: unset" href="requestAnimationFrame.html">Demo</a>
+				</section>
+				<section>
+					<iframe id="timeout-animations" style="width: 100%; min-height: 80vh; border: none;" src="timeout-animations.html"></iframe>
+				</section>
+				<section>
+					<div style="display: flex; align-items: center">
+						<task-queue id="too-many-tasks" style="--queue-width: 200px; margin: auto;"></task-queue>
+					</div>
+					<script>
+						setTimeout(() => {
+							const tooManyTasks = document.getElementById('too-many-tasks');
+							for (let i = 0; i < 12; i++) {
+								if (!(i % 4))
+									tooManyTasks.addTask('necessary');
+								else 
+									tooManyTasks.addTask('unnecessary');
+							}
+						}, 1000);
+					</script>
+				</section>
+				<section>
+					<iframe src="requestAnimationFrame.html"></iframe>
+				</section>
+				<section>
+					<pre style="font-size: 1.9em"><code class="js" data-noescape>(function move() {
+ box.style.left = calculateX();
+ box.style.top = calculateY();
+ if (x < screen.width)
+  <span style="color: rgb(var(--pink))">requestAnimationFrame(move);</span>
+ })();</code></pre>	 
+				</section>
+				<section>
+					<iframe style="width: 100%; min-height: 80vh; border: none" src="animations.html"></iframe>
 				</section>
 				<section>
 						<pre><code data-noescape class="js" style="font-size: 2.6em">
@@ -431,7 +505,18 @@ while (true) {
 				</section>
 				<section>
 					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
-					<a class="demo-link" href="browser-worker.html">Demo</a>
+				</section>
+				<section>
+					<div class="loops">
+						<fieldset class="web-workers">
+							<legend>Main browser window</legend>
+							<iframe src="microtasks.html"></iframe>
+						</fieldset>
+						<fieldset class="web-workers">
+							<legend>job.js</legend>
+							<iframe src="web-worker.html"></iframe>    
+						</fieldset>
+					</div>
 				</section>
 				<section>
 					<div class="list-and-image">
@@ -501,26 +586,14 @@ function (message) {
 				</section>
 				<section>
 					<div class="sharing-or-not">
-						<img src="css/sharing-is-caring.jpg" class="shadow offscreen" />
-						<img src="css/isolated-dinosaurs.jpg" class="shadow offscreen" />
+						<img src="css/sharing-is-caring.jpg" class="shadow offscreen fragment" />
+						<img src="css/isolated-dinosaurs.jpg" class="shadow offscreen fragment" />
 					</div>
 					<div class="notes">
 						So, generally speaking, it's up the browser whether it runs your JS in its own event loop, or makes you
 						share with other apps.
 						There is an important exception to this rule - shared browsing contexts always share an event loop
 					</div>
-					<script>
-						function showOffscreenElement() {
-							const hiddenElement = document.querySelector('.offscreen');
-							hiddenElement.classList.remove('offscreen');
-
-							const moreHiddenElements = document.querySelector('.offscreen');
-							if (!moreHiddenElements) {
-								document.body.removeEventListener('click', showOffscreenElement);
-							}
-						}
-						document.body.addEventListener('click', showOffscreenElement);
-					</script>
 				</section>
 				<section>
 					<a target="_blank" href="slow.html" class="opener-link">
@@ -556,59 +629,46 @@ function (message) {
 						</a>
 						<iframe src="animation.html" class="dino-animation"></iframe>		
 				</section>
-	
-
-
-
-
-
-
-
-
-
-
-
-				<section>
-					<h2>No rendering pipeline!</h2>
-					<div class="fragment" style="font-size: 8em">🎉</div>
-					<a href="web-worker.html" class="demo-link">Demo</a>
-				</section>
-				<section>
-					<div class="text">... but what about Node?</div>
-				</section>
-				<section>
-						<span style="position: relative">
-							<img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
-							<div class="libuv">libuv</div>
-						</span>
-						<div class="notes">
-							Node equivalent == unicorn velocity library.
-							Because of course it is.
-							The event loop also isn't libuv.
-						</div>
-					</section>
-	
-				<section>
-					<img class="border full-page" src="css/good-news-everyone.jpg" />
-				</section>
-				<section>
-					<div class="list-container" style="font-size: 2em;">
-						<ul>
-							<li class="fragment">No script parsing events</li>
-							<li class="fragment">No pesky user interactions</li>
-							<li class="fragment">No animation frame callbacks</li>
-							<li class="fragment">No rendering pipeline <i>at all</i></li>
-						</ul>
+				<section data-background-image="css/skeleton.jpg">
+					<h2 class="heading-card" style="position: relative; top: 20px">Node</h2>
+					<div class="notes">
+						So what about Node?
+						Well, the good news is that node is a little more... ahem... _bare bones_ than the browser
 					</div>
 				</section>
 				<section>
-					<img class="full-page" src="css/corgi-carousel.gif" />
+					<span style="position: relative">
+						<img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
+						<div class="libuv">libuv</div>
+					</span>
+					<div class="notes">
+						It still consists of an engine and a bunch of supporting APIs.
+						Although, in Node, they're not called Web APIs, because, obviously, that would be weird.
+						Instead they're called the unicorn velociraptor library. Or libuv.
+					</div>
 				</section>
 				<section>
-					<img class="full-page" src="css/thunderbolt.gif" />
+					<ul style="font-size: 3em">
+						<li class="fragment">No DOM</li>
+						<li class="fragment">Limited user interactions</li>
+						<li class="fragment">No windows</li>
+					</ul>
+					<div class="notes">
+						The event loop itself is much simpler
+						- no DOM - just straight up JS, no rendering pipeline, no animation frame queue
+						- user interactions when you ask for them, none of this hanging around letting them click wherever the whim takes them
+						- no windows = no sharing event loops, worrying about cross-origin anything
+						- there are workers, but as we saw before, they're dead simple
+					</div>
 				</section>
 				<section>
-					<a class="text" href="node.html">Node event loop demo</a>
+					<img class="stretch shadow" src="css/corgi-carousel.gif" />
+				</section>
+				<section>
+					<img class="stretch shadow" src="css/thunderbolt.gif" />
+				</section>
+				<section>
+					<iframe src="node.html"></iframe>
 				</section>
 				<section>
 					<pre><code style="text-align: center; font-size: 4em" class="lisp">setImmediate(callback)</code></pre>
@@ -622,11 +682,15 @@ function (message) {
 						<img style="width: 20vmin" src="css/sonic.png" />
 						<pre><code>setImmediate(callback)</code></pre>
 					</div>
-					<a class="demo-link" href="node.html">Demo</a>
+				</section>
+				<section>
+					<iframe src="node.html"></iframe>
 				</section>
 				<section>
 					<pre><code style="text-align: center; font-size: 4em" class="lisp">process.nextTick(callback)</code></pre>
-					<a class="demo-link" href="node.html">Demo</a>
+				</section>
+				<section>
+					<iframe src="node.html"></iframe>
 				</section>
 				<section>
 					<div style="display: flex">
@@ -657,118 +721,6 @@ while (tasksAreWaiting()) {
 					</code></pre>
 				</section>
 				<section>
-					<div style="position: absolute; top: 50vh; font-size: 3em;">Web workers</div>
-					<img src="css/redback.png" />
-				</section>
-				<section>
-					... but what about multiple event loops?
-				</section>
-				<section>
-				</section>
-				<section>
-					So the obvious situation where you might have multiple event loops is where you're
-					running multiple web pages in the one browser, either in different tabs/windows, or
-					in iFrames. Generally speaking, it's up to the browser to decide how many event 
-					loops it wants to run in this situation.
-					Check whether iframes run in same process or different
-					Chrome spins up another event loop if you look at it sideways
-					Each window/tab/iframe runs in its own thread/process, which is why you end up with your task manager full of Chrome processes. This approach makes Chrome more secure?
-					Firefox takes a restrained approach, and will spin up up to four new processes
-					(check this), each with their own event loop. Beyond that, new windows/tabs/iframes 
-					share existing processes. This has the advantage of not requiring 16GB of RAM just to
-					run your browser.
-					I don't know what Safari and Edge do. I don't have a windows machine to test Edge on
-					and Safari and I haven't been on speaking terms since an incident with flexbox in Safari 10.
-					Some kind of demo. Maybe Firefox blocking up other windows while Chrome is fine.
-					But then the flip side of how much memory Chrome is using vs Firefox.
-				</section>
-				<section>
-					There is one rule though - pages that share data MUST share an event loop.
-					iframes?
-					parent/child window
-				</section>
-				<section>
-					- how iframes work
-					- how child windows work
-					- how to allow them to be on separate event loops
-				</section>
-				<section>
-					There is one other situation where multiple event loops are a thing - workers
-					- web workers, service workers, whatever kind of worker Node has
-					Workers run in parallel to the main thread, so they must have their own event loop
-					As a result, they're completely separate from the main thread - no DOM access
-					While a child window can access its parent directly, workers can only send and receive 
-					postmessage events
-				</section>
-				<section>
-						<div style="width: 45%; position: fixed; top: 5vh; left: 0; border: 4px solid red; padding: 5px">
-							<div style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: auto;">
-								<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
-									<div style="flex-grow: 1">stack</div>
-									<div class="task">setTimeout(cb)</div>
-									<div class="task">main()</div>
-								</div>
-								<div class="area" style="width: 55%;">
-									<div>webapis</div>
-								</div>
-								<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
-									<div style="margin: auto 0;">task queue</div>
-									<div class="task" style="margin-left: 5px">cb</div>
-								</div>
-							</div>
-						</div>
-						<div class="loading-dots" style="position: fixed; top: 30%; left: 45%; right: 25%;"></div>
-						<div style="width: 25%; position: fixed; right: 0; top: 30%; border: 2px solid white; padding: 5px;">
-							<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-								<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
-									<div style="flex-grow: 1">stack</div>
-									<div class="task"></div>
-									<div class="task"></div>
-									<div class="task"></div>
-								</div>
-								<div class="area" style="width: 55%;">
-									<div>webapis</div>
-								</div>
-								<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
-									<div style="margin: auto 0;">task queue</div>
-									<div class="task" style="margin-left: 5px">cb</div>
-								</div>
-							</div>
-						</div>
-						<div class="loading-dots" 
-								style="position: fixed; top: 7em; left: 40%; transform: rotate(.25turn); transform-origin: left;">
-						</div>
-						<div style="width: 25%; position: fixed; left: 25%; bottom: 5vh; border: 2px solid white; padding: 5px;">
-							<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-								<div class="area" style="width: 40%; display: flex; flex-direction: column; justify-content: flex-end">
-									<div style="flex-grow: 1">stack</div>
-									<div class="task"></div>
-									<div class="task"></div>
-									<div class="task"></div>
-								</div>
-								<div class="area" style="width: 55%;">
-									<div>webapis</div>
-								</div>
-								<div class="area" style="display: flex; width: 100%; margin-top: 1vw; height: 4em;">
-									<div style="margin: auto 0;">task queue</div>
-									<div class="task" style="margin-left: 5px">cb</div>
-								</div>
-							</div>
-						</div>
-					</section>								
-				</section>
-				<section>
-					<ul style="font-size: 4em">
-						<li class="fragment">No script tags</li>
-						<li class="fragment">No user interactions</li>
-						<li class="fragment">No DOM manipulation</li>
-					</ul>
-					<a class="demo-link" href="web-worker.html">Demo</a>
-				</section>
-				<section>
-					<img class="full-page" src="css/thats-it-too-easy.jpg" />
-				</section>
-				<section>
 					<div style="font-size: 3.9em;">Long running tasks will make your web page run like a wonky cat</div>
 				</section>
 				<section>
@@ -794,6 +746,11 @@ while (tasksAreWaiting()) {
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
+
+		<link rel="import" href="components/queue.html">
+		<link rel="import" href="components/rendering-pipeline.html">
+		<link rel="import" href="components/browser.html">
+		<link rel="import" href="components/task-source.html">
 		
 		<script>
 			// More info about config & dependencies:
@@ -812,22 +769,5 @@ while (tasksAreWaiting()) {
 			});
 		</script>
 
-		<link rel="import" href="components/event-loop.html">
-		<link rel="import" href="components/browser.html">
-		<link rel="import" href="components/queues.html">
-		<link rel="import" href="components/rendering-pipeline.html">
-		<link rel="import" href="components/queue-selector.html">
-		<link rel="import" href="components/queue.html">
-    <link rel="import" href="components/task-source.html">
-    
-    <script>
-      // const task = document.querySelector('.tasks');
-      // task.addEventListener('click', function () {
-      //   this.classList.add('highlighted');
-      // });
-      // document.body.addEventListener('keydown', (event) => {
-      //   console.log(event.key);
-      // });
-		</script>
 	</body>
 </html>

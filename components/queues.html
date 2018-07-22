@@ -45,7 +45,15 @@
 
     }
 
+    startTimer() {
+      this.pipeline.timerCount();
+      this.selector.startTimer();
+    }
+
     addTask(taskType) {
+      if (!this.pipeline.interval) {
+        this.pipeline.startTimer();
+      }
       const queue = this.findQueue(taskType);      
       queue.addTask(taskType);
     }

@@ -42,9 +42,11 @@
       this.animationQueue = document.querySelector('task-queue[type="animation"]');
       this.microtaskQueue = document.querySelector('task-queue[type="microtask"]');      
 
-      document.body.addEventListener('click', () => {
-        setTimeout(() => { this.readyToPaint = true }, 8000);
-      }, { once: true });
+      document.body.addEventListener('click', this.startTimer.bind(this), { once: true });
+    }
+
+    startTimer() {
+      setTimeout(() => { this.readyToPaint = true }, 8000);
     }
 
     async pickQueue() {
@@ -96,7 +98,7 @@
       const queueLeft = queue.getBoundingClientRect().left;
 
       const leftDistance = queueLeft - containerLeft;
-      this.style.left = `${(leftDistance + 16) / window.scale}px`; 
+      this.style.left = `${leftDistance + 16}px`; 
     }
 
     spin(run = true) {

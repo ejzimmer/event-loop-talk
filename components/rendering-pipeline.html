@@ -71,18 +71,14 @@
       this.timer = this.shadow.getElementById('seconds-since-repaint');
       this.secondsSinceRepaint = 0;
 
-      document.body.addEventListener('click', () => {
-        this.timerCount();
-      }, { once: true });
-
       this.browser.addEventListener('transitionend', (event) => {
         this.resolveTask();
-        this.timerCount();
+        this.startTimer();
       });
 
     }
 
-    timerCount() {
+    startTimer() {
       this.interval = setInterval(() => {
         this.timer.innerHTML = ++this.secondsSinceRepaint;
         if (this.secondsSinceRepaint > 16) {

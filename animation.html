@@ -21,23 +21,18 @@
     <img id="dino" src="css/mozilla.png" />
     <script>
       const dino = document.getElementById('dino');
-      const start = dino.getBoundingClientRect().left;
-      let startTime = 0;
-      const finish = document.querySelector('body').getBoundingClientRect().right - 100;
+      let x = dino.getBoundingClientRect().left;
+      const finish = window.parent.innerWidth;
+      const rate = 5;
 
       (function animate() {
-        requestAnimationFrame((time) => {
-          const left = start + ((time - startTime) / 8);
-          dino.style.left = `${left}px`;
+        x += rate;
+        if (x > finish) {
+          x = 0;
+        }
 
-          if (left > finish) {
-            dino.style.left = `${start}px`;
-            startTime = time;
-          } 
-          
-          animate();
-          
-        });
+        dino.style.left = `${x}px`;
+        requestAnimationFrame(animate);
       })();
     </script>
   </body>

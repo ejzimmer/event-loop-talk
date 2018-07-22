@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+      .box-world {
+        display: flex;
+        height: 100%;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        cursor: pointer;
+        background-color: rgb(var(--green));
+        margin: auto 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box-world">
+      <div class="box"></div>
+    </div>
+    <script>
+      const box = document.querySelector('.box');
+      const rate = 10;
+      let startTime;
+
+      box.addEventListener('click', () => {
+        requestAnimationFrame((time) => startTime = time);
+        requestAnimationFrame(sine);
+      });	
+
+      function sine(currentTime) {
+        const elapsedTime = currentTime - startTime;
+
+        const x = elapsedTime / rate;
+        const y = Math.sin(elapsedTime / 500) * 100;
+
+        box.style.left = `${x}px`;
+        box.style.top = `${y}px`;
+
+        if ((x + 50) < window.innerWidth) {
+          requestAnimationFrame(sine);
+        }
+      }
+    </script>
+  </body>
+</html>

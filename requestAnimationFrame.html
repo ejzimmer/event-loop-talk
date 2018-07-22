@@ -7,6 +7,7 @@
     <title>Event Loop with Animation Frames</title>          
     
     <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/common.css">
 
     <link rel="import" href="components/event-loop.html">
 		<link rel="import" href="components/browser.html">
@@ -17,31 +18,21 @@
 		<link rel="import" href="components/task-source.html">
 	</head>
 	<body>
-		<section>
-      <event-loop>
-        <div class="sources">
-          <task-source type="html"></task-source>
-          <task-source type="browser"></task-source>
-          <task-source type="timer"></task-source>
-          <task-source type="network"></task-source>
-          <task-source type="promise"></task-source>
-          <task-source type="animation"></task-source>
-        </div>
-        <task-queues>
-          <task-queue type="browser"></task-queue>
-          <task-queue></task-queue>  
-          <task-queue type="microtask"></task-queue>
-          <task-queue type="animation"></task-queue>
-        </task-queues>
-      </event-loop>
-    </section>
-    
-    <script>
-      document.body.addEventListener('keydown', (event) => {
-        if (event.key === 'PageDown') {
-          location.href = '/#/28';
-        }
-      }, { once: true });
-    </script>
- 	</body>
+    <event-loop>
+      <div class="sources">
+        <task-source type="html"></task-source>
+        <task-source type="browser"></task-source>
+        <task-source type="timer"></task-source>
+        <task-source type="network"></task-source>
+        <task-source type="promise"></task-source>
+        <task-source type="animation"></task-source>
+      </div>
+      <task-queues>
+        <task-queue type="browser"></task-queue>
+        <task-queue></task-queue>  
+        <task-queue type="microtask"></task-queue>
+        <task-queue type="animation"></task-queue>
+      </task-queues>
+    </event-loop>
+  </body>
 </html>
