@@ -51,7 +51,7 @@
     }
 
     addTask(taskType) {
-      if (!this.pipeline.interval) {
+      if (this.pipeline.startTimer && !this.pipeline.interval) {
         this.pipeline.startTimer();
       }
       const queue = this.findQueue(taskType);      

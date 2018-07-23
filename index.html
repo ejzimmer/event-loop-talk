@@ -28,7 +28,7 @@
 						</svg>
 					</div>
 					<h1>The Event Loop</h1>
-					<div class="demo-link">@erinjzimmer</div>
+					<div class="twitter">@erinjzimmer</div>
 				</section>
 				<section>
 					<h2 style="font-size: 3.5em">What actually is the Event Loop?</h2>
@@ -43,7 +43,7 @@
 							<task-source type="drive" class="fragment"></task-source>
 							<img src="css/mouse-pointer.svg" class="fragment" style="margin: .75em" />
 							<div class="html fragment"></div>
-							<div id="web-apis" style="animation: unset">Web APIs</div>
+							<div id="web-apis" class="fragment">Web APIs</div>
 						</div>
 					</fieldset>
 					<div class="notes">
@@ -60,9 +60,6 @@
 					<script>
 						document.querySelector('.browser-internals').addEventListener('click', function () {
 							this.classList.add('web-apis');
-							this.addEventListener('click', () => {
-								document.querySelector('#web-apis').style.opacity = 1;
-							}, { once: true });
 						}, { once: true });
 					</script>
 				</section>
@@ -76,15 +73,12 @@
 							<task-source type="drive"></task-source>
 							<img src="css/mouse-pointer.svg" style="margin: .75em" />
 							<div class="html"></div>
-							<div id="engines" style="animation: unset">JavaScript Engine</div>
+							<div id="engines" class="fragment">JavaScript Engine</div>
 						</div>
 					</fieldset>
 					<script>
 						document.querySelector('.browser-internals.engine').addEventListener('click', function () {
 							this.querySelector('#engine').classList.add('highlighted');
-							this.addEventListener('click', () => {
-								document.getElementById('engines').style.opacity = 1;
-							})
 						}, { once: true });
 					</script>
 					<div class="notes">
@@ -110,6 +104,19 @@
 					</div>
 				</section>
 				<section>
+				<fieldset class="browser-internals">
+						<legend>The Browser</legend>
+						<div class="browser-bits">
+							<img id="engine" src="css/JavaScript-logo.png" style="margin-left: 0" />
+							<task-source type="network"></task-source>
+							<task-source type="timer"></task-source>
+							<task-source type="drive"></task-source>
+							<img src="css/mouse-pointer.svg" style="margin: .75em" />
+							<div class="html"></div>
+						</div>
+					</fieldset>
+				</section>
+				<section>
 					<pre><code data-noescape class="js" style="font-size: 4em">
 while (true) {
  <span class="variable-name">task</span> = taskQueue.pop();
@@ -128,6 +135,7 @@ while (true) {
 						<ul>
 							<li class="fragment">What's a task?</li>
 							<li class="fragment">What's a task&nbsp;queue?</li>
+							<li class="fragment">How do tasks<br />get in the task&nbsp;queue?</li>
 						</ul>
 						<img src="css/Philosoraptor.jpg" />
 					</div>
@@ -265,7 +273,7 @@ function repeat(reps, action) {
  const repsLeft = reps - batchSize;
  if (repsLeft) {
   setTimeout(() => {
-   repeat(repsLeft, action)
+   repeat(repsLeft, action);
   });
  }
 }
@@ -383,13 +391,6 @@ requestAnimationFrame(callback);
 					</div>
 				</section>
 				<section>
-					<ul style="font-size: 3em">
-						<li class="fragment">x depends on time</li>
-						<li class="fragment">y depends on sine(time)</li>
-					</ul>
-					<img src="css/sine-wave.png" class="fragment shadow" />
-				</section>
-				<section>
 					<pre style="font-size: 1.3em;"><code>while ((x + 50) < screen.width) {
  const elapsedTime = Date.now() - startTime;
  box.style.left = calculateX(elapsedTime);
@@ -427,12 +428,13 @@ requestAnimationFrame(callback);
 					</script>
 				</section>
 				<section>
-					<pre style="font-size: 1.9em"><code class="js">(function move() {
- box.style.left = calculateX();
- box.style.top = calculateY();
+					<pre style="font-size: 1.3em"><code class="js" data-noescape>function move() {
+ const elapsedTime = Date.now() - startTime;
+ box.style.left = calculateX(elapsedTime);
+ box.style.top = calculateY(elapsedTime);
  if (x < screen.width)
   <span style="color: rgb(var(--green))">setTimeout(move);</span>
-})();
+}
 					</code></pre>
 				</section>
 				<section>
@@ -458,12 +460,14 @@ requestAnimationFrame(callback);
 					<iframe src="requestAnimationFrame.html"></iframe>
 				</section>
 				<section>
-					<pre style="font-size: 1.9em"><code class="js" data-noescape>(function move() {
- box.style.left = calculateX();
- box.style.top = calculateY();
+					<pre style="font-size: 1.3em"><code class="js" data-noescape>function move() {
+ const elapsedTime = Date.now() - startTime;
+ box.style.left = calculateX(elapsedTime);
+ box.style.top = calculateY(elapsedTime);
  if (x < screen.width)
   <span style="color: rgb(var(--pink))">requestAnimationFrame(move);</span>
- })();</code></pre>	 
+ }
+}</code></pre>	 
 				</section>
 				<section>
 					<iframe style="width: 100%; min-height: 80vh; border: none" src="animations.html"></iframe>
@@ -611,19 +615,6 @@ function (message) {
 					</div>
 				</section>
 				<section>
-					<img src="css/no.gif" class="stretch shadow" />
-					<div class="notes">
-						the browser will stop you from accessing the other windows' document. The two windows will still
-						run on the same event loop though, so it is still a potential performance issue.
-					</div>
-				</section>
-				<section>
-					<img src="css/good-news-everyone.jpg" alt="" class="stretch shadow">
-					<div class="notes">
-						The good news is, there is a solution.
-					</div>
-				</section>
-				<section>
 						<a target="_blank" href="slow.html" rel="noopener" class="opener-link">
 							&lt;a target="_blank" <span style="color: rgb(var(--pink))">rel="noopener"</span> href="button.html"&gt;&lt;/a&gt;
 						</a>
@@ -647,6 +638,9 @@ function (message) {
 						Instead they're called the unicorn velociraptor library. Or libuv.
 					</div>
 				</section>
+				<section>
+					<img src="css/good-news-everyone.jpg" alt="" class="stretch shadow">
+				</section>	
 				<section>
 					<ul style="font-size: 3em">
 						<li class="fragment">No DOM</li>
@@ -720,25 +714,31 @@ while (tasksAreWaiting()) {
 }
 					</code></pre>
 				</section>
-				<section>
-					<div style="font-size: 3.9em;">Long running tasks will make your web page run like a wonky cat</div>
+				<section data-background-image="css/philosoraptor-big.jpg">
+					<div class="notes">
+						So why do we even care about this stuff
+						Well, first of all, don't block main thread, use requestAnimationFram
+					</div>
 				</section>
 				<section>
-					<div style="font-size: 4em">Promises and nextTick tasks can make it run like a dead cat</div>
+					<img src="css/clockwork-brain.gif" class="stretch shadow" />
+					<div class="notes">
+						will have your app running like clockwork...
+					</div>
 				</section>
 				<section>
-					<div style="font-size: 4em">Node is a bit different</div>
+					<pre style="margin-top: -150px; font-size: 2em"><code style="padding-left: 0" class="js">setTimeout(fn, 0)</code></pre>
+					<pre style="font-size: 2em"><code style="padding-left: 0" class="js fragment">$timeout(() => $scope.$apply());</code></pre>
+					<div class="notes">
+						Hopefully now you also understand why this - or if you're an old-school Angular programmer, this - sometimes
+						makes things work, seemingly by magic
+						And.. maybe you could find a better way to solve your problem
+					</div>
 				</section>
-				<section>
-					<div style="font-size: 4em">Web workers do their own thing</div>
-				</section>
-				<section>
-					<div style="font-size: 3.5em;">The event loop is more exciting than you could possibly have imagined</div>
-				</section>
-				<section data-background-image="css/roller-coaster.jpg">
-					<div class="frosted">
-						<div style="margin-bottom: .5em">@erinjzimmer</div>
-						<a href="/package.json" style="color: currentColor; font-size: .9em">https://ejzimmer.github.io/event-loop-talk</a>
+				<section data-background-image="css/jurassic-park-raptors.jpg">
+					<div class="notes">
+						- more importantly, better tools to be able to reason about what's going on in your own and other people's JavaScript applications
+						- make you feel like a clever girl
 					</div>
 				</section>
 			</div>

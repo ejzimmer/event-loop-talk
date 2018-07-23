@@ -52,6 +52,14 @@ svg.title {
   margin: auto;
 }
 
+.twitter {
+  font-size: 3em;
+  position: fixed;
+  right: 15px;
+  bottom: 10px;
+  opacity: .6;
+}
+
 
 .browser-internals {
   width: 80%;
@@ -113,9 +121,9 @@ svg.title {
   background-color: rgb(var(--pink));
   box-shadow: 4px 4px 4px rgba(3, 3, 3, 0.4);
   position: absolute;
-  opacity: 0;
   transition: opacity .5s;
   padding: .5em;
+  animation: none;
 }
 #web-apis {
   right: 20%;
@@ -151,6 +159,7 @@ svg.title {
   margin: 1em;
 }
 .list-and-image img {
+  margin-left: 2em;
   max-width: 33%
 }
 
