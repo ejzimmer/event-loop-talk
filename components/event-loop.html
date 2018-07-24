@@ -36,9 +36,6 @@
     connectedCallback() {
       this.queues = document.querySelector('task-queues, node-queues');
       document.querySelector('body').addEventListener('task', event => this.queues.addTask(event.detail));
-
-      window.addEventListener('resize', this.resize.bind(this));
-      this.resize();
     }
 
     startTimer() {
@@ -49,19 +46,8 @@
       this.queues.addTask(taskType);
     }
 
-    resize() {
-      // const body = document.querySelector('body');
-      // getComputedStyle(body);
-      // const frameHeight = body.style.height;
-      // const frameWidth = body.style.width;
-      // const scale = Math.min(frameWidth / width, frameHeight / height);
-
-      // console.log(document.querySelector('body').style.height);
-
-      // if (scale) {
-      //   this.style.transform = `translate(-50%, calc(-50% - 8px)) scale(${scale})`;
-      //   window.scale = scale;
-      // }
+    setScale(scale) {
+      this.style.transform = `translate(-50%, calc(-50% - 8px)) scale(${scale})`;
     }
   }
   customElements.define('event-loop', EventLoop);

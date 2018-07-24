@@ -24,10 +24,8 @@
     <button id="slow" onclick="slow()">Make things slow</button>
     <script>
       function slow() {
-        total = 0;
-        for (let i = 0; i < 50000; i++) {
-          console.log(i);
-        }
+        const start = Date.now();
+          while ((Date.now() - start) < 5000);
       }
     </script>
   </body>

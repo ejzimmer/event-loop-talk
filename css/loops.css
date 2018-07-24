@@ -108,6 +108,9 @@ svg.title {
 .browser-internals.web-apis .browser-bits *:not(#engine), .engine #engine.highlighted {
   animation: pink-background-flash 1s cubic-bezier(0.555, 0.140, 0.390, 1.040) forwards;
 }
+.browser-internals.web-apis .browser-bits #web-apis {
+  animation: none;
+}
 @keyframes pink-background-flash {
   50% {
     background-color: rgba(var(--pink), 1);
@@ -151,6 +154,27 @@ svg.title {
   width: 33%;
 }
 
+.centred {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.big-text {
+  font-size: 6em;
+}
+.inverse {
+  background-color: white;
+  color: var(--background);
+}
+.uninverse {
+  border: 4px solid white;
+  color: white;
+}
+.inverse, .uninverse {
+  padding: .5em 1em;
+  width: 10ch;
+}
+
 .list-and-image {
   display: flex;
   font-size: 2em;
@@ -167,13 +191,21 @@ svg.title {
   display: flex;
   align-items: center;
 }
-.arrow-right {
-  transform: rotate(.25turn);
+.arrow-right, .arrow-down {
   font-size: 10em;
   font-family: 'Courier New', 'Courier New', Courier, monospace;
   font-weight: bold;
   padding-top: 200px;
   -webkit-text-stroke: 8px black;
+}
+.arrow-right {
+  transform: rotate(.25turn);
+}
+.arrow-down {
+  transform: rotate(.5turn);
+  padding-top: .5em;
+  color: rgb(var(--green));
+  -webkit-text-stroke: 8px rgb(var(--pink));
 }
 .task {
   background-color: white;

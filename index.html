@@ -12,6 +12,8 @@
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<script src="js/reveal.js"></script>
 	</head>
 	<body>
 		<div class="reveal">
@@ -104,17 +106,11 @@
 					</div>
 				</section>
 				<section>
-				<fieldset class="browser-internals">
-						<legend>The Browser</legend>
-						<div class="browser-bits">
-							<img id="engine" src="css/JavaScript-logo.png" style="margin-left: 0" />
-							<task-source type="network"></task-source>
-							<task-source type="timer"></task-source>
-							<task-source type="drive"></task-source>
-							<img src="css/mouse-pointer.svg" style="margin: .75em" />
-							<div class="html"></div>
-						</div>
-					</fieldset>
+					<div class="centred">
+						<div class="inverse big-text">Web APIs</div>
+						<div class="arrow-down" data-fragment-index="1">^</div>
+						<div class="uninverse big-text">JavaScript Engine</div>
+					</div>
 				</section>
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 4em">
@@ -205,7 +201,6 @@ while (true) {
 								<task-source type="drive"></task-source>
 								<img src="css/mouse-pointer.svg" style="margin: .75em" />
 								<div class="html"></div>
-								<div id="engines" style="animation: unset">JavaScript Engine</div>
 							</div>
 						</fieldset>						
 				</section>
@@ -440,20 +435,20 @@ requestAnimationFrame(callback);
 				<section>
 					<iframe id="timeout-animations" style="width: 100%; min-height: 80vh; border: none;" src="timeout-animations.html"></iframe>
 				</section>
-				<section>
+				<section data-state="addTasks">
 					<div style="display: flex; align-items: center">
 						<task-queue id="too-many-tasks" style="--queue-width: 200px; margin: auto;"></task-queue>
 					</div>
 					<script>
-						setTimeout(() => {
+						Reveal.addEventListener('addTasks', function () {
 							const tooManyTasks = document.getElementById('too-many-tasks');
 							for (let i = 0; i < 12; i++) {
 								if (!(i % 4))
 									tooManyTasks.addTask('necessary');
 								else 
 									tooManyTasks.addTask('unnecessary');
-							}
-						}, 1000);
+							} 
+						});
 					</script>
 				</section>
 				<section>
@@ -510,7 +505,7 @@ while (true) {
 				<section>
 					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
 				</section>
-				<section>
+				<section data-state="scaleIFrames">
 					<div class="loops">
 						<fieldset class="web-workers">
 							<legend>Main browser window</legend>
@@ -520,6 +515,13 @@ while (true) {
 							<legend>job.js</legend>
 							<iframe src="web-worker.html"></iframe>    
 						</fieldset>
+						<script>
+							Reveal.addEventListener('scaleIFrames', () => {
+								document.querySelectorAll('.web-workers iframe').forEach((iframe) => {
+									iframe.contentDocument.querySelector('event-loop').setScale(.5);
+								});
+							})
+						</script>
 					</div>
 				</section>
 				<section>
@@ -745,7 +747,6 @@ while (tasksAreWaiting()) {
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
 
 		<link rel="import" href="components/queue.html">
 		<link rel="import" href="components/rendering-pipeline.html">
