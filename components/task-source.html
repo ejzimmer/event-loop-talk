@@ -120,8 +120,10 @@
         radial-gradient(circle at 30% 75%, #334 20%, white calc(20% + 4px), transparent calc(20% + 4px));
     }
     .drive .arm {
+      --arm-height: calc(var(--width) * .5);
+      height: --arm-height;
       border: 8px solid transparent;
-      border-bottom-color: white;
+      border-bottom: white solid var(--arm-height);
       box-sizing: border-box;
       width: 8px;
       position: absolute;
@@ -245,15 +247,6 @@
     }
 
     connectedCallback() {
-      if (this.type === 'drive') {
-        const observer = new MutationObserver(() => {
-          const driveHeight = this.source.getBoundingClientRect().height;
-          const armHeight = driveHeight * 0.35;
-          this.arm.style.height = armHeight;
-          this.arm.style.borderBottomWidth = `${armHeight}px`;
-        });
-        observer.observe(document.querySelector('body'), { childList: true });
-      }
 
       const syncTasks = ['html', 'browser', 'promise', 'animation', 'immediate', 'next-tick', 'postmessage'];
       const asyncTasks = ['timer', 'network', 'drive'];
@@ -300,7 +293,7 @@
 
         if (!isPlaying) {
           this.arm.style.animationPlayState = 'running';
-          this.finishDriveTask();
+          this.finishDriveTask(task);
         }
       } else {
         this.finishTask(task);
@@ -314,15 +307,14 @@
       }, time);
     }
 
-    finishDriveTask() {
+    finishDriveTask(task) {
       setTimeout(() => {
-        const driveTasks = this.shadow.querySelectorAll('.thread .drive');
-        const currentTask = driveTasks[0];
-        this.finishTask(currentTask, 0);
+        this.finishTask(task, 0);
 
+        const driveTasks = this.shadow.querySelectorAll('.drive + .thread .thread-item');
         if (driveTasks.length > 1) {
           const nextTask = driveTasks[1];
-          this.finishDriveTask();
+          this.finishDriveTask(nextTask);
         } else {
           this.arm.style.animationPlayState = 'paused';
         }
