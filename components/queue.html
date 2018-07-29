@@ -153,14 +153,15 @@
       return this.getTasks().length;
     }
 
-    async runTask() {
+    async runTask(time) {
       if (this.type === 'animation') {
         return this.runAnimationTasks();
       }
 
       const firstTask = this.getTask(0);
+      console.log(firstTask)
       if (firstTask) {
-        let duration = this.getRandomTime();
+        let duration = time || this.getRandomTime();
         if (firstTask.classList.contains('repeating')) {
           this.addTask('repeating');
           duration = 2;

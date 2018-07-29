@@ -15,6 +15,12 @@
 		<link rel="import" href="components/queue-selector.html">
 		<link rel="import" href="components/queue.html">
 		<link rel="import" href="components/task-source.html">
+
+		<style>
+			body {
+				--background: transparent;
+			}
+		</style>
 	</head>
 	<body>
 		<event-loop>
@@ -29,12 +35,5 @@
 				<task-queue type="microtask"></task-queue>
 			</task-queues>
 		</event-loop>
-		<script>
-			document.body.addEventListener('keydown', (event) => {
-				if (event.key === 'PageDown') {
-					location.href = "/#/40";
-				}
-			})
-		</script>
 	</body>
 </html>

@@ -1,3 +1,7 @@
+body {
+  --background: #333;
+}
+
 h1 {
   margin: 0 0 20px 0;
   line-height: 1.2;
@@ -206,6 +210,7 @@ svg.title {
   padding-top: .5em;
   color: rgb(var(--green));
   -webkit-text-stroke: 8px rgb(var(--pink));
+  margin: -.25em;
 }
 .task {
   background-color: white;
@@ -285,9 +290,9 @@ svg.title {
 }
 fieldset.web-workers {
   width: 45%;
-  height: 80vh;
+  height: 60%;
   border: 4px solid white;
-  margin: auto;
+  margin: 0 auto;
   display: flex;
 }
 fieldset.web-workers legend {
@@ -295,7 +300,7 @@ fieldset.web-workers legend {
   padding: 0 1em;
 }
 fieldset.web-workers iframe {
-  height: 80%;
+  margin-top: -20%;
 }
 
 .communication {
@@ -384,4 +389,43 @@ pre code.hljs {
   font-size: 1em;
   text-align: left;
   padding: 2em;
+}
+
+.quote {
+  font-size: 3em;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 75%;
+  position: relative;
+}
+.quote::before, .quote::after {
+  position: absolute;
+  font-size: 2em;
+  color: rgb(var(--quote-colour));
+}
+.quote::before {
+  content: '\201c';
+  left: -.27em;
+  top: -.2em;
+}
+.quote::after {
+  content: '\201d';
+}
+
+.manual-task {
+  position: absolute; 
+  right: 12px; 
+  top: -80px; 
+  bottom: 12px; 
+  height: auto; 
+  transition: top 10s linear;
+  width: 150px;
+}
+.manual-task::before {
+  font-size: 8em;
+}
+.timer-animation {
+  transition: transform steps(12, end) 3s, filter .3s;
+}
+.timer-animation.go {
+  transform: rotate(1turn);
 }

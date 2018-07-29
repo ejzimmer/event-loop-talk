@@ -14,6 +14,10 @@
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
 		<script src="js/reveal.js"></script>
+
+		<script>
+			const isNextSlide = key => key === 'PageDown' || key === 'ArrowRight' || key === ' ';
+		</script>
 	</head>
 	<body>
 		<div class="reveal">
@@ -35,7 +39,7 @@
 				<section>
 					<h2 style="font-size: 3.5em">What actually is the Event Loop?</h2>
 				</section>
-				<section>
+				<section data-state="web-apis">
 					<fieldset class="browser-internals">
 						<legend>The Browser</legend>
 						<div class="browser-bits">
@@ -48,24 +52,22 @@
 							<div id="web-apis" class="fragment">Web APIs</div>
 						</div>
 					</fieldset>
-					<div class="notes">
-						- You see, browsers have a bunch of different bits in them
-						- One is the bit that runs from JavaScript
-						- But there's also another bit that takes care of network requests
-						- And a bit that looks after timers
-						- A bit that can do disk I/O
-						- A bit that listens for user interactions
-						- And a heap of bits that interact with the DOM and CSS.
-						- Collectively, these bits that aren't the bit that runs JavaScript are called...
-						- ... Web APIs. 
-					</div>
 					<script>
-						document.querySelector('.browser-internals').addEventListener('click', function () {
-							this.classList.add('web-apis');
-						}, { once: true });
+						let lastItem;
+						function highlightWebApis(event) {
+							if (lastItem.classList.contains('current-fragment') && isNextSlide(event.key)) {
+								event.stopPropagation();
+								document.querySelector('.browser-internals').classList.add('web-apis');
+								document.body.removeEventListener('keydown', highlightWebApis);
+							}
+						}
+						Reveal.addEventListener('web-apis', () => {
+							lastItem = document.querySelector('.browser-bits div.html.fragment');
+							document.body.addEventListener('keydown', highlightWebApis);
+						});
 					</script>
 				</section>
-				<section>
+				<section data-state="js-engine">
 					<fieldset class="browser-internals engine">
 						<legend>The Browser</legend>
 						<div class="browser-bits">
@@ -79,9 +81,16 @@
 						</div>
 					</fieldset>
 					<script>
-						document.querySelector('.browser-internals.engine').addEventListener('click', function () {
-							this.querySelector('#engine').classList.add('highlighted');
-						}, { once: true });
+						function highlightJSEngine(event) {
+							if (isNextSlide(event.key)) {
+								event.stopPropagation();
+								document.querySelector('.browser-internals.engine #engine').classList.add('highlighted');
+								document.body.removeEventListener('keydown', highlightJSEngine);
+							}
+						}
+						Reveal.addEventListener('js-engine', () => {
+							document.body.addEventListener('keydown', highlightJSEngine);
+						});
 					</script>
 					<div class="notes">
 						The bit that runs JavaScript is called the JavaScript engine.
@@ -94,21 +103,11 @@
 						<img class="fragment" src="css/squirrelfish.png" />
 					</div>
 					<img class="fragment" src="css/spider-monkey.jpg" style="width: 80%" />
-					<div class="notes">
-						There are a bunch of different JS engines kicking around
-						- V8, in Chrome and Node
-						- Chakra which powers Edge
-						- er, Safari's SquirrelFish
-						- and SpiderMonkey from Mozilla, which I couldn't find a logo for,
-						so here's a picture of an actual SpiderMonkey
-						spider monkey photo from Ewa https://www.flickr.com/photos/ewas-world/
-						The event loop co-ordinates communication between the web APIs and the JS engine
-					</div>
 				</section>
 				<section>
 					<div class="centred">
 						<div class="inverse big-text">Web APIs</div>
-						<div class="arrow-down" data-fragment-index="1">^</div>
+						<div class="arrow-down">^</div>
 						<div class="uninverse big-text">JavaScript Engine</div>
 					</div>
 				</section>
@@ -119,12 +118,6 @@ while (true) {
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
-					<div class="notes">
-						The main function of the browser
-						In its simplest form, would look something like this
-						Now, while I'm sure we all understand how the loop part works, I think
-						this code snippet probably raises a couple of other questions, like...
-					</div>
 				</section>
 				<section>
 					<div class="list-and-image">
@@ -134,9 +127,6 @@ while (true) {
 							<li class="fragment">How do tasks<br />get in the task&nbsp;queue?</li>
 						</ul>
 						<img src="css/Philosoraptor.jpg" />
-					</div>
-					<div class="notes">
-						What is a task? And what could it possibly be queueing up for?
 					</div>
 				</section>
 				<section>
@@ -167,16 +157,10 @@ while (true) {
 				</section>
 				<section>
 					<h2><div style="font-size: .9em">JavaScript, why are you like that?</div></h2>
-					<div class="notes">
-						The answer is due to two things
-					</div>
 				</section>
 				<section>
 					<h2>JavaScript is single-threaded</h2>
 					<div class="notes">
-						- This is a thing most people probably know
-						- Important because DOM
-						- So each task runs to completion before another task can start
 						- But remember, the JS engine is only one part of the browser
 					</div>
 				</section>
@@ -205,29 +189,87 @@ while (true) {
 						</fieldset>						
 				</section>
 				<section>
-					<div class="columns">
-						<pre class="script-task"><code data-noescape>const btn = document.createElement('button');
-document.body.appendChild(btn);
-
-btn.addEventListener('click', function () {
- <span class="click-task">console.log('CHOMP!');</span>
-});</code></pre>
-						<div class="vertical">
-							<div class="task" style="background-color: rgb(var(--pink))"></div>
-							<div class="task" style="background-color: rgb(var(--green))"></div>
-						</div>
+					<div class="notes">
+						In fact, this idea is the very heart of the asynchronous programming we all know and love so much		
 					</div>
-				<script>
-					document.body.addEventListener('click', () => {
-						document.querySelector('.script-task').classList.add('highlighted');
-						document.querySelector('.vertical .task').style.opacity = 1;
+					<pre><code style="font-size: 3em">setTimeout(myCallbackFunction, 3000);</code></pre>		
+				</section>
+				<section>
+					<div style="display: flex; flex-direction: column; margin: 1em;">
+						<div class="quote fragment" style="text-align: left; margin-bottom: 2em; --quote-colour: var(--green)">
+							Hey WebAPIs! Could you wait 3 seconds and then run my callback function?
+						</div>
+						<div class="quote fragment" style="text-align: left; align-self: flex-end; --quote-colour: var(--pink);	">
+							No worries! You keep doing your thing, I'll take care of this.
+						</div>
+					</div>		
+				</section>
+				<section data-state="threads">
+					<div class="threaded" style="display: flex; justify-content: space-around; position: relative">
+						<div style="position: relative; display: flex">
+							<div class="task manual-task" style="transition-duration: 3s"></div>
+							<task-queue id="threads-task" style="--queue-width: 150px; margin-left: 50px;">
+							</task-queue>
+						</div>
+						<task-source id="threaded-timer" type="timer" class="timer-animation"></task-source>
+					</div>
+					<script>
+						Reveal.addEventListener('threads', () => {
+							let newTask;
 
-						document.body.addEventListener('click', () => {
-							document.querySelector('.click-task').classList.add('highlighted');
-							document.querySelector('.vertical .task:nth-child(2)').style.opacity = 2;
-						}, { once: true });
-					}, { once: true });
-				</script>
+							function finishTasks(event) {
+								if (isNextSlide(event.key)) {
+									event.stopPropagation();
+									task.style.transitionDuration = '2s';
+									task.style.top = '100px';
+
+									task.addEventListener('transitionend', () => task.style.opacity = 0);
+
+									newTask.style.top = '100px';
+									newTask.addEventListener('transitionend', () => newTask.style.opacity = 0);
+
+									document.body.removeEventListener('keydown', finishTasks);
+								}
+							}
+
+							function addTimerTaskToQueue(event) {
+								if (isNextSlide(event.key)) {
+									event.stopPropagation();
+									document.body.removeEventListener('keydown', addTimerTaskToQueue);
+
+									newTask = document.createElement('div');
+									newTask.classList.add('task', 'manual-task');
+									newTask.style.zIndex = -2;
+									newTask.style.right = '24px';
+									newTask.style.transition = 'top 5s linear 2s';
+
+									document.querySelector('.threaded div').append(newTask);
+
+									timer.style.visibility = 'hidden';
+
+									document.body.addEventListener('keydown', finishTasks);
+								}
+							}
+
+							function runFiveSecondTask(event) {
+								if (isNextSlide(event.key)) {
+									event.stopPropagation();
+									task.style.top = '50px';
+									timer.classList.add('go');
+
+									document.body.removeEventListener('keydown', runFiveSecondTask);
+									timer.addEventListener('transitionend', () => {
+										timer.style.filter = 'drop-shadow(3px 3px 5px rgb(var(--green))';
+										document.body.addEventListener('keydown', addTimerTaskToQueue);
+									});
+								}
+							}
+
+							const task = document.querySelector('.threaded .task');
+							const timer = document.getElementById('threaded-timer');
+							document.body.addEventListener('keydown', runFiveSecondTask);
+						});
+					</script>
 				</section>
 				<section>
 					<iframe src="simple.html"></iframe>
@@ -258,21 +300,12 @@ while (true) {
 					</div>
 				</section>
 				<section class="center">
-					<pre><code style="font-size: 3em">
-function repeat(reps, action) {
- const batchSize = Math.min(reps, 1000);
- for (let i = 0; i < batchSize; i++) {
-  action();
+					<pre><code style="font-size: 3em">function repeat(reps, action) {
+ action();
+ if (--reps) {
+  setTimeout(() => repeat(reps, action));
  }
-
- const repsLeft = reps - batchSize;
- if (repsLeft) {
-  setTimeout(() => {
-   repeat(repsLeft, action);
-  });
- }
-}
-					</code></pre>
+}					</code></pre>
 				</section>
 				<section>
 					<pre><code style="font-size: 3em" class="js">
@@ -301,15 +334,15 @@ while (true) {
 						<pre><code>
 bool did_work = delegate->DoWork();
 if (!keep_running_)
-	break;
+ break;
 did_work |= delegate->DoDelayedWork(&delayed_work_time_);
 if (!keep_running_)
-	break;
+ break;
 if (did_work)
-	continue;
+ continue;
 did_work = delegate->DoIdleWork();
 if (!keep_running_)
-	break;
+ break;
 					</code></pre>
 				</section>
 				<section data-background-image="css/dinosaur-queues.jpg">
@@ -386,7 +419,7 @@ requestAnimationFrame(callback);
 					</div>
 				</section>
 				<section>
-					<pre style="font-size: 1.3em;"><code>while ((x + 50) < screen.width) {
+					<pre style="font-size: 1.3em;"><code>while (box.style.right < screen.width) {
  const elapsedTime = Date.now() - startTime;
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime)
@@ -400,26 +433,36 @@ requestAnimationFrame(callback);
 						If you did that, what you would get is this...
 					</div>
 				</section>
-				<section>
+				<section data-state="naive-animation">
 					<div style="display: flex; align-items: flex-end;">
 						<div style="margin: 0 auto; position: relative">
-							<div class="task" id="naive-animation" 
-								style="position: absolute; right: 12px; top: -180px; bottom: 12px; height: auto; transition: top 10s linear;">
-							</div>
+							<div class="task manual-task" id="naive-animation" style="width: 200px; top: -200px"></div>
 							<task-queue style="--queue-width: 150px; margin-left: 50px;">
 							</task-queue>
 						</div>
 						<rendering-pipeline style="transform: scaleX(1.5); margin: 0 auto"></rendering-pipeline>
 					</div>
 					<script>
-						const naiveAnimationTask = document.getElementById('naive-animation');
-						naiveAnimationTask.addEventListener('click', () => {
-							naiveAnimationTask.style.top = '50px';
-							naiveAnimationTask.addEventListener('transitionend', () => {
-								naiveAnimationTask.style.display = 'none';
-								document.querySelector('rendering-pipeline').runTask();
-							})
+						Reveal.addEventListener('naive-animation', () => {
+							const naiveAnimationTask = document.getElementById('naive-animation');
+
+							function doNaiveAnimationTask(event) {
+								if (isNextSlide(event.key)) {
+									event.stopPropagation();
+									document.body.removeEventListener('keydown', doNaiveAnimationTask);
+									naiveAnimationTask.style.top = 0;
+
+									naiveAnimationTask.addEventListener('transitionend', () => {
+										naiveAnimationTask.style.display = 'none';
+										document.querySelector('rendering-pipeline').runTask()
+									})
+
+								}
+							}
+
+							document.body.addEventListener('keydown', doNaiveAnimationTask);
 						});
+						const naiveAnimationTask = document.getElementById('naive-animation');
 					</script>
 				</section>
 				<section>
@@ -427,7 +470,7 @@ requestAnimationFrame(callback);
  const elapsedTime = Date.now() - startTime;
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime);
- if (x < screen.width)
+ if (box.style.right < screen.width)
   <span style="color: rgb(var(--green))">setTimeout(move);</span>
 }
 					</code></pre>
@@ -436,7 +479,7 @@ requestAnimationFrame(callback);
 					<iframe id="timeout-animations" style="width: 100%; min-height: 80vh; border: none;" src="timeout-animations.html"></iframe>
 				</section>
 				<section data-state="addTasks">
-					<div style="display: flex; align-items: center">
+					<div style="display: flex; align-items: center; position: fixed; top: 10%; right: 35%; height: 100vh">
 						<task-queue id="too-many-tasks" style="--queue-width: 200px; margin: auto;"></task-queue>
 					</div>
 					<script>
@@ -452,9 +495,6 @@ requestAnimationFrame(callback);
 					</script>
 				</section>
 				<section>
-					<iframe src="requestAnimationFrame.html"></iframe>
-				</section>
-				<section>
 					<pre style="font-size: 1.3em"><code class="js" data-noescape>function move() {
  const elapsedTime = Date.now() - startTime;
  box.style.left = calculateX(elapsedTime);
@@ -463,6 +503,9 @@ requestAnimationFrame(callback);
   <span style="color: rgb(var(--pink))">requestAnimationFrame(move);</span>
  }
 }</code></pre>	 
+				</section>
+				<section>
+						<iframe src="requestAnimationFrame.html"></iframe>
 				</section>
 				<section>
 					<iframe style="width: 100%; min-height: 80vh; border: none" src="animations.html"></iframe>
@@ -532,37 +575,6 @@ while (true) {
 							<li class="fragment">No DOM at all!</li>
 						</ul>
 						<img src="css/top-hat-t-rex.gif" class="fragment" />
-				</section>
-				<section>
-					<div class="communication">
-						<fieldset class="worker">
-							<legend>Worker</legend>
-							<button id="rawr-button">Send Message</button>
-							<pre><code style="padding: 0">postMessage('rawr!');</code></pre>
-						</fieldset>
-						<fieldset>
-							<legend>Browser</legend>
-							<pre><code><script style="display: block">
-const myWorker = new Worker('worker.js');
-myWorker.addEventListener('message', 
-function (message) {
- response.innerHTML = message.data;
-});
-</script>
-</code></pre>
-							<div id="response"></div>
-						</fieldset>
-					</div>
-					<script>
-						const rawrButton = document.getElementById('rawr-button');
-						rawrButton.addEventListener('click', () => {
-							myWorker.postMessage('hello');
-						});	
-						const response = document.getElementById('response');
-					</script>
-					<div class="notes">
-						Segue - web workers aren't the time a browser might have multiple event loops
-					</div>
 				</section>
 				<section>
 					<img src="css/chrome-processes.png" class="stretch shadow" />
@@ -716,17 +728,13 @@ while (tasksAreWaiting()) {
 }
 					</code></pre>
 				</section>
-				<section data-background-image="css/philosoraptor-big.jpg">
-					<div class="notes">
-						So why do we even care about this stuff
-						Well, first of all, don't block main thread, use requestAnimationFram
-					</div>
-				</section>
 				<section>
-					<img src="css/clockwork-brain.gif" class="stretch shadow" />
-					<div class="notes">
-						will have your app running like clockwork...
-					</div>
+					<ul>
+						<li class="fragment">Don't block rendering</li>
+						<li class="fragment">Use web workers for long-running tasks</li>
+						<li class="fragment">Use requestAnimationFrame for buttery smooth animations</li>
+						<li class="fragment">Always rel="noopener"</li>
+					</ul>
 				</section>
 				<section>
 					<pre style="margin-top: -150px; font-size: 2em"><code style="padding-left: 0" class="js">setTimeout(fn, 0)</code></pre>
@@ -738,6 +746,9 @@ while (tasksAreWaiting()) {
 					</div>
 				</section>
 				<section data-background-image="css/jurassic-park-raptors.jpg">
+					<h2 class="heading-card fragment" data-fragment-index="1">Thanks! (rawr)</h2>
+					<div class="twitter fragment" style="opacity: .9" data-fragment-index="1">@erinjzimmer</div>
+
 					<div class="notes">
 						- more importantly, better tools to be able to reason about what's going on in your own and other people's JavaScript applications
 						- make you feel like a clever girl

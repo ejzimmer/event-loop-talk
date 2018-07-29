@@ -45,12 +45,6 @@
       }, { once: true });
     }
 
-    connectedCallback() {
-      const firstQueueRect = document.querySelector('task-queue').getBoundingClientRect();
-      const bottom = firstQueueRect.bottom;
-      this.style.top = `${bottom + 80}px`;
-    }
-
     async doLoop() {
       await this.doMicrotaskCheck();
       await this.waitForEvents();
@@ -126,7 +120,6 @@
       const leftDistance = queueLeft - containerLeft;
       this.style.left = `${leftDistance + 16}px`; 
     }
-
 
     spin(run = true) {
       this.loop.style.animationPlayState = run ? 'running' : 'paused';
