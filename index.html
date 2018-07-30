@@ -92,9 +92,6 @@
 							document.body.addEventListener('keydown', highlightJSEngine);
 						});
 					</script>
-					<div class="notes">
-						The bit that runs JavaScript is called the JavaScript engine.
-					</div>
 				</section>
 				<section>
 					<div class="engine-logos">
@@ -312,10 +309,110 @@ while (true) {
 const worker = new Worker('job.js');
 					</code></pre>
 					<div class="fragment" style="font-size: 8em; text-align: center">🎉</div>
+				</section>
+				<section>
+					<h2 style="text-align: left">Why don't web workers interfere with rendering?</h2>
 					<div class="notes">
-						Or you could use a webworker, which is guaranteed not to interfere with your rendering
-						for reasons we'll get into a bit later.
+						You all remember when we were talking about long-running tasks and I said you could
+						use web workers, because they were guaranteed not to interfere with the rendering pipeline?
+						So, given everything we now know about how the event loop works in browsers, how can I be so sure?
+						Because I read the spec...
 					</div>
+				</section>
+				<section>
+					<div class="spec-text">
+						Each <b><i>WorkerGlobalScope</i></b> object has a distinct <u>event loop</u>, 
+						separate from those used by <u>units of related similar-origin browsing contexts</u>.
+					</div>
+				</section>
+				<section>
+					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
+				</section>
+				<section data-state="scaleIFrames">
+					<div class="loops">
+						<fieldset class="web-workers">
+							<legend>Main browser window</legend>
+							<iframe src="rendering-pipeline.html"></iframe>
+						</fieldset>
+						<fieldset class="web-workers">
+							<legend>job.js</legend>
+							<iframe src="web-worker.html"></iframe>    
+						</fieldset>
+						<script>
+							Reveal.addEventListener('scaleIFrames', () => {
+								document.querySelectorAll('.web-workers iframe').forEach((iframe) => {
+									iframe.contentDocument.querySelector('event-loop').setScale(.5);
+								});
+							})
+						</script>
+					</div>
+				</section>
+				<section>
+					<div class="list-and-image">
+						<ul>
+							<li class="fragment">No user interactions</li>
+							<li class="fragment">No rendering pipeline</li>
+							<li class="fragment">No DOM at all!</li>
+						</ul>
+						<img src="css/top-hat-t-rex.gif" class="fragment" />
+				</section>
+				<section>
+					<img src="css/chrome-processes.png" class="stretch shadow" />
+					<div class="notes">
+						If you've ever had a look at your Activity Monitor or Task Manager while Chrome is running,
+						you probably saw something like this...
+						Chrome likes to run things in lots of different processes. 
+						If you have a look at the Chrome Task Manager, you can see what each of those processes is actually doing.
+						(Do it)
+						And you would see that you've got a process for each tab, each browser extension, and a couple of extras.
+						The important thing here, is that we have a process for each tab.
+						Because each of those tabs is running in a separate process, they must have their own event loop.
+						This means that if we start some resource heavy process in one tab, none of the others are affected.
+						This is a big advantage of this process per tab model.
+						Each tab is isolated so it doesn't affect the security or performance of the other tabs.
+					</div>
+				</section>
+				<section>
+					<img src="css/firefox-processes.png" class="stretch shadow" />
+					<div class="notes">
+						It doesn't have to be this way though. If you open all the same tabs in Firefox and check out the task 
+						manager, you see something like this: just four processes for all of your tabs.
+						This means, if you've got a bunch of tabs open, some of them will be sharing an event loop.
+						So, there is potential for some badly behaved tab to interfere with the performance of other tabs,
+						but it also means you've got some RAM left over to do other things.
+					</div>
+				</section>
+				<section>
+					<div class="sharing-or-not">
+						<img src="css/sharing-is-caring.jpg" class="shadow offscreen fragment" />
+						<img src="css/isolated-dinosaurs.jpg" class="shadow offscreen fragment" />
+					</div>
+					<div class="notes">
+						So, generally speaking, it's up the browser whether it runs your JS in its own event loop, or makes you
+						share with other apps.
+						There is an important exception to this rule - shared browsing contexts always share an event loop
+					</div>
+				</section>
+				<section>
+					<a target="_blank" href="slow.html" class="opener-link">
+						&lt;a target="_blank" href="button.html"&gt;&lt;/a&gt;
+					</a>
+					<iframe src="animation.html" class="dino-animation"></iframe>
+					<div class="notes">
+						There's a good reason for this - these windows have access to each others'
+						DOM - demo changing background colour on opener - so they need to be on the same
+						event loop, else there would be issues
+						window.opener.document.body.style.backgroundColor & 
+						window.opener.document.querySelector('iframe').contentWindow.document.body.style.backgroundColor
+						This isn't a security issue, because it only works on same-origin windows and frames - if you try it
+						on cross-origin windows...
+					</div>
+				</section>
+				<section>
+						<a target="_blank" href="slow.html" rel="noopener" class="opener-link">
+							&lt;a target="_blank" <span style="color: rgb(var(--pink))">rel="noopener"</span> href="button.html"&gt;&lt;/a&gt;
+						</a>
+						<iframe src="animation.html" class="dino-animation"></iframe>		
 				</section>
 				<section>
 						<pre><code data-noescape class="js" style="font-size: 3.7em">
@@ -427,7 +524,7 @@ requestAnimationFrame(callback);
 
 					</code></pre>
 				</section>
-				<section>
+				<section data-transition="fade-in">
 					<div style="width: 100px; height: 100px; background-color: rgb(var(--green)); position: fixed; right: -50px"></div>
 					<div class="notes">
 						If you did that, what you would get is this...
@@ -530,110 +627,6 @@ while (true) {
 }
 					</code></pre>
 				</section>
-				<section>
-					<h2 style="text-align: left">Why don't web workers interfere with rendering?</h2>
-					<div class="notes">
-						You all remember when we were talking about long-running tasks and I said you could
-						use web workers, because they were guaranteed not to interfere with the rendering pipeline?
-						So, given everything we now know about how the event loop works in browsers, how can I be so sure?
-						Because I read the spec...
-					</div>
-				</section>
-				<section>
-					<div class="spec-text">
-						Each <b><i>WorkerGlobalScope</i></b> object has a distinct <u>event loop</u>, 
-						separate from those used by <u>units of related similar-origin browsing contexts</u>.
-					</div>
-				</section>
-				<section>
-					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
-				</section>
-				<section data-state="scaleIFrames">
-					<div class="loops">
-						<fieldset class="web-workers">
-							<legend>Main browser window</legend>
-							<iframe src="microtasks.html"></iframe>
-						</fieldset>
-						<fieldset class="web-workers">
-							<legend>job.js</legend>
-							<iframe src="web-worker.html"></iframe>    
-						</fieldset>
-						<script>
-							Reveal.addEventListener('scaleIFrames', () => {
-								document.querySelectorAll('.web-workers iframe').forEach((iframe) => {
-									iframe.contentDocument.querySelector('event-loop').setScale(.5);
-								});
-							})
-						</script>
-					</div>
-				</section>
-				<section>
-					<div class="list-and-image">
-						<ul>
-							<li class="fragment">No user interactions</li>
-							<li class="fragment">No rendering pipeline</li>
-							<li class="fragment">No DOM at all!</li>
-						</ul>
-						<img src="css/top-hat-t-rex.gif" class="fragment" />
-				</section>
-				<section>
-					<img src="css/chrome-processes.png" class="stretch shadow" />
-					<div class="notes">
-						If you've ever had a look at your Activity Monitor or Task Manager while Chrome is running,
-						you probably saw something like this...
-						Chrome likes to run things in lots of different processes. 
-						If you have a look at the Chrome Task Manager, you can see what each of those processes is actually doing.
-						(Do it)
-						And you would see that you've got a process for each tab, each browser extension, and a couple of extras.
-						The important thing here, is that we have a process for each tab.
-						Because each of those tabs is running in a separate process, they must have their own event loop.
-						This means that if we start some resource heavy process in one tab, none of the others are affected.
-						This is a big advantage of this process per tab model.
-						Each tab is isolated so it doesn't affect the security or performance of the other tabs.
-					</div>
-				</section>
-				<section>
-					<img src="css/firefox-processes.png" class="stretch shadow" />
-					<div class="notes">
-						It doesn't have to be this way though. If you open all the same tabs in Firefox and check out the task 
-						manager, you see something like this: just four processes for all of your tabs.
-						This means, if you've got a bunch of tabs open, some of them will be sharing an event loop.
-						So, there is potential for some badly behaved tab to interfere with the performance of other tabs,
-						but it also means you've got some RAM left over to do other things.
-					</div>
-				</section>
-				<section>
-					<div class="sharing-or-not">
-						<img src="css/sharing-is-caring.jpg" class="shadow offscreen fragment" />
-						<img src="css/isolated-dinosaurs.jpg" class="shadow offscreen fragment" />
-					</div>
-					<div class="notes">
-						So, generally speaking, it's up the browser whether it runs your JS in its own event loop, or makes you
-						share with other apps.
-						There is an important exception to this rule - shared browsing contexts always share an event loop
-					</div>
-				</section>
-				<section>
-					<a target="_blank" href="slow.html" class="opener-link">
-						&lt;a target="_blank" href="button.html"&gt;&lt;/a&gt;
-					</a>
-					<iframe src="animation.html" class="dino-animation"></iframe>
-					<div class="notes">
-						There's a good reason for this - these windows have access to each others'
-						DOM - demo changing background colour on opener - so they need to be on the same
-						event loop, else there would be issues
-						window.opener.document.body.style.backgroundColor & 
-						window.opener.document.querySelector('iframe').contentWindow.document.body.style.backgroundColor
-						This isn't a security issue, because it only works on same-origin windows and frames - if you try it
-						on cross-origin windows...
-					</div>
-				</section>
-				<section>
-						<a target="_blank" href="slow.html" rel="noopener" class="opener-link">
-							&lt;a target="_blank" <span style="color: rgb(var(--pink))">rel="noopener"</span> href="button.html"&gt;&lt;/a&gt;
-						</a>
-						<iframe src="animation.html" class="dino-animation"></iframe>		
-				</section>
 				<section data-background-image="css/skeleton.jpg">
 					<h2 class="heading-card" style="position: relative; top: 20px">Node</h2>
 				</section>
@@ -727,28 +720,19 @@ while (tasksAreWaiting()) {
 				<section>
 					<ul>
 						<li class="fragment">Don't block rendering</li>
-						<li class="fragment">Use web workers for long-running tasks</li>
-						<li class="fragment">Use requestAnimationFrame for buttery smooth animations</li>
-						<li class="fragment">Always rel="noopener"</li>
+						<li class="fragment">Use web workers if you can</li>
+						<li class="fragment">Always use rel="noopener"</li>
+						<li class="fragment">Promises beat tasks</li>
+						<li class="fragment">Animate with requestAnimationFrame</li>
 					</ul>
 				</section>
 				<section>
 					<pre style="margin-top: -150px; font-size: 2em"><code style="padding-left: 0" class="js">setTimeout(fn, 0)</code></pre>
 					<pre style="font-size: 2em"><code style="padding-left: 0" class="js fragment">$timeout(() => $scope.$apply());</code></pre>
-					<div class="notes">
-						Hopefully now you also understand why this - or if you're an old-school Angular programmer, this - sometimes
-						makes things work, seemingly by magic
-						And.. maybe you could find a better way to solve your problem
-					</div>
 				</section>
 				<section data-background-image="css/jurassic-park-raptors.jpg">
 					<h2 class="heading-card fragment" data-fragment-index="1">Thanks! (rawr)</h2>
 					<div class="twitter fragment" style="opacity: .9" data-fragment-index="1">@erinjzimmer</div>
-
-					<div class="notes">
-						- more importantly, better tools to be able to reason about what's going on in your own and other people's JavaScript applications
-						- make you feel like a clever girl
-					</div>
 				</section>
 			</div>
 		</div>
