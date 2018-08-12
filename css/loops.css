@@ -64,7 +64,6 @@ svg.title {
   opacity: .6;
 }
 
-
 .browser-internals {
   width: 80%;
   height: 80%;
@@ -282,6 +281,11 @@ svg.title {
 .spec-text {
   font-size: 3em;
   text-align: left;
+}
+
+.yoshi {
+  position: absolute;
+  width: 40vw;
 }
 
 .loops {

@@ -290,7 +290,7 @@ while (true) {
 					<iframe src="rendering-pipeline.html"></iframe>
 				</section>
 				<section class="center">
-					<img src="css/unco-cat.gif" class="stretch border" />
+					<img src="css/dino-jaw.gif" class="stretch border" />
 					<div class="notes">
 						Long running tasks will cause your browser to start dropping frames
 						and, much like this cat, your app just won't run right
@@ -308,7 +308,7 @@ while (true) {
 					<pre><code style="font-size: 3em" class="js">
 const worker = new Worker('job.js');
 					</code></pre>
-					<div class="fragment" style="font-size: 8em; text-align: center">🎉</div>
+					<img src="css/Yoshi_Happy.png" class="yoshi fragment" />
 				</section>
 				<section>
 					<h2 style="text-align: left">Why don't web workers interfere with rendering?</h2>
@@ -410,7 +410,7 @@ const worker = new Worker('job.js');
 				</section>
 				<section>
 						<a target="_blank" href="slow.html" rel="noopener" class="opener-link">
-							&lt;a target="_blank" <span style="color: rgb(var(--pink))">rel="noopener"</span> href="button.html"&gt;&lt;/a&gt;
+							&lt;a target="_blank" <span style="color: rgb(var(--green))">rel="noopener"</span> href="button.html"&gt;&lt;/a&gt;
 						</a>
 						<iframe src="animation.html" class="dino-animation"></iframe>		
 				</section>
@@ -597,7 +597,7 @@ requestAnimationFrame(callback);
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime);
  if (x < screen.width)
-  <span style="color: rgb(var(--pink))">requestAnimationFrame(move);</span>
+  <span style="color: rgb(var(--green))">requestAnimationFrame(move);</span>
  }
 }</code></pre>	 
 				</section>
@@ -626,6 +626,9 @@ while (true) {
  }
 }
 					</code></pre>
+				</section>
+				<section>
+					<video src="https://www.youtube.com/watch?v=8efK-Y3JDFU" width="900px" height="400px"></video>
 				</section>
 				<section data-background-image="css/skeleton.jpg">
 					<h2 class="heading-card" style="position: relative; top: 20px">Node</h2>
@@ -720,7 +723,7 @@ while (tasksAreWaiting()) {
 				<section>
 					<ul>
 						<li class="fragment">Don't block rendering</li>
-						<li class="fragment">Use web workers if you can</li>
+						<li class="fragment">Use web workers</li>
 						<li class="fragment">Always use rel="noopener"</li>
 						<li class="fragment">Promises beat tasks</li>
 						<li class="fragment">Animate with requestAnimationFrame</li>
@@ -732,6 +735,9 @@ while (tasksAreWaiting()) {
 				</section>
 				<section data-background-image="css/jurassic-park-raptors.jpg">
 					<h2 class="heading-card fragment" data-fragment-index="1">Thanks! (rawr)</h2>
+					<h2 class="heading-card fragment" data-fragment-index="2" style="font-size: 3.5em; position: relative; top: 2em;">
+						ejzimmer.github.io/event-loop-talk
+					</h2>
 					<div class="twitter fragment" style="opacity: .9" data-fragment-index="1">@erinjzimmer</div>
 				</section>
 			</div>
