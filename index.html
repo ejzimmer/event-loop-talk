@@ -306,7 +306,15 @@ while (true) {
 				</section>
 				<section>
 					<pre><code style="font-size: 3em" class="js">
+/*  job.js  */
+onmessage = function(e) {
+ for (let i = 0; i < e.data.reps; i++) {
+  e.data.action();
+ }
+}</code></pre><pre><code style="font-size: 3em" class="js fragment">
+/*  app.js  */
 const worker = new Worker('job.js');
+worker.postMessage(action, reps);
 					</code></pre>
 					<img src="css/Yoshi_Happy.png" class="yoshi fragment" />
 				</section>
@@ -332,17 +340,25 @@ const worker = new Worker('job.js');
 					<div class="loops">
 						<fieldset class="web-workers">
 							<legend>Main browser window</legend>
-							<iframe src="rendering-pipeline.html"></iframe>
+							<iframe id="main" src="rendering-pipeline.html"></iframe>
+							<button onclick="sendPostMessage('worker')">Post Message</button>
 						</fieldset>
 						<fieldset class="web-workers">
 							<legend>job.js</legend>
-							<iframe src="web-worker.html"></iframe>    
+							<iframe id="worker" src="web-worker.html"></iframe>   
+							<button onclick="sendPostMessage('main')">Post Message</button> 
 						</fieldset>
 						<script>
+							function sendPostMessage(id) {
+								const recipient = document.querySelector(`iframe#${id}`).contentWindow;
+								recipient.postMessage('addTask', '*');
+							}
+
 							Reveal.addEventListener('scaleIFrames', () => {
 								document.querySelectorAll('.web-workers iframe').forEach((iframe) => {
 									iframe.contentDocument.querySelector('event-loop').setScale(.5);
 								});
+
 							})
 						</script>
 					</div>
@@ -470,6 +486,43 @@ while (true) {
 				</section>
 				<section data-background-image="css/littlefoot-and-mum.jpg">
 					<h2 class="heading-card" style="position: relative; top: 20px">Microtasks</h2>
+				</section>
+				<section>
+					<div style="font-size: 3.8em">
+						A task that happens between tasks
+					</div>
+					<div class="notes">
+						Between one task and the next, or between task and rendering
+					</div>
+				</section>
+				<section>
+					<pre><code>
+const observer = new MutationObserver(callback);
+const myElement = document.getElementById('stegosaurus');
+observer.observe(myElement, ({ subtree: true }));
+					</code></pre>
+					<div class="notes">
+						Potentially lots of things happening
+						Changes to DOM, want to run things related to changing DOM before window renders again
+					</div>
+				</section>
+				<section>
+					<pre><code>
+const myPromise = new Promise((resolve, reject) => { do stuff... });
+myPromise.then(callback).catch(erroCallback);
+					</code></pre>
+					<div class="notes">
+						Performance reasons
+						Esp catch -> want error handling to happen after stuff, but before anything else
+					</div>
+				</section>
+				<section>
+					<pre><code>
+window.queueMicrotask(callback);
+					</code></pre>
+					<div class="notes">
+						Only in Chrome, generally intended for people writing frameworks
+					</div>
 				</section>
 				<section>
 					<iframe src="microtasks.html"></iframe>
@@ -626,9 +679,6 @@ while (true) {
  }
 }
 					</code></pre>
-				</section>
-				<section>
-					<video src="https://www.youtube.com/watch?v=8efK-Y3JDFU" width="900px" height="400px"></video>
 				</section>
 				<section data-background-image="css/skeleton.jpg">
 					<h2 class="heading-card" style="position: relative; top: 20px">Node</h2>

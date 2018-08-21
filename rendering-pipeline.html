@@ -35,5 +35,13 @@
 				<task-queue></task-queue>
 			</task-queues>
 		</event-loop>
+		<script>
+				window.addEventListener('message', (event) => {
+					if (event.data === 'addTask') {
+						const queue = document.querySelector('task-queue');
+						queue.addTask();
+					}
+				});
+		</script>	
 	</body>
 </html>

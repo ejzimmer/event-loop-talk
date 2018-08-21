@@ -284,7 +284,8 @@ svg.title {
 }
 
 .yoshi {
-  position: absolute;
+  position: fixed;
+  bottom: 0;
   width: 40vw;
 }
 
@@ -324,7 +325,7 @@ fieldset.web-workers iframe {
   display: flex;
   align-self: flex-start;
 }
-.worker button {
+.web-workers button {
   font-size: 1em;
   padding: .5em;
   background: transparent;
@@ -333,11 +334,11 @@ fieldset.web-workers iframe {
   border-radius: 5px;
   cursor: pointer;
 }
-.worker button:hover {
+.web-workers button:hover {
   color: var(--background);
   background: white;
 }
-.worker button:active, .worker button:focus {
+.web-workers button:active, .worker button:focus {
   outline: 0;
 } 
 .communication #response {
