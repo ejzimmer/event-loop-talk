@@ -333,12 +333,15 @@ fieldset.web-workers iframe {
   color: white;
   border-radius: 5px;
   cursor: pointer;
+  margin: auto;
+  margin-top: -10vh;
+  z-index: 2;
 }
 .web-workers button:hover {
   color: var(--background);
   background: white;
 }
-.web-workers button:active, .worker button:focus {
+.web-workers button:active, .web-workers button:focus {
   outline: 0;
 } 
 .communication #response {

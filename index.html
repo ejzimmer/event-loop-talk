@@ -373,6 +373,9 @@ worker.postMessage(action, reps);
 						<img src="css/top-hat-t-rex.gif" class="fragment" />
 				</section>
 				<section>
+					<img src="css/caniuse-web-workers.png" class="stretch shadow" />
+				</section>
+				<section>
 					<img src="css/chrome-processes.png" class="stretch shadow" />
 					<div class="notes">
 						If you've ever had a look at your Activity Monitor or Task Manager while Chrome is running,
@@ -507,9 +510,9 @@ observer.observe(myElement, ({ subtree: true }));
 					</div>
 				</section>
 				<section>
-					<pre><code>
-const myPromise = new Promise((resolve, reject) => { do stuff... });
-myPromise.then(callback).catch(erroCallback);
+					<pre><code class="js">
+const myPromise = new Promise((resolve, reject) => { ... });
+myPromise.then(callback).catch(errorCallback);
 					</code></pre>
 					<div class="notes">
 						Performance reasons
@@ -661,6 +664,9 @@ requestAnimationFrame(callback);
 					<iframe style="width: 100%; min-height: 80vh; border: none" src="animations.html"></iframe>
 				</section>
 				<section>
+					<img src="css/caniuse-requestAnimationFrame.png" class="stretch shadow" />
+				</section>
+				<section>
 						<pre><code data-noescape class="js" style="font-size: 2.6em">
 while (true) {
  <span class="variable-name">queue</span> = getNextQueue();
@@ -781,7 +787,6 @@ while (tasksAreWaiting()) {
 				</section>
 				<section>
 					<pre style="margin-top: -150px; font-size: 2em"><code style="padding-left: 0" class="js">setTimeout(fn, 0)</code></pre>
-					<pre style="font-size: 2em"><code style="padding-left: 0" class="js fragment">$timeout(() => $scope.$apply());</code></pre>
 				</section>
 				<section data-background-image="css/jurassic-park-raptors.jpg">
 					<h2 class="heading-card fragment" data-fragment-index="1">Thanks! (rawr)</h2>
