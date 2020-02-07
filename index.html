@@ -33,8 +33,9 @@
 							</text>
 						</svg>
 					</div>
-					<h1>The Event Loop</h1>
-					<div class="twitter">@erinjzimmer</div>
+					<img src="css/dinosaur-head-png-2.png" style="position: absolute; transform: scale(.3) translate(-160%, -200%)">
+					<h1 style="position: relative">The Event Loop</h1>
+					<div class="twitter">@ErinJZimmer</div>
 				</section>
 				<section data-background-image="css/perth-concert-hall.JPG">
 					<div class="about-me">
@@ -42,246 +43,112 @@
 							<li class="fragment" data-fragment-index="1">Erin Zimmer</li>
 							<li class="fragment">Mozilla Tech Speaker & Google Developer Expert</li>
 							<li class="fragment">@ErinJZimmer</li>
-							<li class="fragment" style="margin-bottom: 0">ejzimmer.github.io/event-loop-talk</li>
+							<li class="fragment" style="margin-bottom: 0">https://event-loop.ez.codes</li>
 						</ul>
 						<div class="fragment shine-logo" data-fragment-index="2"><img src="css/shine-solutions-logo-dark.png" /></div>
 					</div>
 				</section>
+
 				<section>
-					<h2 style="font-size: 3.5em">What actually is the Event Loop?</h2>
+					<div class="question">What even is the event loop?</div>
 				</section>
-				<section data-state="web-apis">
-					<fieldset class="browser-internals">
-						<legend>The Browser</legend>
-						<div class="browser-bits">
-							<img id="engine" src="css/JavaScript-logo.png" class="fragment" style="margin-left: 0" />
-							<task-source type="network" class="fragment"></task-source>
-							<task-source type="timer" class="fragment"></task-source>
-							<task-source type="drive" class="fragment"></task-source>
-							<img src="css/mouse-pointer.svg" class="fragment" style="margin: .75em" />
-							<div class="html fragment"></div>
-							<div id="web-apis" class="fragment">Web APIs</div>
-						</div>
-					</fieldset>
-					<script>
-						let lastItem;
-						function highlightWebApis(event) {
-							if (lastItem.classList.contains('current-fragment') && isNextSlide(event.key)) {
-								event.stopPropagation();
-								document.querySelector('.browser-internals').classList.add('web-apis');
-								document.body.removeEventListener('keydown', highlightWebApis);
-							}
-						}
-						Reveal.addEventListener('web-apis', () => {
-							lastItem = document.querySelector('.browser-bits div.html.fragment');
-							document.body.addEventListener('keydown', highlightWebApis);
-						});
-					</script>
-				</section>
-				<section data-state="js-engine">
-					<fieldset class="browser-internals engine">
-						<legend>The Browser</legend>
-						<div class="browser-bits">
-							<img id="engine" src="css/JavaScript-logo.png" style="margin-left: 0" />
-							<task-source type="network"></task-source>
-							<task-source type="timer"></task-source>
-							<task-source type="drive"></task-source>
-							<img src="css/mouse-pointer.svg" style="margin: .75em" />
-							<div class="html"></div>
-							<div id="engines" class="fragment">JavaScript Engine</div>
-						</div>
-					</fieldset>
-					<script>
-						function highlightJSEngine(event) {
-							if (isNextSlide(event.key)) {
-								event.stopPropagation();
-								document.querySelector('.browser-internals.engine #engine').classList.add('highlighted');
-								document.body.removeEventListener('keydown', highlightJSEngine);
-							}
-						}
-						Reveal.addEventListener('js-engine', () => {
-							document.body.addEventListener('keydown', highlightJSEngine);
-						});
-					</script>
-				</section>
+
 				<section>
-					<div class="engine-logos">
-						<img class="fragment" src="css/v8-logo.png" />
-						<img class="fragment" src="css/edge-logo.png" style="transform: scale(.6)" />
-						<img class="fragment" src="css/squirrelfish.png" />
-					</div>
-					<img class="fragment" src="css/spider-monkey.jpg" style="width: 80%" />
+<pre><code style="font-size: 1em">
+&lt;body&gt;
+  &lt;noscript&gt;
+    &lt;form action=&quot;https://mobile.twitter.com/i/nojs_router?path=%2Fhome%3FprefetchTimestamp%3D1580726066737&quot; method=&quot;POST&quot; style=&quot;background-color: #fff; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;&quot;&gt;
+      &lt;div style=&quot;font-size: 18px; font-family: Helvetica,sans-serif; line-height: 24px; margin: 10%; width: 80%;&quot;&gt;
+        &lt;p&gt;We've detected that JavaScript is disabled in your browser. Would you like to proceed to legacy Twitter?&lt;/p&gt;
+        &lt;p style=&quot;margin: 20px 0;&quot;&gt;
+          &lt;button type=&quot;submit&quot; style=&quot;background-color: #1da1f2; border-radius: 100px; border: none; box-shadow: none; color: #fff; cursor: pointer; font-size: 14px; font-weight: bold; line-height: 20px; padding: 6px 16px;&quot;&gt;Yes&lt;/button&gt;
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  &lt;/noscript&gt;
+	&lt;div id=&quot;react-root&quot; style=&quot;height:100%;display:flex;&quot;&gt;
+		&lt;div class=&quot;css-1dbjc4n r-13awgt0 r-12vffkv&quot; data-reactroot=&quot;&quot;&gt;
+			&lt;div class=&quot;css-1dbjc4n r-13awgt0 r-12vffkv&quot;&gt;
+				&lt;div aria-label=&quot;Loading&hellip;&quot; class=&quot;css-1dbjc4n r-14lw9ot r-1p0dtai r-1d2f490 r-1xcajam r-zchlnj r-ipm5af&quot;&gt;
+					&lt;svg viewBox=&quot;0 0 24 24&quot; class=&quot;r-1p0dtai r-13gxpu9 r-4qtqp9 r-yyyyoo r-wy61xf r-1d2f490 r-ywje51 r-dnmrzs r-u8s1d r-zchlnj r-1plcrui r-ipm5af r-lrvibr r-1blnp2b&quot;&gt;
+						&lt;g&gt;
+							&lt;path d=&quot;M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z&quot;&gt;&lt;/path&gt;
+						&lt;/g&gt;
+					&lt;/svg&gt;
+				&lt;/div&gt;
+			&lt;div class=&quot;css-1dbjc4n r-hvic4v r-1d2f490 r-1xcajam r-zchlnj r-1ykxob0&quot; id=&quot;ScriptLoadFailure&quot;&gt;
+				&lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+					&lt;div dir=&quot;auto&quot; class=&quot;css-901oao r-1adg3ll r-1b2b6em r-q4m81j&quot;&gt;
+						&lt;span dir=&quot;auto&quot; class=&quot;css-901oao css-16my406&quot;&gt;Something went wrong, but don&rsquo;t fret &mdash; let&rsquo;s give it another shot.&lt;/span&gt;
+						&lt;br/&gt;
+						&lt;input type=&quot;submit&quot; value=&quot;Try again&quot;/&gt;
+					&lt;/div&gt;
+				&lt;/form&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;&lt;/div&gt;
+	&lt;script nonce=&quot;YjZiYjI1MzctODE4Mi00YjdhLTlkNGItYTdhYmZiY2RlNmFh&quot;&gt;
+	window.__INITIAL_STATE__ = {&quot;optimist&quot;:[],&quot;featureSwitch&quot;:{&quot;config&quot;:{&quot;account_country_setting_countries_whitelist&quot;:{&quot;value&quot;:[&quot;ad&quot;,&quot;ae&quot;,&quot;af&quot;,&quot;ag&quot;,&quot;ai&quot;,&quot;al&quot;,&quot;am&quot;,&quot;ao&quot;,&quot;ar&quot;,&quot;as&quot;,&quot;at&quot;,&quot;au&quot;,&quot;aw&quot;,&quot;ax&quot;,&quot;az&quot;,&quot;ba&quot;,&quot;bb&quot;,&quot;bd&quot;,&quot;be&quot;,&quot;bf&quot;,&quot;bg&quot;,&quot;bh&quot;,&quot;bi&quot;,&quot;bj&quot;,&quot;bl&quot;,&quot;bm&quot;,&quot;bn&quot;,&quot;bo&quot;,&quot;bq&quot;,&quot;br&quot;,&quot;bs&quot;,&quot;bt&quot;,&quot;bv&quot;,&quot;bw&quot;,&quot;by&quot;,&quot;bz&quot;,&quot;ca&quot;,&quot;cc&quot;,&quot;cd&quot;,&quot;cf&quot;,&quot;cg&quot;,&quot;ch&quot;,&quot;ci&quot;,&quot;ck&quot;,&quot;cl&quot;,&quot;cm&quot;,&quot;co&quot;,&quot;cr&quot;,&quot;cu&quot;,&quot;cv&quot;,&quot;cw&quot;,&quot;cx&quot;,&quot;cy&quot;,&quot;cz&quot;,&quot;de&quot;,&quot;dj&quot;,&quot;dk&quot;,&quot;dm&quot;,&quot;do&quot;,&quot;dz&quot;,&quot;ec&quot;,&quot;ee&quot;,&quot;eg&quot;,&quot;er&quot;,&quot;es&quot;,&quot;et&quot;,&quot;fi&quot;,&quot;fj&quot;,&quot;fk&quot;,&quot;fm&quot;,&quot;fo&quot;,&quot;fr&quot;,&quot;ga&quot;,&quot;gb&quot;,&quot;gd&quot;,&quot;ge&quot;,&quot;gf&quot;,&quot;gg&quot;,&quot;gh&quot;,&quot;gi&quot;,&quot;gl&quot;,&quot;gm&quot;,&quot;gn&quot;,&quot;gp&quot;,&quot;gq&quot;,&quot;gr&quot;,&quot;gs&quot;,&quot;gt&quot;,&quot;gu&quot;,&quot;gw&quot;,&quot;gy&quot;,&quot;hk&quot;,&quot;hn&quot;,&quot;hr&quot;,&quot;ht&quot;,&quot;hu&quot;,&quot;id&quot;,&quot;ie&quot;,&quot;il&quot;,&quot;im&quot;,&quot;in&quot;,&quot;io&quot;,&quot;iq&quot;,&quot;ir&quot;,&quot;is&quot;,&quot;it&quot;,&quot;je&quot;,&quot;jm&quot;,&quot;jo&quot;,&quot;jp&quot;,&quot;ke&quot;,&quot;kg&quot;,&quot;kh&quot;,&quot;ki&quot;,&quot;km&quot;,&quot;kn&quot;,&quot;kr&quot;,&quot;kw&quot;,&quot;ky&quot;,&quot;kz&quot;,&quot;la&quot;,&quot;lb&quot;,&quot;lc&quot;,&quot;li&quot;,&quot;lk&quot;,&quot;lr&quot;,&quot;ls&quot;,&quot;lt&quot;,&quot;lu&quot;,&quot;lv&quot;,&quot;ly&quot;,&quot;ma&quot;,&quot;mc&quot;,&quot;md&quot;,&quot;me&quot;,&quot;mf&quot;,&quot;mg&quot;,&quot;mh&quot;,&quot;mk&quot;,&quot;ml&quot;,&quot;mn&quot;,&quot;mo&quot;,&quot;mp&quot;,&quot;mq&quot;,&quot;mr&quot;,&quot;ms&quot;,&quot;mt&quot;,&quot;mu&quot;,&quot;mv&quot;,&quot;mw&quot;,&quot;mx&quot;,&quot;my&quot;,&quot;mz&quot;,&quot;na&quot;,&quot;nc&quot;,&quot;ne&quot;,&quot;nf&quot;,&quot;ng&quot;,&quot;ni&quot;,&quot;nl&quot;,&quot;no&quot;,&quot;np&quot;,&quot;nr&quot;,&quot;nu&quot;,&quot;nz&quot;,&quot;om&quot;,&quot;pa&quot;,&quot;pe&quot;,&quot;pf&quot;,&quot;pg&quot;,&quot;ph&quot;,&quot;pk&quot;,&quot;pl&quot;,&quot;pm&quot;,&quot;pn&quot;,&quot;pr&quot;,&quot;ps&quot;,&quot;pt&quot;,&quot;pw&quot;,&quot;py&quot;,&quot;qa&quot;,&quot;re&quot;,&quot;ro&quot;,&quot;rs&quot;,&quot;ru&quot;,&quot;rw&quot;,&quot;sa&quot;,&quot;sb&quot;,&quot;sc&quot;,&quot;se&quot;,&quot;sg&quot;,&quot;sh&quot;,&quot;si&quot;,&quot;sk&quot;,&quot;sl&quot;,&quot;sm&quot;,&quot;sn&quot;,&quot;so&quot;,&quot;sr&quot;,&quot;st&quot;,&quot;sv&quot;,&quot;sx&quot;,&quot;sz&quot;,&quot;tc&quot;,&quot;td&quot;,&quot;tf&quot;,&quot;tg&quot;,&quot;th&quot;,&quot;tj&quot;,&quot;tk&quot;,&quot;tl&quot;,&quot;tm&quot;,&quot;tn&quot;,&quot;to&quot;,&quot;tr&quot;,&quot;tt&quot;,&quot;tv&quot;,&quot;tw&quot;,&quot;tz&quot;,&quot;ua&quot;,&quot;ug&quot;,&quot;us&quot;,&quot;uy&quot;,&quot;uz&quot;,&quot;va&quot;,&quot;vc&quot;,&quot;ve&quot;,&quot;vi&quot;,&quot;vn&quot;,&quot;vu&quot;,&quot;wf&quot;,&quot;ws&quot;,&quot;xk&quot;,&quot;ye&quot;,&quot;yt&quot;,&quot;za&quot;,&quot;zm&quot;,&quot;zw&quot;]},&quot;author_moderated_replies_urt_container_enabled&quot;:{&quot;value&quot;:false},&quot;content_language_setting_enabled&quot;:{&quot;value&quot;:true},&quot;dm_reactions_config_active_reactions&quot;:{&quot;value&quot;:[&quot;😂:funny&quot;,&quot;😲:surprised&quot;,&quot;😢:sad&quot;,&quot;❤:like&quot;,&quot;🔥:excited&quot;,&quot;👍:agree&quot;,&quot;👎:disagree&quot;]},&quot;dm_reactions_config_inactive_reactions&quot;:{&quot;value&quot;:[&quot;😠:angry&quot;]},&quot;guest_broadcasting_timeline_decorations_enabled&quot;:{&quot;value&quot;:true},&quot;home_timeline_latest_timeline_autoswitch_half_life_minutes&quot;:{&quot;value&quot;:43200},&quot;home_timeline_latest_timeline_autoswitch_threshold_multiplier&quot;:{&quot;value&quot;:2},&quot;home_timeline_latest_timeline_max_time_to_autoswitch_minutes&quot;:{&quot;value&quot;:5256000},&quot;home_timeline_latest_timeline_min_time_to_autoswitch_minutes&quot;:{&quot;value&quot;:5256000},&quot;home_timeline_latest_timeline_switch_enabled&quot;:{&quot;value&quot;:true},&quot;home_timeline_latest_timeline_threshold_to_increase_autoswitch_seconds&quot;:{&quot;value&quot;:60},&quot;home_timeline_spheres_detail_page_enabled&quot;:{&quot;value&quot;:true},&quot;home_timeline_spheres_detail_page_report_list_enabled&quot;:{&quot;value&quot;:true},&quot;home_timeline_spheres_detail_page_sharing_enabled&quot;:{&quot;value&quot;:true},&quot;home_timeline_spheres_max_user_owned_or_subscribed_lists_count&quot;:{&quot;value&quot;:0},&quot;home_timeline_spheres_management_page_enabled&quot;:{&quot;value&quot;:false},&quot;live_event_modern_segmented_controller_enabled&quot;:{&quot;value&quot;:false},&quot;live_event_multi_video_auto_advance_dock_enabled&quot;:{&quot;value&quot;:true},&quot;live_event_multi_video_auto_advance_enabled&quot;:{&quot;value&quot;:true},&quot;live_event_multi_video_auto_advance_fullscreen_enabled&quot;:{&quot;value&quot;:false},&quot;live_event_multi_video_auto_advance_transition_duration_seconds&quot;:{&quot;value&quot;:5},&quot;live_event_multi_video_enabled&quot;:{&quot;value&quot;:true},&quot;live_event_share_icon_enabled&quot;:{&quot;value&quot;:true},&quot;live_event_timeline_default_refresh_rate_interval_seconds&quot;:{&quot;value&quot;:30},&quot;live_event_timeline_minimum_refresh_rate_interval_seconds&quot;:{&quot;value&quot;:10},&quot;live_event_timeline_server_controlled_refresh_rate_enabled&quot;:{&quot;value&quot;:true},&quot;live_event_vod_promoted_content_enabled&quot;:{&quot;value&quot;:false},&quot;moment_annotations_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_2fa_settings_change_copy_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_allow_switch_to_ms&quot;:{&quot;value&quot;:false},&quot;responsive_web_alt_text_badge_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_alt_text_by_default_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_alt_text_gifs_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_auto_logout_multiaccount_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_auto_logout_restrictedauthtoken_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_auto_logout_twid_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_branch_download_links_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_branch_sdk_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_broadcast_page_card_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_composer_text_in_local_state_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_continue_as_param_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_continue_as_always_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_conversation_tree_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_conversation_tree_deep_threads_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_conversation_tree_selected_state_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_delight_sidebar_welcome_prompt&quot;:{&quot;value&quot;:true},&quot;responsive_web_desktop_app_reload_hard_ttl&quot;:{&quot;value&quot;:86400000},&quot;responsive_web_desktop_app_reload_nightly_reset_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_desktop_app_reload_soft_ttl&quot;:{&quot;value&quot;:86400000},&quot;responsive_web_disable_access&quot;:{&quot;value&quot;:true},&quot;responsive_web_dm_quick_access_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_dm_reactions_read_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_dm_reactions_write_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_eu_countries&quot;:{&quot;value&quot;:[&quot;at&quot;,&quot;be&quot;,&quot;bg&quot;,&quot;ch&quot;,&quot;cy&quot;,&quot;cz&quot;,&quot;de&quot;,&quot;dk&quot;,&quot;ee&quot;,&quot;es&quot;,&quot;fi&quot;,&quot;fr&quot;,&quot;gb&quot;,&quot;gr&quot;,&quot;hr&quot;,&quot;hu&quot;,&quot;ie&quot;,&quot;is&quot;,&quot;it&quot;,&quot;li&quot;,&quot;lt&quot;,&quot;lu&quot;,&quot;lv&quot;,&quot;mt&quot;,&quot;nl&quot;,&quot;no&quot;,&quot;pl&quot;,&quot;pt&quot;,&quot;ro&quot;,&quot;se&quot;,&quot;si&quot;,&quot;sk&quot;]},&quot;responsive_web_extension_compatibility_hide&quot;:{&quot;value&quot;:true},&quot;responsive_web_extension_compatibility_impression_guard&quot;:{&quot;value&quot;:true},&quot;responsive_web_extension_compatibility_override_param&quot;:{&quot;value&quot;:true},&quot;responsive_web_extension_compatibility_scribe&quot;:{&quot;value&quot;:true},&quot;responsive_web_extension_compatibility_size_threshold&quot;:{&quot;value&quot;:50},&quot;responsive_web_fake_root_twitter_domain_for_testing&quot;:{&quot;value&quot;:false},&quot;responsive_web_feature_switch_dash_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_feedback_link_m6&quot;:{&quot;value&quot;:&quot;&quot;},&quot;responsive_web_fetch_hashflags_on_boot&quot;:{&quot;value&quot;:true},&quot;responsive_web_framerate_tracking_home_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_gif_search_improvements_m2_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_graphql_dark_reads_probability&quot;:{&quot;value&quot;:0},&quot;responsive_web_graphql_following&quot;:{&quot;value&quot;:false},&quot;responsive_web_graphql_user_lists_blocked&quot;:{&quot;value&quot;:false},&quot;responsive_web_graphql_user_lists_followers_you_follow&quot;:{&quot;value&quot;:false},&quot;responsive_web_graphql_user_lists_muted&quot;:{&quot;value&quot;:false},&quot;responsive_web_graphql_verify_credentials_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_guest_token_reporting&quot;:{&quot;value&quot;:true},&quot;responsive_web_horizon_video_player_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_hw_cards_in_dms_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_inline_login_field_prompts_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_instream_video_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_live_video_parity_periscope_auth_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_login_input_type_email_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_media_avatar_crop_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_media_upload_eager_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_media_upload_limit_2g&quot;:{&quot;value&quot;:250},&quot;responsive_web_media_upload_limit_3g&quot;:{&quot;value&quot;:1500},&quot;responsive_web_media_upload_limit_slow_2g&quot;:{&quot;value&quot;:150},&quot;responsive_web_media_upload_target_jpg_pixels_per_byte&quot;:{&quot;value&quot;:1},&quot;responsive_web_media_viewer_m2_sidebar_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_moment_analytics_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_multiple_account_limit&quot;:{&quot;value&quot;:5},&quot;responsive_web_new_tweet_translations_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_new_multi_account_ux_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_ntab_verified_mentions_vit_internal_dogfood&quot;:{&quot;value&quot;:false},&quot;responsive_web_ocf_sms_autoverify_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_redirect_moments_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_report_page_not_found&quot;:{&quot;value&quot;:false},&quot;responsive_web_rich_tweet_landing_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_scheduling_edit_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_scheduling_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_scheduling_entry_point&quot;:{&quot;value&quot;:&quot;overflow&quot;},&quot;responsive_web_scroller_autopoll_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_scroller_pin_to_top_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_scroller_v3_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_search_dms_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_show_urt_connect_tab&quot;:{&quot;value&quot;:true},&quot;responsive_web_side_nav_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_trends_setting_new_endpoints&quot;:{&quot;value&quot;:false},&quot;responsive_web_tweetdeck_composer_route_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_tweetdeck_composer_team_picker_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_tweets_pill_local_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_all_cards_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_amplify_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_app_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_appplayer_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_audio_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_broadcast_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_direct_store_link_app_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_image_direct_message_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_live_event_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_message_me_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_moment_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_periscope_broadcast_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_player_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_poll2choice_image_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_poll2choice_text_only_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_poll2choice_video_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_poll3choice_image_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_poll3choice_text_only_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_poll3choice_video_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_poll4choice_image_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_poll4choice_text_only_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_poll4choice_video_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_unified_cards_promo_image_app_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_promo_image_convo_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_promo_video_convo_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_promo_video_website_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_promo_website_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_promoted_cards_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_summary_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_summary_large_image_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_unified_card_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_video_direct_message_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_unified_cards_vine_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_verification_v2_enabled&quot;:{&quot;value&quot;:false},&quot;responsive_web_video_native_fullscreen_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_video_promoted_logging_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_vod_muted_captions_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_vs_config_desktop_assumed_item_height&quot;:{&quot;value&quot;:100},&quot;responsive_web_vs_config_resize_observer_enabled&quot;:{&quot;value&quot;:true},&quot;responsive_web_zipkin_api_requests_enabled&quot;:{&quot;value&quot;:false},&quot;scribe_api_error_sample_size&quot;:{&quot;value&quot;:0},&quot;scribe_api_sample_size&quot;:{&quot;value&quot;:100},&quot;scribe_cdn_host_list&quot;:{&quot;value&quot;:[&quot;si0.twimg.com&quot;,&quot;si1.twimg.com&quot;,&quot;si2.twimg.com&quot;,&quot;si3.twimg.com&quot;,&quot;a0.twimg.com&quot;,&quot;a1.twimg.com&quot;,&quot;a2.twimg.com&quot;,&quot;a3.twimg.com&quot;,&quot;abs.twimg.com&quot;,&quot;amp.twimg.com&quot;,&quot;o.twimg.com&quot;,&quot;pbs.twimg.com&quot;,&quot;pbs-eb.twimg.com&quot;,&quot;pbs-ec.twimg.com&quot;,&quot;pbs-v6.twimg.com&quot;,&quot;pbs-h1.twimg.com&quot;,&quot;pbs-h2.twimg.com&quot;,&quot;video.twimg.com&quot;,&quot;platform.twitter.com&quot;,&quot;cdn.api.twitter.com&quot;,&quot;ton.twimg.com&quot;,&quot;v.cdn.vine.co&quot;,&quot;mtc.cdn.vine.co&quot;,&quot;edge.vncdn.co&quot;,&quot;mid.vncdn.co&quot;]},&quot;scribe_cdn_sample_size&quot;:{&quot;value&quot;:50},&quot;scribe_enabled&quot;:{&quot;value&quot;:true},&quot;topics_profile_entry_point_enabled&quot;:{&quot;value&quot;:true},&quot;tweet_limited_actions_config_enabled&quot;:{&quot;value&quot;:true},&quot;tweet_limited_actions_config_non_compliant&quot;:{&quot;value&quot;:[&quot;reply&quot;,&quot;retweet&quot;,&quot;like&quot;,&quot;send_via_dm&quot;,&quot;add_to_bookmarks&quot;,&quot;add_to_moment&quot;,&quot;pin_to_profile&quot;,&quot;view_tweet_activity&quot;,&quot;share_tweet_via&quot;]},&quot;user_display_name_max_limit&quot;:{&quot;value&quot;:50},&quot;web_video_hls_mp4_threshold_sec&quot;:{&quot;value&quot;:0},&quot;web_video_hlsjs_version&quot;:{&quot;value&quot;:&quot;&quot;},&quot;web_video_hlsjs_worker_enabled&quot;:{&quot;value&quot;:false},&quot;live_event_web_docking_holdback_8481&quot;:{&quot;value&quot;:&quot;docking_enabled&quot;},&quot;responsive_web_graphql_followers_9209&quot;:{&quot;value&quot;:&quot;control&quot;},&quot;responsive_web_video_precaching_8507&quot;:{&quot;value&quot;:&quot;precaching&quot;},&quot;rweb_android_app_install_cta_v2_8497&quot;:{&quot;value&quot;:&quot;app_install_once_per_week&quot;},&quot;rweb_organic_hw_cards_8432&quot;:{&quot;value&quot;:&quot;treatment&quot;},&quot;rweb_promoted_hw_cards_8477&quot;:{&quot;value&quot;:&quot;treatment&quot;}},&quot;debug&quot;:{},&quot;impression_pointers&quot;:{&quot;responsive_web_unified_cards_poll4choice_video_enabled&quot;:[&quot;unified_cards_poll_media_9949&quot;],&quot;responsive_web_unified_cards_poll3choice_image_enabled&quot;:[&quot;unified_cards_poll_media_9949&quot;],&quot;responsive_web_unified_cards_poll3choice_video_enabled&quot;:[&quot;unified_cards_poll_media_9949&quot;],&quot;responsive_web_unified_cards_poll2choice_video_enabled&quot;:[&quot;unified_cards_poll_media_9949&quot;],&quot;responsive_web_unified_cards_poll2choice_image_enabled&quot;:[&quot;unified_cards_poll_media_9949&quot;],&quot;responsive_web_unified_cards_poll4choice_image_enabled&quot;:[&quot;unified_cards_poll_media_9949&quot;]},&quot;impressions&quot;:{&quot;responsive_web_graphql_followers_9209&quot;:{&quot;key&quot;:&quot;responsive_web_graphql_followers_9209&quot;,&quot;bucket&quot;:&quot;control&quot;,&quot;version&quot;:5},&quot;unified_cards_poll_media_9949&quot;:{&quot;key&quot;:&quot;unified_cards_poll_media_9949&quot;,&quot;bucket&quot;:&quot;control&quot;,&quot;version&quot;:2}},&quot;featureSetToken&quot;:&quot;098234df4c9a720fbf6614d48322ae927e74f37c&quot;,&quot;isLoaded&quot;:true,&quot;isLoading&quot;:false,&quot;keysRead&quot;:{},&quot;settingsVersion&quot;:&quot;345565bae8067ad6069e38310f957382&quot;},&quot;urt&quot;:{},&quot;entities&quot;:{&quot;users&quot;:{&quot;entities&quot;:{&quot;1516051664&quot;:{&quot;advertiser_account_type&quot;:&quot;promotable_user&quot;,&quot;blocked_by&quot;:false,&quot;blocking&quot;:false,&quot;can_dm&quot;:true,&quot;can_media_tag&quot;:true,&quot;created_at&quot;:&quot;2013-06-14T10:41:58.000Z&quot;,&quot;default_profile&quot;:false,&quot;default_profile_image&quot;:false,&quot;description&quot;:&quot;Oxygen will begin to flow without the bag inflating.\nhttps://t.co/8PLrDknw8R.\nShe/her.&quot;,&quot;entities&quot;:{&quot;description&quot;:{&quot;urls&quot;:[{&quot;display_url&quot;:&quot;ez.codes&quot;,&quot;expanded_url&quot;:&quot;http://ez.codes&quot;,&quot;indices&quot;:[53,76],&quot;url&quot;:&quot;https://t.co/8PLrDknw8R&quot;}]}},&quot;fast_followers_count&quot;:0,&quot;favourites_count&quot;:305,&quot;follow_request_sent&quot;:false,&quot;followed_by&quot;:false,&quot;followers_count&quot;:555,&quot;following&quot;:false,&quot;friends_count&quot;:353,&quot;has_custom_timelines&quot;:true,&quot;is_translator&quot;:false,&quot;listed_count&quot;:30,&quot;location&quot;:&quot;Melbourne, Victoria&quot;,&quot;media_count&quot;:161,&quot;muting&quot;:false,&quot;name&quot;:&quot;🌈 Erin Zimmer&quot;,&quot;normal_followers_count&quot;:555,&quot;notifications&quot;:false,&quot;pinned_tweet_ids_str&quot;:[],&quot;profile_banner_extensions&quot;:{&quot;mediaColor&quot;:{&quot;r&quot;:{&quot;ok&quot;:{&quot;palette&quot;:[{&quot;percentage&quot;:63.48,&quot;rgb&quot;:{&quot;red&quot;:37,&quot;blue&quot;:39,&quot;green&quot;:38}},{&quot;percentage&quot;:21.4,&quot;rgb&quot;:{&quot;red&quot;:136,&quot;blue&quot;:109,&quot;green&quot;:134}},{&quot;percentage&quot;:4.31,&quot;rgb&quot;:{&quot;red&quot;:221,&quot;blue&quot;:227,&quot;green&quot;:223}},{&quot;percentage&quot;:2.47,&quot;rgb&quot;:{&quot;red&quot;:178,&quot;blue&quot;:108,&quot;green&quot;:167}},{&quot;percentage&quot;:1.94,&quot;rgb&quot;:{&quot;red&quot;:110,&quot;blue&quot;:72,&quot;green&quot;:67}}]}}}},&quot;profile_banner_url&quot;:&quot;https://pbs.twimg.com/profile_banners/1516051664/1426371004&quot;,&quot;profile_image_extensions&quot;:{&quot;mediaColor&quot;:{&quot;r&quot;:{&quot;ok&quot;:{&quot;palette&quot;:[{&quot;percentage&quot;:62.52,&quot;rgb&quot;:{&quot;red&quot;:12,&quot;blue&quot;:231,&quot;green&quot;:116}},{&quot;percentage&quot;:7.81,&quot;rgb&quot;:{&quot;red&quot;:146,&quot;blue&quot;:36,&quot;green&quot;:58}},{&quot;percentage&quot;:6.42,&quot;rgb&quot;:{&quot;red&quot;:21,&quot;blue&quot;:36,&quot;green&quot;:20}},{&quot;percentage&quot;:5.83,&quot;rgb&quot;:{&quot;red&quot;:239,&quot;blue&quot;:191,&quot;green&quot;:224}},{&quot;percentage&quot;:3.05,&quot;rgb&quot;:{&quot;red&quot;:222,&quot;blue&quot;:33,&quot;green&quot;:82}}]}}}},&quot;profile_image_url_https&quot;:&quot;https://pbs.twimg.com/profile_images/724737729154555904/Y2A0ssCJ_normal.jpg&quot;,&quot;profile_interstitial_type&quot;:&quot;&quot;,&quot;protected&quot;:false,&quot;screen_name&quot;:&quot;ErinJZimmer&quot;,&quot;statuses_count&quot;:1559,&quot;translator_type&quot;:&quot;none&quot;,&quot;verified&quot;:false,&quot;want_retweets&quot;:false,&quot;id_str&quot;:&quot;1516051664&quot;,&quot;is_profile_translatable&quot;:false,&quot;birthdate&quot;:&quot;&quot;,&quot;features&quot;:{&quot;mediatool_studio_library&quot;:false},&quot;profile_banner_extensions_media_color&quot;:{&quot;palette&quot;:[{&quot;percentage&quot;:63.48,&quot;rgb&quot;:{&quot;red&quot;:37,&quot;blue&quot;:39,&quot;green&quot;:38}},{&quot;percentage&quot;:21.4,&quot;rgb&quot;:{&quot;red&quot;:136,&quot;blue&quot;:109,&quot;green&quot;:134}},{&quot;percentage&quot;:4.31,&quot;rgb&quot;:{&quot;red&quot;:221,&quot;blue&quot;:227,&quot;green&quot;:223}},{&quot;percentage&quot;:2.47,&quot;rgb&quot;:{&quot;red&quot;:178,&quot;blue&quot;:108,&quot;green&quot;:167}},{&quot;percentage&quot;:1.94,&quot;rgb&quot;:{&quot;red&quot;:110,&quot;blue&quot;:72,&quot;green&quot;:67}}]},&quot;profile_image_extensions_media_color&quot;:{&quot;palette&quot;:[{&quot;percentage&quot;:62.52,&quot;rgb&quot;:{&quot;red&quot;:12,&quot;blue&quot;:231,&quot;green&quot;:116}},{&quot;percentage&quot;:7.81,&quot;rgb&quot;:{&quot;red&quot;:146,&quot;blue&quot;:36,&quot;green&quot;:58}},{&quot;percentage&quot;:6.42,&quot;rgb&quot;:{&quot;red&quot;:21,&quot;blue&quot;:36,&quot;green&quot;:20}},{&quot;percentage&quot;:5.83,&quot;rgb&quot;:{&quot;red&quot;:239,&quot;blue&quot;:191,&quot;green&quot;:224}},{&quot;percentage&quot;:3.05,&quot;rgb&quot;:{&quot;red&quot;:222,&quot;blue&quot;:33,&quot;green&quot;:82}}]}}},&quot;errors&quot;:{},&quot;fetchStatus&quot;:{&quot;1516051664&quot;:&quot;loaded&quot;}},&quot;tweets&quot;:{&quot;entities&quot;:{},&quot;errors&quot;:{},&quot;fetchStatus&quot;:{}},&quot;cards&quot;:{&quot;entities&quot;:{},&quot;errors&quot;:{},&quot;fetchStatus&quot;:{}}},&quot;toasts&quot;:[],&quot;devices&quot;:{&quot;browserPush&quot;:{&quot;fetchStatus&quot;:&quot;none&quot;,&quot;pushNotificationsPrompt&quot;:{&quot;dismissed&quot;:false,&quot;fetchStatus&quot;:&quot;none&quot;},&quot;subscribed&quot;:false,&quot;supported&quot;:null},&quot;devices&quot;:{&quot;data&quot;:{&quot;emails&quot;:[],&quot;phone_numbers&quot;:[]},&quot;fetchStatus&quot;:&quot;none&quot;},&quot;notificationSettings&quot;:{&quot;push_settings&quot;:{&quot;error&quot;:null,&quot;fetchStatus&quot;:&quot;none&quot;},&quot;push_settings_template&quot;:{&quot;template&quot;:{&quot;settings&quot;:[]}},&quot;sms_settings&quot;:{&quot;error&quot;:null,&quot;fetchStatus&quot;:&quot;none&quot;},&quot;sms_settings_template&quot;:{&quot;template&quot;:{&quot;settings&quot;:[]}},&quot;checkin_time&quot;:null}},&quot;typeaheadUsers&quot;:{&quot;fetchStatus&quot;:&quot;none&quot;,&quot;users&quot;:{},&quot;denylist&quot;:{},&quot;lastUpdated&quot;:0,&quot;index&quot;:{}},&quot;session&quot;:{&quot;country&quot;:&quot;AU&quot;,&quot;emailLiteLoginEligibility&quot;:{&quot;fetchStatus&quot;:&quot;none&quot;},&quot;guestId&quot;:&quot;157455719777117351&quot;,&quot;language&quot;:&quot;en&quot;,&quot;oneFactorLoginEligibility&quot;:{&quot;fetchStatus&quot;:&quot;none&quot;},&quot;user_id&quot;:&quot;1516051664&quot;},&quot;settings&quot;:{&quot;local&quot;:{&quot;nextPushCheckin&quot;:0,&quot;shouldAutoPlayGif&quot;:false,&quot;scale&quot;:&quot;normal&quot;,&quot;themeColor&quot;:&quot;blue&quot;,&quot;highContrastEnabled&quot;:false,&quot;themeBackground&quot;:&quot;light&quot;,&quot;loginPromptLastShown&quot;:0,&quot;reducedMotionEnabled&quot;:false,&quot;conversationTreeEnabled&quot;:false},&quot;remote&quot;:{&quot;settings&quot;:{&quot;display_sensitive_media&quot;:true,&quot;time_zone&quot;:{&quot;name&quot;:&quot;Melbourne&quot;,&quot;utc_offset&quot;:39600,&quot;tzinfo_name&quot;:&quot;Australia/Melbourne&quot;},&quot;protected&quot;:false,&quot;screen_name&quot;:&quot;ErinJZimmer&quot;,&quot;always_use_https&quot;:true,&quot;use_cookie_personalization&quot;:false,&quot;sleep_time&quot;:{&quot;enabled&quot;:false,&quot;end_time&quot;:null,&quot;start_time&quot;:null},&quot;geo_enabled&quot;:false,&quot;language&quot;:&quot;en&quot;,&quot;discoverable_by_email&quot;:true,&quot;discoverable_by_mobile_phone&quot;:false,&quot;personalized_trends&quot;:true,&quot;allow_media_tagging&quot;:&quot;all&quot;,&quot;allow_contributor_request&quot;:&quot;all&quot;,&quot;allow_ads_personalization&quot;:false,&quot;allow_logged_out_device_personalization&quot;:false,&quot;allow_location_history_personalization&quot;:false,&quot;allow_sharing_data_for_third_party_personalization&quot;:false,&quot;allow_dms_from&quot;:&quot;all&quot;,&quot;allow_dm_groups_from&quot;:&quot;following&quot;,&quot;translator_type&quot;:&quot;none&quot;,&quot;trend_location&quot;:[{&quot;name&quot;:&quot;Worldwide&quot;,&quot;countryCode&quot;:null,&quot;url&quot;:&quot;http://where.yahooapis.com/v1/place/1&quot;,&quot;woeid&quot;:1,&quot;placeType&quot;:{&quot;name&quot;:&quot;Supername&quot;,&quot;code&quot;:19},&quot;parentid&quot;:0,&quot;country&quot;:&quot;&quot;}],&quot;country_code&quot;:&quot;au&quot;,&quot;nsfw_user&quot;:false,&quot;nsfw_admin&quot;:false,&quot;ranked_timeline_setting&quot;:2,&quot;ranked_timeline_eligible&quot;:true,&quot;address_book_live_sync_enabled&quot;:false,&quot;universal_quality_filtering_enabled&quot;:&quot;enabled&quot;,&quot;dm_receipt_setting&quot;:&quot;all_enabled&quot;,&quot;alt_text_compose_enabled&quot;:null,&quot;mention_filter&quot;:&quot;unfiltered&quot;,&quot;allow_authenticated_periscope_requests&quot;:false,&quot;protect_password_reset&quot;:false,&quot;require_password_login&quot;:false,&quot;requires_login_verification&quot;:false,&quot;dm_quality_filter&quot;:&quot;disabled&quot;,&quot;autoplay_disabled&quot;:true,&quot;settings_metadata&quot;:{}},&quot;fetchStatus&quot;:&quot;loaded&quot;},&quot;dataSaver&quot;:{&quot;dataSaverMode&quot;:false},&quot;transient&quot;:{&quot;dtabBarInfo&quot;:{&quot;dtabAll&quot;:null,&quot;dtabRweb&quot;:null,&quot;hide&quot;:false},&quot;loginPromptShown&quot;:false,&quot;lastViewedDmInboxPath&quot;:&quot;/messages&quot;,&quot;themeFocus&quot;:&quot;&quot;}},&quot;hashflags&quot;:{&quot;fetchStatus&quot;:&quot;none&quot;,&quot;hashflags&quot;:{}}};
+	window.__META_DATA__ = {&quot;env&quot;:&quot;prod&quot;,&quot;isFromDynamicRenderer&quot;:false,&quot;isLoggedIn&quot;:true,&quot;isRTL&quot;:false,&quot;hasMultiAccountCookie&quot;:false,&quot;serverDate&quot;:1580726069485,&quot;userAgentTags&quot;:[&quot;m2&quot;,&quot;rweb&quot;,&quot;msw&quot;],&quot;sha&quot;:&quot;fa1024039ac1478c343ae849830ac99089c65098&quot;};
+	window.__PREFETCH_DATA__ = {&quot;items&quot;:[{&quot;key&quot;:&quot;dataUsageSettings&quot;,&quot;payload&quot;:{&quot;dataSaverMode&quot;:false,&quot;videoAutoplay&quot;:&quot;Off&quot;}}],&quot;timestamp&quot;:1580726066737};
+	&lt;/script&gt;
+	&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot; nonce=&quot;YjZiYjI1MzctODE4Mi00YjdhLTlkNGItYTdhYmZiY2RlNmFh&quot;&gt;
+		window.__SCRIPTS_LOADED__ = {};
+		!function(e){function n(n){for(var o,t,i=n[0],c=n[1],m=n[2],u=0,s=[];u&lt;i.length;u++)t=i[u],Object.prototype.hasOwnProperty.call(a,t)&amp;&amp;a[t]&amp;&amp;s.push(a[t][0]),a[t]=0;for(o in c)Object.prototype.hasOwnProperty.call(c,o)&amp;&amp;(e[o]=c[o]);for(l&amp;&amp;l(n);s.length;)s.shift()();return r.push.apply(r,m||[]),d()}function d(){for(var e,n=0;n&lt;r.length;n++){for(var d=r[n],o=!0,i=1;i&lt;d.length;i++){var c=d[i];0!==a[c]&amp;&amp;(o=!1)}o&amp;&amp;(r.splice(n--,1),e=t(t.s=d[0]))}return e}var o={},a={0:0},r=[];function t(n){if(o[n])return o[n].exports;var d=o[n]={i:n,l:!1,exports:{}};return e[n].call(d.exports,d,d.exports,t),d.l=!0,d.exports}t.e=function(e){var n=[],d=a[e];if(0!==d)if(d)n.push(d[2]);else{var o=new Promise((function(n,o){d=a[e]=[n,o]}));n.push(d[2]=o);var r,i=document.createElement(&quot;script&quot;);i.charset=&quot;utf-8&quot;,i.timeout=120,t.nc&amp;&amp;i.setAttribute(&quot;nonce&quot;,t.nc),i.src=function(e){return t.p+&quot;&quot;+({2:&quot;shared~bundle.HomeTimeline&quot;,3:&quot;shared~bundle.DirectMessages&quot;,4:&quot;shared~bundle.UserProfile&quot;,5:&quot;shared~bundle.Settings&quot;,6:&quot;bundle.NewsCameraCapsule~loader.NewsCamera~ondemand.VideoPlayerDefaultUI&quot;,7:&quot;bundle.Conversation~bundle.TweetMediaDetail&quot;,8:&quot;bundle.Display~bundle.Settings&quot;,9:&quot;bundle.GenericTimeline&quot;,10:&quot;bundle.LiveEvent~bundle.Moment&quot;,11:&quot;bundle.NewsCameraCapsule~loader.NewsCamera&quot;,12:&quot;ondemand.PlayerBase~ondemand.lex&quot;,13:&quot;vendors~ondemand.TweetDeckRichTextCompose~bundle.DMRichTextCompose&quot;,14:&quot;bundle.AboutThisAd&quot;,15:&quot;bundle.Account&quot;,16:&quot;bundle.AdvancedSearch&quot;,17:&quot;bundle.Bookmarks&quot;,18:&quot;bundle.Broadcast&quot;,19:&quot;bundle.Collection&quot;,20:&quot;bundle.Compose&quot;,21:&quot;bundle.ComposeMedia&quot;,22:&quot;bundle.ConnectTab&quot;,23:&quot;bundle.Conversation&quot;,24:&quot;bundle.ConversationParticipants&quot;,25:&quot;bundle.DMRichTextCompose&quot;,26:&quot;bundle.DirectMessages&quot;,27:&quot;bundle.Display&quot;,28:&quot;bundle.Download&quot;,29:&quot;bundle.Explore&quot;,30:&quot;bundle.ExploreTopics&quot;,31:&quot;bundle.FollowerRequests&quot;,32:&quot;bundle.GifSearch&quot;,33:&quot;bundle.HomeTimeline&quot;,34:&quot;bundle.KeyboardShortcuts&quot;,35:&quot;bundle.LiveEvent&quot;,36:&quot;bundle.LoggedOutHome&quot;,37:&quot;bundle.Login&quot;,38:&quot;bundle.Logout&quot;,39:&quot;bundle.Moment&quot;,40:&quot;bundle.MultiAccount&quot;,41:&quot;bundle.NetworkInstrument&quot;,42:&quot;bundle.NewsCameraCapsule&quot;,43:&quot;bundle.NotificationDetail&quot;,44:&quot;bundle.Notifications&quot;,45:&quot;bundle.Ocf&quot;,46:&quot;bundle.Place&quot;,47:&quot;bundle.ProfileRedirect&quot;,48:&quot;bundle.Report&quot;,49:&quot;bundle.RichTextCompose&quot;,50:&quot;bundle.Search&quot;,51:&quot;bundle.Settings&quot;,52:&quot;bundle.SettingsInternals&quot;,53:&quot;bundle.SettingsProfile&quot;,54:&quot;bundle.SettingsTransparency&quot;,55:&quot;bundle.SmsLogin&quot;,56:&quot;bundle.Topics&quot;,57:&quot;bundle.Trends&quot;,58:&quot;bundle.TweetActivity&quot;,59:&quot;bundle.TweetMediaDetail&quot;,60:&quot;bundle.TweetMediaTags&quot;,61:&quot;bundle.Twitterversary&quot;,62:&quot;bundle.UserAvatar&quot;,63:&quot;bundle.UserFollowLists&quot;,64:&quot;bundle.UserHeader&quot;,65:&quot;bundle.UserLists&quot;,66:&quot;bundle.UserMoments&quot;,67:&quot;bundle.UserProfile&quot;,68:&quot;bundle.UserProfileTimelines&quot;,69:&quot;bundle.UserRedirect&quot;,168:&quot;loader.AbsolutePower&quot;,169:&quot;loader.AppModules&quot;,170:&quot;loader.DashMenu&quot;,171:&quot;loader.DelightSidebarWelcomePrompt&quot;,172:&quot;loader.ExploreSidebar&quot;,173:&quot;loader.FeedbackSheet&quot;,174:&quot;loader.FeedbackTombstone&quot;,175:&quot;loader.HWCard&quot;,176:&quot;loader.NewTweetsPill&quot;,177:&quot;loader.NewsCamera&quot;,178:&quot;loader.PeriscopeOverlay&quot;,179:&quot;loader.ProfileClusterFollow&quot;,180:&quot;loader.PushNotificationsPrompt&quot;,181:&quot;loader.SideNav&quot;,182:&quot;loader.SignupModule&quot;,183:&quot;loader.TimelineGap&quot;,184:&quot;loader.TimelineRenderer&quot;,185:&quot;loader.TweetCurationActionMenu&quot;,186:&quot;loader.TweetPhotos&quot;,187:&quot;loader.Typeahead&quot;,188:&quot;loader.WideLayout&quot;,189:&quot;loader.directMessagesData&quot;,190:&quot;loader.graphQLDarkReads&quot;,192:&quot;ondemand.Balloons&quot;,193:&quot;ondemand.BranchSdk&quot;,194:&quot;ondemand.CarouselScroller&quot;,195:&quot;ondemand.ComposeScheduling&quot;,196:&quot;ondemand.EditBirthdate&quot;,197:&quot;ondemand.EmojiPicker&quot;,198:&quot;ondemand.HoverCard&quot;,199:&quot;ondemand.InlinePlayer&quot;,200:&quot;ondemand.IntentPrompt&quot;,201:&quot;ondemand.MicrosoftInterface&quot;,202:&quot;ondemand.PlayerBase&quot;,203:&quot;ondemand.PlayerHls12&quot;,204:&quot;ondemand.PlayerUi&quot;,205:&quot;ondemand.ProfileSidebar&quot;,206:&quot;ondemand.SettingsInternals&quot;,207:&quot;ondemand.TweetDeckRichTextCompose&quot;,208:&quot;ondemand.VideoPlayerDefaultUI&quot;,209:&quot;ondemand.countries-ar&quot;,210:&quot;ondemand.countries-bg&quot;,211:&quot;ondemand.countries-bn&quot;,212:&quot;ondemand.countries-ca&quot;,213:&quot;ondemand.countries-cs&quot;,214:&quot;ondemand.countries-da&quot;,215:&quot;ondemand.countries-de&quot;,216:&quot;ondemand.countries-el&quot;,217:&quot;ondemand.countries-en&quot;,218:&quot;ondemand.countries-en-GB&quot;,219:&quot;ondemand.countries-es&quot;,220:&quot;ondemand.countries-eu&quot;,221:&quot;ondemand.countries-fa&quot;,222:&quot;ondemand.countries-fi&quot;,223:&quot;ondemand.countries-fil&quot;,224:&quot;ondemand.countries-fr&quot;,225:&quot;ondemand.countries-ga&quot;,226:&quot;ondemand.countries-gl&quot;,227:&quot;ondemand.countries-gu&quot;,228:&quot;ondemand.countries-he&quot;,229:&quot;ondemand.countries-hi&quot;,230:&quot;ondemand.countries-hr&quot;,231:&quot;ondemand.countries-hu&quot;,232:&quot;ondemand.countries-id&quot;,233:&quot;ondemand.countries-it&quot;,234:&quot;ondemand.countries-ja&quot;,235:&quot;ondemand.countries-kn&quot;,236:&quot;ondemand.countries-ko&quot;,237:&quot;ondemand.countries-mr&quot;,238:&quot;ondemand.countries-ms&quot;,239:&quot;ondemand.countries-nb&quot;,240:&quot;ondemand.countries-nl&quot;,241:&quot;ondemand.countries-pl&quot;,242:&quot;ondemand.countries-pt&quot;,243:&quot;ondemand.countries-ro&quot;,244:&quot;ondemand.countries-ru&quot;,245:&quot;ondemand.countries-sk&quot;,246:&quot;ondemand.countries-sr&quot;,247:&quot;ondemand.countries-sv&quot;,248:&quot;ondemand.countries-ta&quot;,249:&quot;ondemand.countries-th&quot;,250:&quot;ondemand.countries-tr&quot;,251:&quot;ondemand.countries-uk&quot;,252:&quot;ondemand.countries-ur&quot;,253:&quot;ondemand.countries-zh&quot;,254:&quot;ondemand.countries-zh-Hant&quot;,255:&quot;ondemand.emoji.ar&quot;,256:&quot;ondemand.emoji.bg&quot;,257:&quot;ondemand.emoji.bn&quot;,258:&quot;ondemand.emoji.ca&quot;,259:&quot;ondemand.emoji.cs&quot;,260:&quot;ondemand.emoji.da&quot;,261:&quot;ondemand.emoji.de&quot;,262:&quot;ondemand.emoji.el&quot;,263:&quot;ondemand.emoji.en&quot;,264:&quot;ondemand.emoji.en-GB&quot;,265:&quot;ondemand.emoji.en-ss&quot;,266:&quot;ondemand.emoji.en-xx&quot;,267:&quot;ondemand.emoji.es&quot;,268:&quot;ondemand.emoji.eu&quot;,269:&quot;ondemand.emoji.fa&quot;,270:&quot;ondemand.emoji.fi&quot;,271:&quot;ondemand.emoji.fil&quot;,272:&quot;ondemand.emoji.fr&quot;,273:&quot;ondemand.emoji.ga&quot;,274:&quot;ondemand.emoji.gl&quot;,275:&quot;ondemand.emoji.gu&quot;,276:&quot;ondemand.emoji.he&quot;,277:&quot;ondemand.emoji.hi&quot;,278:&quot;ondemand.emoji.hr&quot;,279:&quot;ondemand.emoji.hu&quot;,280:&quot;ondemand.emoji.id&quot;,281:&quot;ondemand.emoji.it&quot;,282:&quot;ondemand.emoji.ja&quot;,283:&quot;ondemand.emoji.kn&quot;,284:&quot;ondemand.emoji.ko&quot;,285:&quot;ondemand.emoji.mr&quot;,286:&quot;ondemand.emoji.ms&quot;,287:&quot;ondemand.emoji.nb&quot;,288:&quot;ondemand.emoji.nl&quot;,289:&quot;ondemand.emoji.pl&quot;,290:&quot;ondemand.emoji.pt&quot;,291:&quot;ondemand.emoji.ro&quot;,292:&quot;ondemand.emoji.ru&quot;,293:&quot;ondemand.emoji.sk&quot;,294:&quot;ondemand.emoji.sr&quot;,295:&quot;ondemand.emoji.sv&quot;,296:&quot;ondemand.emoji.ta&quot;,297:&quot;ondemand.emoji.th&quot;,298:&quot;ondemand.emoji.tr&quot;,299:&quot;ondemand.emoji.uk&quot;,300:&quot;ondemand.emoji.ur&quot;,301:&quot;ondemand.emoji.vi&quot;,302:&quot;ondemand.emoji.zh&quot;,303:&quot;ondemand.emoji.zh-Hant&quot;,304:&quot;ondemand.framerateTracking&quot;,305:&quot;ondemand.lex&quot;,307:&quot;vendors~ondemand.EmojiPicker&quot;,308:&quot;vendors~ondemand.PlayerBase&quot;,309:&quot;vendors~ondemand.PlayerUi&quot;,310:&quot;vendors~ondemand.TweetDeckRichTextCompose&quot;}[e]||e)+&quot;.&quot;+{2:&quot;a519c69&quot;,3:&quot;c75d435&quot;,4:&quot;6e8fc13&quot;,5:&quot;b25d59c&quot;,6:&quot;54b8a93&quot;,7:&quot;ee108d2&quot;,8:&quot;aa73ca8&quot;,9:&quot;f4e4166&quot;,10:&quot;d90baab&quot;,11:&quot;14a5792&quot;,12:&quot;0ee634b&quot;,13:&quot;9e4aec5&quot;,14:&quot;12ded46&quot;,15:&quot;5976fbd&quot;,16:&quot;c90bbfa&quot;,17:&quot;65f3ce8&quot;,18:&quot;e7a4684&quot;,19:&quot;39b015c&quot;,20:&quot;7e70b64&quot;,21:&quot;a24e3e6&quot;,22:&quot;3b20053&quot;,23:&quot;1e66aa7&quot;,24:&quot;cf76dff&quot;,25:&quot;5fb0047&quot;,26:&quot;bf67d0e&quot;,27:&quot;ba471eb&quot;,28:&quot;6b946cf&quot;,29:&quot;fc1113b&quot;,30:&quot;34729c4&quot;,31:&quot;e3e6135&quot;,32:&quot;2f7f852&quot;,33:&quot;712d26a&quot;,34:&quot;b59cfa6&quot;,35:&quot;4c7e4e6&quot;,36:&quot;7fba7ef&quot;,37:&quot;ce0d27a&quot;,38:&quot;a225f9f&quot;,39:&quot;5c7f506&quot;,40:&quot;cc15770&quot;,41:&quot;7b75a6f&quot;,42:&quot;0278f82&quot;,43:&quot;f587303&quot;,44:&quot;3148015&quot;,45:&quot;2b1e029&quot;,46:&quot;6d6c7fc&quot;,47:&quot;b8e16a2&quot;,48:&quot;ba493f8&quot;,49:&quot;7da9260&quot;,50:&quot;91c74d9&quot;,51:&quot;d191ea9&quot;,52:&quot;eaa4d55&quot;,53:&quot;f4cdc95&quot;,54:&quot;04e11a9&quot;,55:&quot;ea15f9a&quot;,56:&quot;f038727&quot;,57:&quot;4c89ed6&quot;,58:&quot;ce796c1&quot;,59:&quot;73ac3dc&quot;,60:&quot;6c533a6&quot;,61:&quot;2a1a06e&quot;,62:&quot;09c52ec&quot;,63:&quot;42b5549&quot;,64:&quot;ce625b6&quot;,65:&quot;16194c7&quot;,66:&quot;bc3633f&quot;,67:&quot;f753b15&quot;,68:&quot;8a73502&quot;,69:&quot;6205f68&quot;,168:&quot;86dcba5&quot;,169:&quot;381cdbc&quot;,170:&quot;9bb836b&quot;,171:&quot;cc4e0da&quot;,172:&quot;12864ad&quot;,173:&quot;fc945b2&quot;,174:&quot;acebd0e&quot;,175:&quot;34936d8&quot;,176:&quot;9e40b3d&quot;,177:&quot;25319e4&quot;,178:&quot;1c750c9&quot;,179:&quot;c114303&quot;,180:&quot;b0213f6&quot;,181:&quot;394c742&quot;,182:&quot;945897a&quot;,183:&quot;b933185&quot;,184:&quot;8553a9b&quot;,185:&quot;bc27cb9&quot;,186:&quot;354210d&quot;,187:&quot;9f6ef65&quot;,188:&quot;abba97e&quot;,189:&quot;3ce20ae&quot;,190:&quot;9275902&quot;,192:&quot;f548126&quot;,193:&quot;95b9ff3&quot;,194:&quot;7591795&quot;,195:&quot;54b99b5&quot;,196:&quot;927a072&quot;,197:&quot;9bde8c3&quot;,198:&quot;3829c49&quot;,199:&quot;45b1214&quot;,200:&quot;5933152&quot;,201:&quot;ec5622b&quot;,202:&quot;3900fb6&quot;,203:&quot;162250e&quot;,204:&quot;259c2de&quot;,205:&quot;4a7b58e&quot;,206:&quot;59e6184&quot;,207:&quot;5c0d330&quot;,208:&quot;8b5950a&quot;,209:&quot;dcf67e1&quot;,210:&quot;15238bc&quot;,211:&quot;cfe9073&quot;,212:&quot;7a60d86&quot;,213:&quot;e65c869&quot;,214:&quot;6965d7c&quot;,215:&quot;1e8193f&quot;,216:&quot;bd99990&quot;,217:&quot;9a7001a&quot;,218:&quot;b81b6ef&quot;,219:&quot;0dcfdfd&quot;,220:&quot;b15646d&quot;,221:&quot;b64343b&quot;,222:&quot;98a26b4&quot;,223:&quot;76f6e75&quot;,224:&quot;086b46f&quot;,225:&quot;79401c4&quot;,226:&quot;bf827ff&quot;,227:&quot;6407cfa&quot;,228:&quot;76164a7&quot;,229:&quot;28cd7b2&quot;,230:&quot;e5070d4&quot;,231:&quot;65fd116&quot;,232:&quot;9436f5f&quot;,233:&quot;5f67082&quot;,234:&quot;5e1c6bb&quot;,235:&quot;b7bce4c&quot;,236:&quot;82cc373&quot;,237:&quot;1d87cf9&quot;,238:&quot;2e9275e&quot;,239:&quot;2082f85&quot;,240:&quot;8682120&quot;,241:&quot;da55458&quot;,242:&quot;252891f&quot;,243:&quot;fc17d52&quot;,244:&quot;74fb673&quot;,245:&quot;9772105&quot;,246:&quot;8b200f1&quot;,247:&quot;08e5b51&quot;,248:&quot;e52609c&quot;,249:&quot;844a6d1&quot;,250:&quot;7d28caf&quot;,251:&quot;dca711b&quot;,252:&quot;110df23&quot;,253:&quot;df2451b&quot;,254:&quot;bee5756&quot;,255:&quot;e5db850&quot;,256:&quot;f2e9f95&quot;,257:&quot;a2dbfb3&quot;,258:&quot;40865db&quot;,259:&quot;5bf3c7f&quot;,260:&quot;0e39890&quot;,261:&quot;a4d9b92&quot;,262:&quot;fdf6c42&quot;,263:&quot;ab63373&quot;,264:&quot;a76df98&quot;,265:&quot;c576b41&quot;,266:&quot;2556230&quot;,267:&quot;e3665b1&quot;,268:&quot;f0d0054&quot;,269:&quot;ed48bd4&quot;,270:&quot;31e9752&quot;,271:&quot;b15ebde&quot;,272:&quot;ca9f9a9&quot;,273:&quot;98071f2&quot;,274:&quot;c3e3cba&quot;,275:&quot;960acc7&quot;,276:&quot;09e729e&quot;,277:&quot;fa62673&quot;,278:&quot;cf7cf6b&quot;,279:&quot;840a4bd&quot;,280:&quot;8144770&quot;,281:&quot;2e8e422&quot;,282:&quot;c893051&quot;,283:&quot;001d3c8&quot;,284:&quot;e067e40&quot;,285:&quot;4e7f253&quot;,286:&quot;a97acc8&quot;,287:&quot;cb64d0f&quot;,288:&quot;101727b&quot;,289:&quot;304e29a&quot;,290:&quot;c043089&quot;,291:&quot;9739a39&quot;,292:&quot;662ca81&quot;,293:&quot;cd6de06&quot;,294:&quot;f9f2f5b&quot;,295:&quot;713c4ef&quot;,296:&quot;0a67c63&quot;,297:&quot;96a74d0&quot;,298:&quot;41cf12d&quot;,299:&quot;a6a8096&quot;,300:&quot;e74a908&quot;,301:&quot;4551f9f&quot;,302:&quot;6c06862&quot;,303:&quot;04a0e00&quot;,304:&quot;88c5f0c&quot;,305:&quot;c7afd20&quot;,307:&quot;97df1ce&quot;,308:&quot;db4f310&quot;,309:&quot;a67fc60&quot;,310:&quot;4cde46b&quot;}[e]+&quot;4.js&quot;}(e);var c=new Error;r=function(n){i.onerror=i.onload=null,clearTimeout(m);var d=a[e];if(0!==d){if(d){var o=n&amp;&amp;(&quot;load&quot;===n.type?&quot;missing&quot;:n.type),r=n&amp;&amp;n.target&amp;&amp;n.target.src;c.message=&quot;Loading chunk &quot;+e+&quot; failed.\n(&quot;+o+&quot;: &quot;+r+&quot;)&quot;,c.name=&quot;ChunkLoadError&quot;,c.type=o,c.request=r,d[1](c)}a[e]=void 0}};var m=setTimeout((function(){r({type:&quot;timeout&quot;,target:i})}),12e4);i.onerror=i.onload=r,document.head.appendChild(i)}return Promise.all(n)},t.m=e,t.c=o,t.d=function(e,n,d){t.o(e,n)||Object.defineProperty(e,n,{enumerable:!0,get:d})},t.r=function(e){&quot;undefined&quot;!=typeof Symbol&amp;&amp;Symbol.toStringTag&amp;&amp;Object.defineProperty(e,Symbol.toStringTag,{value:&quot;Module&quot;}),Object.defineProperty(e,&quot;__esModule&quot;,{value:!0})},t.t=function(e,n){if(1&amp;n&amp;&amp;(e=t(e)),8&amp;n)return e;if(4&amp;n&amp;&amp;&quot;object&quot;==typeof e&amp;&amp;e&amp;&amp;e.__esModule)return e;var d=Object.create(null);if(t.r(d),Object.defineProperty(d,&quot;default&quot;,{enumerable:!0,value:e}),2&amp;n&amp;&amp;&quot;string&quot;!=typeof e)for(var o in e)t.d(d,o,function(n){return e[n]}.bind(null,o));return d},t.n=function(e){var n=e&amp;&amp;e.__esModule?function(){return e.default}:function(){return e};return t.d(n,&quot;a&quot;,n),n},t.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},t.p=&quot;https://abs.twimg.com/responsive-web/web/&quot;,t.oe=function(e){throw e};var i=window.webpackJsonp=window.webpackJsonp||[],c=i.push.bind(i);i.push=n,i=i.slice();for(var m=0;m&lt;i.length;m++)n(i[m]);var l=c;d()}([]),window.__SCRIPTS_LOADED__.runtime=!0;
+	//# sourceMappingURL=runtime.2c1d3cb4.js.map
+	&lt;/script&gt;
+	&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot; nonce=&quot;YjZiYjI1MzctODE4Mi00YjdhLTlkNGItYTdhYmZiY2RlNmFh&quot; crossorigin=&quot;anonymous&quot; src=&quot;https://abs.twimg.com/responsive-web/web/polyfills.a0d464b4.js&quot;&gt;&lt;/script&gt;
+	&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot; nonce=&quot;YjZiYjI1MzctODE4Mi00YjdhLTlkNGItYTdhYmZiY2RlNmFh&quot; crossorigin=&quot;anonymous&quot; src=&quot;https://abs.twimg.com/responsive-web/web/vendors~main.d4bb44a4.js&quot;&gt;&lt;/script&gt;
+	&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot; nonce=&quot;YjZiYjI1MzctODE4Mi00YjdhLTlkNGItYTdhYmZiY2RlNmFh&quot; crossorigin=&quot;anonymous&quot; src=&quot;https://abs.twimg.com/responsive-web/web/i18n-rweb/en.c558e804.js&quot;&gt;&lt;/script&gt;
+	&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot; nonce=&quot;YjZiYjI1MzctODE4Mi00YjdhLTlkNGItYTdhYmZiY2RlNmFh&quot; crossorigin=&quot;anonymous&quot; src=&quot;https://abs.twimg.com/responsive-web/web/i18n-horizon/en.ffd5aad4.js&quot;&gt;&lt;/script&gt;
+	&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot; nonce=&quot;YjZiYjI1MzctODE4Mi00YjdhLTlkNGItYTdhYmZiY2RlNmFh&quot; crossorigin=&quot;anonymous&quot; src=&quot;https://abs.twimg.com/responsive-web/web/main.d4843a24.js&quot;&gt;&lt;/script&gt;
+	&lt;script nonce=&quot;YjZiYjI1MzctODE4Mi00YjdhLTlkNGItYTdhYmZiY2RlNmFh&quot;&gt;
+		if (!window.__SCRIPTS_LOADED__['main']) {
+			document.getElementById('ScriptLoadFailure').style.display = 'block';
+		}
+	&lt;/script&gt;
+</code></pre>				
 				</section>
+
 				<section>
-					<div class="centred">
-						<div class="inverse big-text">Web APIs</div>
-						<div class="arrow-down">^</div>
-						<div class="uninverse big-text">JavaScript Engine</div>
-					</div>
+					<pre><code class="js">
+const context = new AudioContext();
+const sine = context.createOscillator();
+					
+setTimeout(() => {
+	sine.start();
+	sine.connect(context.destination);
+}, 28800000)
+					</code></pre>
+					
 				</section>
+
+
 				<section>
-					<pre><code data-noescape class="js" style="font-size: 4em">
-while (true) {
- <span class="variable-name">task</span> = taskQueue.pop();
- execute(<span class="variable-name">task</span>);
-}
+					<pre><code class="js">
+const alarmButton = document.getElementById('alarm-off');
+alarmButton.addEventListener('click', function () {
+	sine.disconnect();
+});
 					</code></pre>
 				</section>
-				<section>
-					<div class="list-and-image">
-						<ul>
-							<li class="fragment">What's a task?</li>
-							<li class="fragment">What's a task&nbsp;queue?</li>
-							<li class="fragment">How do tasks<br />get in the task&nbsp;queue?</li>
-						</ul>
-						<img src="css/Philosoraptor.jpg" />
-					</div>
-				</section>
-				<section>
-					<div class="columns">
-						<pre><code>
-<script>
- const intrepidAdventurers = [
-  'Little Foot',
-  'Cera',
-  'Ducky',
-  'Petrie',
-  'Spike'
- ];
 
- function rawr() {
-  console.log('rawr!')
- }
-
- intrepidAdventurers.forEach(rawr);
-</script>
+				<section>
+					<pre><code class="js">
+fetch(COFFEE_MACHINE_API, COFFEE_REQUEST)
+	.then((response) => response.json())
+	.then((response) => {
+		if (response === OK) {
+			alert('Your coffee is ready!');
+		}
+	});
 					</code></pre>
-						<div class="arrow-right fragment" data-fragment-index="1">^</div>
-						<div class="task fragment" data-fragment-index="1"></div>
-					</div>
 				</section>
-				<section>
-					<iframe src="parser-only.html"></iframe>
-				</section>
-				<section>
-					<h2><div style="font-size: .9em">JavaScript, why are you like that?</div></h2>
-				</section>
-				<section>
-					<h2>JavaScript is single-threaded</h2>
-					<div class="notes">
-						- But remember, the JS engine is only one part of the browser
-					</div>
-				</section>
-				<section>
-					<h2><i>Browsers</i> are multi-threaded</h2>
-					<div class="notes">
-						As well as running your JavaScript, a browser could be 
-						- keeping track of mouse and keyboard events
-						- making network requests
-						- handling timers
-						- disk operations 
-						And any of these things could be generating tasks, via callbacks
-					</div>
-				</section>
-				<section>
-					<fieldset class="browser-internals">
-							<legend>The Browser</legend>
-							<div class="browser-bits">
-								<img id="engine" src="css/JavaScript-logo.png" style="margin-left: 0" />
-								<task-source type="network"></task-source>
-								<task-source type="timer"></task-source>
-								<task-source type="drive"></task-source>
-								<img src="css/mouse-pointer.svg" style="margin: .75em" />
-								<div class="html"></div>
-							</div>
-						</fieldset>						
-				</section>
-				<section>
-					<div class="notes">
-						In fact, this idea is the very heart of the asynchronous programming we all know and love so much		
-					</div>
-					<pre><code style="font-size: 3em">setTimeout(myCallbackFunction, 3000);</code></pre>		
-				</section>
-				<section>
-					<div style="display: flex; flex-direction: column; margin: 1em;">
-						<div class="quote fragment" style="text-align: left; margin-bottom: 2em; --quote-colour: var(--green)">
-							Hey WebAPIs! Could you wait 3 seconds and then run my callback function?
-						</div>
-						<div class="quote fragment" style="text-align: left; align-self: flex-end; --quote-colour: var(--pink);	">
-							No worries! You keep doing your thing, I'll take care of this.
-						</div>
-					</div>		
-				</section>
-				<section data-state="threads">
-					<div class="threaded" style="display: flex; justify-content: space-around; position: relative">
-						<div style="position: relative; display: flex">
-							<div class="task manual-task" style="transition-duration: 3s"></div>
-							<task-queue id="threads-task" style="--queue-width: 150px; margin-left: 50px;">
-							</task-queue>
-						</div>
-						<task-source id="threaded-timer" type="timer" class="timer-animation"></task-source>
-					</div>
-					<script>
-						Reveal.addEventListener('threads', () => {
-							let newTask;
 
-							function finishTasks(event) {
-								if (isNextSlide(event.key)) {
-									event.stopPropagation();
-									task.style.transitionDuration = '2s';
-									task.style.top = '100px';
-
-									task.addEventListener('transitionend', () => task.style.opacity = 0);
-
-									newTask.style.top = '100px';
-									newTask.addEventListener('transitionend', () => newTask.style.opacity = 0);
-
-									document.body.removeEventListener('keydown', finishTasks);
-								}
-							}
-
-							function addTimerTaskToQueue(event) {
-								if (isNextSlide(event.key)) {
-									event.stopPropagation();
-									document.body.removeEventListener('keydown', addTimerTaskToQueue);
-
-									newTask = document.createElement('div');
-									newTask.classList.add('task', 'manual-task');
-									newTask.style.zIndex = -2;
-									newTask.style.right = '24px';
-									newTask.style.transition = 'top 5s linear 2s';
-
-									document.querySelector('.threaded div').append(newTask);
-
-									timer.style.visibility = 'hidden';
-
-									document.body.addEventListener('keydown', finishTasks);
-								}
-							}
-
-							function runFiveSecondTask(event) {
-								if (isNextSlide(event.key)) {
-									event.stopPropagation();
-									task.style.top = '50px';
-									timer.classList.add('go');
-
-									document.body.removeEventListener('keydown', runFiveSecondTask);
-									timer.addEventListener('transitionend', () => {
-										timer.style.filter = 'drop-shadow(3px 3px 5px rgb(var(--green))';
-										document.body.addEventListener('keydown', addTimerTaskToQueue);
-									});
-								}
-							}
-
-							const task = document.querySelector('.threaded .task');
-							const timer = document.getElementById('threaded-timer');
-							document.body.addEventListener('keydown', runFiveSecondTask);
-						});
-					</script>
-				</section>
 				<section>
 					<iframe src="simple.html"></iframe>
 				</section>
+
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 4em">
 while (true) {
@@ -289,12 +156,13 @@ while (true) {
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
-					<div class="notes">
-						So that's basically how tasks and task queues work.
-						Of course, in real life, it's a bit more complicated than that
-					</div>
 				</section>
-				<section data-background-image="css/mario.jpg">
+
+				<section>
+					<iframe src="just-task-queue.html" frameborder="0"></iframe>
+				</section>
+
+				<section data-background-image="css/yoshis_island_1ups2.png">
 					<h2 class="heading-card">The Rendering Pipeline</h2>
 				</section>
 				<section>
@@ -306,143 +174,6 @@ while (true) {
 						Long running tasks will cause your browser to start dropping frames
 						and, much like this cat, your app just won't run right
 					</div>
-				</section>
-				<section class="center">
-					<pre><code style="font-size: 3em">function repeat(reps, action) {
- action();
- if (--reps) {
-  setTimeout(() => repeat(reps, action));
- }
-}					</code></pre>
-				</section>
-				<section>
-					<pre><code style="font-size: 3em" class="js">
-/*  job.js  */
-onmessage = function(e) {
- for (let i = 0; i < e.data.reps; i++) {
-  e.data.action();
- }
-}</code></pre><pre><code style="font-size: 3em" class="js fragment">
-/*  app.js  */
-const worker = new Worker('job.js');
-worker.postMessage(action, reps);
-					</code></pre>
-					<img src="css/Yoshi_Happy.png" class="yoshi fragment" />
-				</section>
-				<section>
-					<h2 style="text-align: left">Why don't web workers interfere with rendering?</h2>
-					<div class="notes">
-						You all remember when we were talking about long-running tasks and I said you could
-						use web workers, because they were guaranteed not to interfere with the rendering pipeline?
-						So, given everything we now know about how the event loop works in browsers, how can I be so sure?
-						Because I read the spec...
-					</div>
-				</section>
-				<section>
-					<div class="spec-text">
-						Each <b><i>WorkerGlobalScope</i></b> object has a distinct <u>event loop</u>, 
-						separate from those used by <u>units of related similar-origin browsing contexts</u>.
-					</div>
-				</section>
-				<section>
-					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
-				</section>
-				<section data-state="scaleIFrames">
-					<div class="loops">
-						<fieldset class="web-workers">
-							<legend>Main browser window</legend>
-							<iframe id="main" src="rendering-pipeline.html"></iframe>
-							<button onclick="sendPostMessage('worker')">Post Message</button>
-						</fieldset>
-						<fieldset class="web-workers">
-							<legend>job.js</legend>
-							<iframe id="worker" src="web-worker.html"></iframe>   
-							<button onclick="sendPostMessage('main')">Post Message</button> 
-						</fieldset>
-						<script>
-							function sendPostMessage(id) {
-								const recipient = document.querySelector(`iframe#${id}`).contentWindow;
-								recipient.postMessage('addTask', '*');
-							}
-
-							Reveal.addEventListener('scaleIFrames', () => {
-								document.querySelectorAll('.web-workers iframe').forEach((iframe) => {
-									iframe.contentDocument.querySelector('event-loop').setScale(.5);
-								});
-
-							})
-						</script>
-					</div>
-				</section>
-				<section>
-					<div class="list-and-image">
-						<ul>
-							<li class="fragment">No user interactions</li>
-							<li class="fragment">No rendering pipeline</li>
-							<li class="fragment">No DOM at all!</li>
-						</ul>
-						<img src="css/top-hat-t-rex.gif" class="fragment" />
-				</section>
-				<section>
-					<img src="css/caniuse-web-workers.png" class="stretch shadow" />
-				</section>
-				<section>
-					<img src="css/chrome-processes.png" class="stretch shadow" />
-					<div class="notes">
-						If you've ever had a look at your Activity Monitor or Task Manager while Chrome is running,
-						you probably saw something like this...
-						Chrome likes to run things in lots of different processes. 
-						If you have a look at the Chrome Task Manager, you can see what each of those processes is actually doing.
-						(Do it)
-						And you would see that you've got a process for each tab, each browser extension, and a couple of extras.
-						The important thing here, is that we have a process for each tab.
-						Because each of those tabs is running in a separate process, they must have their own event loop.
-						This means that if we start some resource heavy process in one tab, none of the others are affected.
-						This is a big advantage of this process per tab model.
-						Each tab is isolated so it doesn't affect the security or performance of the other tabs.
-					</div>
-				</section>
-				<section>
-					<img src="css/firefox-processes.png" class="stretch shadow" />
-					<div class="notes">
-						It doesn't have to be this way though. If you open all the same tabs in Firefox and check out the task 
-						manager, you see something like this: just four processes for all of your tabs.
-						This means, if you've got a bunch of tabs open, some of them will be sharing an event loop.
-						So, there is potential for some badly behaved tab to interfere with the performance of other tabs,
-						but it also means you've got some RAM left over to do other things.
-					</div>
-				</section>
-				<section>
-					<div class="sharing-or-not">
-						<img src="css/sharing-is-caring.jpg" class="shadow offscreen fragment" />
-						<img src="css/isolated-dinosaurs.jpg" class="shadow offscreen fragment" />
-					</div>
-					<div class="notes">
-						So, generally speaking, it's up the browser whether it runs your JS in its own event loop, or makes you
-						share with other apps.
-						There is an important exception to this rule - shared browsing contexts always share an event loop
-					</div>
-				</section>
-				<section>
-					<a target="_blank" href="slow.html" class="opener-link">
-						&lt;a target="_blank" href="button.html"&gt;&lt;/a&gt;
-					</a>
-					<iframe src="animation.html" class="dino-animation"></iframe>
-					<div class="notes">
-						There's a good reason for this - these windows have access to each others'
-						DOM - demo changing background colour on opener - so they need to be on the same
-						event loop, else there would be issues
-						window.opener.document.body.style.backgroundColor & 
-						window.opener.document.querySelector('iframe').contentWindow.document.body.style.backgroundColor
-						This isn't a security issue, because it only works on same-origin windows and frames - if you try it
-						on cross-origin windows...
-					</div>
-				</section>
-				<section>
-						<a target="_blank" href="slow.html" rel="noopener" class="opener-link">
-							&lt;a target="_blank" <span style="color: rgb(var(--green))">rel="noopener"</span> href="button.html"&gt;&lt;/a&gt;
-						</a>
-						<iframe src="animation.html" class="dino-animation"></iframe>		
 				</section>
 				<section>
 						<pre><code data-noescape class="js" style="font-size: 3.7em">
@@ -503,7 +234,7 @@ while (true) {
 				</section>
 				<section>
 					<div style="font-size: 3.8em">
-						A task that happens between tasks
+						A task that happens<br> between tasks
 					</div>
 					<div class="notes">
 						Between one task and the next, or between task and rendering
@@ -541,18 +272,6 @@ window.queueMicrotask(callback);
 				<section>
 					<iframe src="microtasks.html"></iframe>
 				</section>
-				<section data-background-image="css/dinos-fightin.jpg">
-					<div style="display: flex">
-						<h2 class="heading-card" style="display: block; margin: auto">
-							<a href="infinite-timeouts.html">Tasks</a>
-							<div style="margin: 10px">vs</div>
-							<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>
-						</h2>
-					</div>
-				</section>
-				<section>
-					<iframe src="microtasks.html"></iframe>
-				</section>
 				<section>
 					<pre><code data-noescape class="js" style="font-size: 3.5em">
 while (true) {
@@ -568,7 +287,7 @@ while (true) {
 					</code></pre>
 				</section>
 				<section data-background-image="css/ducky-walking.gif">
-					<h2 class="heading-card reverse" style="display: block">Animation Frame Callback Queue</h2>
+					<h2 class="heading-card reverse">Animation Frame<br> Callback Queue</h2>
 				</section>
 				<section>
 					<pre><code style="text-align: center; font-size: 3.7em;">
@@ -584,7 +303,9 @@ requestAnimationFrame(callback);
 				</section>
 				<section>
 					<pre style="font-size: 1.3em;"><code>while (box.style.right < screen.width) {
+
  const elapsedTime = Date.now() - startTime;
+
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime)
 }
@@ -601,7 +322,7 @@ requestAnimationFrame(callback);
 					<div style="display: flex; align-items: flex-end;">
 						<div style="margin: 0 auto; position: relative">
 							<div class="task manual-task" id="naive-animation" style="width: 200px; top: -200px"></div>
-							<task-queue style="--queue-width: 150px; margin-left: 50px;">
+							<task-queue style="--queue-width: 200px; margin-left: 50px;">
 							</task-queue>
 						</div>
 						<rendering-pipeline style="transform: scaleX(1.5); margin: 0 auto"></rendering-pipeline>
@@ -632,10 +353,13 @@ requestAnimationFrame(callback);
 				<section>
 					<pre style="font-size: 1.3em"><code class="js" data-noescape>function move() {
  const elapsedTime = Date.now() - startTime;
+
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime);
- if (box.style.right < screen.width)
-  <span style="color: rgb(var(--green))">setTimeout(move);</span>
+
+ if (box.style.right < screen.width) {
+	<span style="color: rgb(var(--green))">setTimeout(move);</span>
+ }
 }
 					</code></pre>
 				</section>
@@ -661,10 +385,12 @@ requestAnimationFrame(callback);
 				<section>
 					<pre style="font-size: 1.3em"><code class="js" data-noescape>function move() {
  const elapsedTime = Date.now() - startTime;
+
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime);
- if (x < screen.width)
-  <span style="color: rgb(var(--green))">requestAnimationFrame(move);</span>
+
+ if (box.style.right < screen.width) {
+	<span style="color: rgb(var(--green))">requestAnimationFrame(move);</span>
  }
 }</code></pre>	 
 				</section>
@@ -697,111 +423,29 @@ while (true) {
 }
 					</code></pre>
 				</section>
-				<section data-background-image="css/skeleton.jpg">
-					<h2 class="heading-card" style="position: relative; top: 20px">Node</h2>
-				</section>
 				<section>
-						<img src="css/good-news-everyone.jpg" alt="" class="stretch shadow">
-				</section>	
-				<section>
-					<span style="position: relative">
-						<img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
-						<div class="libuv">libuv</div>
-					</span>
-					<div class="notes">
-						It still consists of an engine and a bunch of supporting APIs.
-						Although, in Node, they're not called Web APIs, because, obviously, that would be weird.
-						Instead they're called the unicorn velociraptor library. Or libuv.
-					</div>
-				</section>
-				<section>
-					<ul style="font-size: 3em">
-						<li class="fragment">No DOM</li>
-						<li class="fragment">Limited user interactions</li>
-						<li class="fragment">No windows</li>
-					</ul>
-					<div class="notes">
-						The event loop itself is much simpler
-						- no DOM - just straight up JS, no rendering pipeline, no animation frame queue
-						- user interactions when you ask for them, none of this hanging around letting them click wherever the whim takes them
-						- no windows = no sharing event loops, worrying about cross-origin anything
-						- there are workers, but as we saw before, they're dead simple
-					</div>
-				</section>
-				<section>
-					<img class="stretch shadow" src="css/corgi-carousel.gif" />
-				</section>
-				<section>
-					<img class="stretch shadow" src="css/thunderbolt.gif" />
-				</section>
-				<section>
-					<iframe src="node.html"></iframe>
-				</section>
-				<section>
-					<pre><code style="text-align: center; font-size: 4em" class="lisp">setImmediate(callback)</code></pre>
-				</section>
-				<section>
-					<div style="display: flex; align-items: center; font-size: 2em">
-						<pre><code>setTimeout(callback, 0)</code></pre>
-						<img style="width: 20vmin" src="css/hedgehog.png" />
-					</div>
-					<div style="display: flex; align-items: center; font-size: 2em">
-						<img style="width: 20vmin" src="css/sonic.png" />
-						<pre><code>setImmediate(callback)</code></pre>
-					</div>
-				</section>
-				<section>
-					<iframe src="node.html"></iframe>
-				</section>
-				<section>
-					<pre><code style="text-align: center; font-size: 4em" class="lisp">process.nextTick(callback)</code></pre>
-				</section>
-				<section>
-					<iframe src="node.html"></iframe>
-				</section>
-				<section>
-					<div style="display: flex">
-						<pre><code style="font-size: 3em">setImmediate():</code></pre>
-						<div style="padding: .5em; font-size: 2.2em; align-self: center">do something on the next tick</div>
-					</div>
-					<div style="display: flex;" class="fragment">
-						<pre><code style="font-size: 3em">process.nextTick():</code></pre>
-						<div style="padding: .5em; font-size: 2.2em; align-self: center">do something immediately</div>
-					</div>
-				</section>
-				<section>
-						<pre><code data-noescape class="js" style="font-size: 2.6em">
-while (tasksAreWaiting()) {
- <span class="variable-name">queue</span> = getNextQueue();
-
- while (queue.hasTasks()) {
-  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
-  execute(<span class="variable-name">task</span>);
-
-  while (<span class="variable-name">nextTickQueue</span>.hasTasks()) 
-   doNextTickTask();
-
-  while (<span class="variable-name">promiseQueue</span>.hasTasks()) 
-   doPromiseTask();
- }
-}
-					</code></pre>
-				</section>
-				<section>
+					<div class="question" style="margin-bottom: 60px;">What have we learned?</div>
 					<ul>
-						<li class="fragment">Don't block rendering</li>
-						<li class="fragment">Use web workers</li>
-						<li class="fragment">Always use rel="noopener"</li>
-						<li class="fragment">Promises beat tasks</li>
-						<li class="fragment">Animate with requestAnimationFrame</li>
+						<li class="fragment">JavaScript can block rendering</li>
+						<li class="fragment">Promises operate via microtasks</li>
+						<li class="fragment">Microtasks also block rendering - but worse!</li>
+						<li class="fragment">requestAnimationFrame() runs with rendering</li>
+						<li class="fragment">use requestAnimationFrame() for smooth animations</li>
 					</ul>
 				</section>
 				<section>
-					<pre style="margin-top: -150px; font-size: 2em"><code style="padding-left: 0" class="js">setTimeout(fn, 0)</code></pre>
+					<pre><code style="padding-left: 0; font-size: 4em" class="js">
+setTimeout(() => {
+	... do something ...
+}, 0)
+</code></pre>
 				</section>
 				<section data-background-image="css/jurassic-park-raptors.jpg">
-					<h2 class="heading-card fragment" data-fragment-index="1">Thanks! (rawr)</h2>
-					<div class="twitter fragment" style="opacity: .9" data-fragment-index="1">@erinjzimmer</div>
+					<div class="heading-card" style="display: block; width: max-content; margin: auto">
+						<h2>Thanks! <span style="font-family: Kalam">(rawr)</span></h2>
+						<div style="font-size: 40px; margin: 20px">https://event-loop.ez.codes</div>	
+					</div>
+					<div class="twitter heading-card" style="opacity: .9">@ErinJZimmer</div>
 				</section>
 			</div>
 		</div>

@@ -30,10 +30,16 @@
       this.shadow = this.attachShadow({ mode: 'open' });
       const content = queuesDocument.getElementById('queues').content.cloneNode(true);
       this.shadow.appendChild(content);
+
+      this.noRun = this.attributes['no-run'];
     }
 
     connectedCallback() {
       this.selector = this.shadow.querySelector('queue-selector');
+      if (this.noRun) {
+        this.selector.remove();
+      }
+
       this.pipeline = this.shadow.querySelector('rendering-pipeline');
       this.queues = this.querySelectorAll('task-queue');
 

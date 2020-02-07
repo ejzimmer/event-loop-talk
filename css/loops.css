@@ -3,21 +3,48 @@
   font-family: 'Great Vibes';
   font-style: normal;
   font-weight: 400;
-  src: local('Great Vibes'), local('GreatVibes-Regular'),
-       url('great-vibes-v7-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('great-vibes-v7-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  src: url('great-vibes-v7-latin-regular.woff2') format('woff2');
 }
+@font-face {
+  font-family: 'Kalam';
+  font-style: normal;
+  font-weight: 400;
+  src: url('kalam-v10-latin-regular.woff2') format('woff2');
+}
+/* raleway-regular - latin */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Raleway'), local('Raleway-Regular'),
+       url('raleway-v14-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('raleway-v14-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Raleway'), local('Raleway-Regular'),
+       url('raleway-v14-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('raleway-v14-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
 
 body {
   --background: #333;
+  font-family: Raleway;
 }
 
 h1 {
+  --g: #8dbd2e;
   margin: 0 0 20px 0;
   line-height: 1.2;
   text-transform: uppercase; 
-  font-size: 5em;
-  text-shadow: 4px 4px rgba(var(--green), .5);
+  font-size: 6em;
+  text-shadow: 8px 8px 8px rgba(var(--green), .5);
+  text-shadow: 2px 2px var(--g), 4px 4px var(--g), 6px 6px var(--g), 8px 8px var(--g), 10px 10px var(--g);
+  font-family: 'Raleway';
+  font-weight: normal;
 }
 
 h2 {
@@ -278,10 +305,12 @@ svg.title {
 
 .heading-card {
   background-color: rgba(0, 0, 0, .3);
-  display: inline;
+  width: max-content;
+  margin: auto;
   border-radius: 10px;
   padding: .5em;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, .5);
+  text-shadow: 1px 1px black;
 }
 .heading-card.reverse {
   background-color: rgba(255, 255, 255, .8);
@@ -289,11 +318,12 @@ svg.title {
 }
 
 .about-me {
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, .5);
   display: flex;
   border-radius: 10px;
   padding: .5em;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, .5);
+  text-shadow: 1px 1px black;
 }
 .shine-logo {
   background: linear-gradient(to left, white 50%, transparent);
@@ -463,4 +493,25 @@ pre code.hljs {
 }
 .timer-animation.go {
   transform: rotate(1turn);
+}
+
+pre code {
+  tab-size: 2em;
+}
+
+ul {
+  list-style-type: none;
+}
+li {
+  display: flex;
+  align-items: flex-start;
+}
+li::before {
+  content: '\1F996';
+  margin-right: .25em;
+}
+
+.question {
+  font-family: Kalam;
+  font-size: 4em;
 }

@@ -28,9 +28,9 @@
     constructor() {
       super();
 
-      this.shadow = this.attachShadow({ mode: 'open' });
+      this.attachShadow({ mode: 'open' });
       const content = eventLoopDocument.getElementById('event-loop').content.cloneNode(true);
-      this.shadow.appendChild(content);
+      this.shadowRoot.appendChild(content);
     }
 
     connectedCallback() {

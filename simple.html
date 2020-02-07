@@ -18,14 +18,13 @@
 
 	</head>
 	<body>
-		<event-loop>
+		<event-loop stopped>
 			<div class="sources">
-				<task-source type="html"></task-source>
 				<task-source type="browser"></task-source>
 				<task-source type="timer"></task-source>
 				<task-source type="network"></task-source>
 			</div>
-			<task-queues rendering="false">
+			<task-queues rendering="false" no-run>
 				<task-queue></task-queue>
 			</task-queues>
 		</event-loop>
