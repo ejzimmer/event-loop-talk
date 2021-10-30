@@ -20,7 +20,7 @@
       height: var(--size);
     }
     .shrinker {
-      transform: scale(.4);
+      transform: scale(0.4);
       transform-origin: 20% top;
     }
 
@@ -29,15 +29,15 @@
       width: 10em;
     }
     .html::after {
-      content: '<script>\A...\A</script>';
-      font-family: 'Courier New', Courier, monospace;
+      content: "<script>\A...\A</script>";
+      font-family: "Courier New", Courier, monospace;
       font-weight: bold;
       font-size: 3.35vw;
       margin: auto;
     }
 
     .browser {
-      background-image: url('css/mouse-pointer.svg');
+      background-image: url("css/mouse-pointer.svg");
       background-size: contain;
       background-repeat: no-repeat;
       height: calc(var(--width) / 1.16);
@@ -55,7 +55,7 @@
       transition: transform steps(12, end);
     }
     .timer::after {
-      content: '';
+      content: "";
       border: calc(var(--thickness) / 2) solid var(--colour);
       background-color: var(--colour);
       height: calc((var(--width) - var(--thickness)) / 2);
@@ -70,14 +70,20 @@
       width: var(--width);
       height: var(--width);
       margin: auto;
-      background: repeating-radial-gradient(circle at bottom left, white, white 9%, transparent 9%, transparent 18%);
+      background: repeating-radial-gradient(
+        circle at bottom left,
+        white,
+        white 9%,
+        transparent 9%,
+        transparent 18%
+      );
       border-top-right-radius: 100%;
       transform-origin: bottom left;
-      transform:  translateX(50%) rotate(-.125turn);
+      transform: translateX(50%) rotate(-0.125turn);
       position: relative;
     }
     .network::after {
-      content: '';
+      content: "";
       display: block;
       width: 18%;
       height: 18%;
@@ -94,20 +100,40 @@
       from {
         background: none;
       }
-      33% { 
-        background: radial-gradient(circle at bottom left, transparent, transparent 18%, white 18%, white 27%, transparent 27%);
+      33% {
+        background: radial-gradient(
+          circle at bottom left,
+          transparent,
+          transparent 18%,
+          white 18%,
+          white 27%,
+          transparent 27%
+        );
       }
       66% {
-        background: radial-gradient(circle at bottom left, transparent, transparent 36%, white 36%, white 45%, transparent 45%);
+        background: radial-gradient(
+          circle at bottom left,
+          transparent,
+          transparent 36%,
+          white 36%,
+          white 45%,
+          transparent 45%
+        );
       }
       to {
-        background: radial-gradient(circle at bottom left, transparent, transparent 54%, white 54%, white 63%, transparent 63%);
+        background: radial-gradient(
+          circle at bottom left,
+          transparent,
+          transparent 54%,
+          white 54%,
+          white 63%,
+          transparent 63%
+        );
       }
     }
     .network:hover {
-      transform:  translateX(50%) rotate(-.125turn);
+      transform: translateX(50%) rotate(-0.125turn);
     }
-
 
     .drive {
       width: var(--width);
@@ -115,12 +141,27 @@
       border: 12px solid white;
       border-radius: 4px;
       position: relative;
-      background: 
-        radial-gradient(circle at 50% 40%, transparent, transparent 5%, white 5%, white 10%, #f7df1e 10%, grey 50%, white 50%, white calc(50% + 1px), transparent 20%),
-        radial-gradient(circle at 30% 75%, #334 20%, white calc(20% + 4px), transparent calc(20% + 4px));
+      background: radial-gradient(
+          circle at 50% 40%,
+          transparent,
+          transparent 5%,
+          white 5%,
+          white 10%,
+          #f7df1e 10%,
+          grey 50%,
+          white 50%,
+          white calc(50% + 1px),
+          transparent 20%
+        ),
+        radial-gradient(
+          circle at 30% 75%,
+          #334 20%,
+          white calc(20% + 4px),
+          transparent calc(20% + 4px)
+        );
     }
     .drive .arm {
-      --arm-height: calc(var(--width) * .5);
+      --arm-height: calc(var(--width) * 0.5);
       height: --arm-height;
       border: 8px solid transparent;
       border-bottom: white solid var(--arm-height);
@@ -130,13 +171,17 @@
       bottom: 20%;
       left: calc(30% - 8px);
       transform-origin: bottom;
-      transform: rotate(.1turn);
+      transform: rotate(0.1turn);
       animation: read-drive 2s infinite alternate linear;
       animation-play-state: paused;
     }
     @keyframes read-drive {
-      from { transform: rotate(.09turn); }
-      to { transform: rotate(.18turn); }
+      from {
+        transform: rotate(0.09turn);
+      }
+      to {
+        transform: rotate(0.18turn);
+      }
     }
 
     .promise {
@@ -146,7 +191,7 @@
       position: relative;
     }
     .promise::after {
-      content: 'then';
+      content: "then";
       position: absolute;
       right: 5px;
       bottom: 5px;
@@ -157,15 +202,15 @@
     .animation {
       width: var(--width);
       height: var(--width);
-      background-image: url('css/cat.png');
+      background-image: url("css/cat.png");
       background-size: contain;
     }
     .animation.running {
-      background-image: url('css/cat.gif');
+      background-image: url("css/cat.gif");
     }
 
     .immediate::after {
-      content: '!';
+      content: "!";
       font-weight: bold;
       color: white;
       font-size: 4em;
@@ -181,36 +226,36 @@
     }
 
     .next-tick::after {
-      content: '';
+      content: "";
       display: block;
       border: 10px solid green;
-      width: calc(var(--width) * .6);
-      height: calc(var(--width) * .3);
+      width: calc(var(--width) * 0.6);
+      height: calc(var(--width) * 0.3);
       border-top-style: none;
       border-right-style: none;
-      transform: rotate(-.125turn);
+      transform: rotate(-0.125turn);
       margin: auto;
     }
 
     .postmessage {
       width: var(--width);
       height: calc(var(--width) / 1.4);
-      margin-top: calc(var(--width) * .3);
+      margin-top: calc(var(--width) * 0.3);
       border: 4px solid white;
       position: relative;
     }
 
     .postmessage::after {
-      content: '';
+      content: "";
       display: block;
       border: inherit;
       width: calc(var(--width) / 1.41 - 1.5px);
       height: calc(var(--width) / 1.41 - 1.5px);
       transform-origin: top left;
-      transform: rotate(-.125turn);
+      transform: rotate(-0.125turn);
       position: absolute;
       left: -2.5px;
-      top: -.5px;
+      top: -0.5px;
       border-top: transparent;
       border-right: transparent;
       border-bottom-left-radius: 5px;
@@ -219,130 +264,144 @@
   <div class="container"></div>
 </template>
 <script>
-  const taskSourceDocument = document.currentScript.ownerDocument;
+  const taskSourceDocument = document.currentScript.ownerDocument
   class TaskSource extends HTMLElement {
     constructor() {
-      super();
+      super()
 
-      this.shadow = this.attachShadow({ mode: 'closed' });
-      const content = taskSourceDocument.getElementById('task-source').content.cloneNode(true);
-      this.shadow.appendChild(content);
+      this.shadow = this.attachShadow({ mode: "closed" })
+      const content = taskSourceDocument
+        .getElementById("task-source")
+        .content.cloneNode(true)
+      this.shadow.appendChild(content)
 
-      this.type = this.attributes.type.value;
-      this.container = this.shadow.querySelector('.container');
+      this.type = this.attributes.type.value
+      this.container = this.shadow.querySelector(".container")
 
-      this.source = document.createElement('div');
-      this.source.classList.add(this.type);
-      this.container.appendChild(this.source);
+      this.source = document.createElement("div")
+      this.source.classList.add(this.type)
+      this.container.appendChild(this.source)
 
-      this.thread = document.createElement('div');
-      this.thread.classList.add('thread');
-      this.container.appendChild(this.thread);
+      this.thread = document.createElement("div")
+      this.thread.classList.add("thread")
+      this.container.appendChild(this.thread)
 
-      if (this.type === 'drive') {
-        this.arm = document.createElement('div');
-        this.arm.classList.add('arm');
-        this.source.appendChild(this.arm);
+      if (this.type === "drive") {
+        this.arm = document.createElement("div")
+        this.arm.classList.add("arm")
+        this.source.appendChild(this.arm)
       }
     }
 
     connectedCallback() {
-
-      const syncTasks = ['html', 'browser', 'promise', 'animation', 'immediate', 'next-tick', 'postmessage'];
-      const asyncTasks = ['timer', 'network', 'drive'];
+      const syncTasks = [
+        "html",
+        "browser",
+        "promise",
+        "animation",
+        "immediate",
+        "next-tick",
+        "postmessage",
+      ]
+      const asyncTasks = ["timer", "network", "drive"]
       if (asyncTasks.includes(this.type)) {
-        this.source.addEventListener('click', () => {
-          this.startAsyncTask();
-        });
+        this.source.addEventListener("click", () => {
+          this.startAsyncTask()
+        })
       } else if (this.source) {
-        this.container.addEventListener('click', () => {
-          this.addTask();
-        });
+        this.container.addEventListener("click", () => {
+          this.addTask()
+        })
       }
 
-      document.body.addEventListener('keydown', (event) => {
-        if (event.key === 'PageDown') {
-          location.href = '/#/7';
-        }
-      }, { once: true })
+      document.body.addEventListener(
+        "keydown",
+        (event) => {
+          if (event.key === "PageDown") {
+            location.href = "/#/7"
+          }
+        },
+        { once: true }
+      )
     }
 
     startAsyncTask() {
-      const task = document.createElement('div');
-      task.classList.add('thread-item');
-      this.thread.appendChild(task);
+      const task = document.createElement("div")
+      task.classList.add("thread-item")
+      this.thread.appendChild(task)
 
-      const shrinker = document.createElement('div');
-      shrinker.classList.add('shrinker');
-      task.appendChild(shrinker);
+      const shrinker = document.createElement("div")
+      shrinker.classList.add("shrinker")
+      task.appendChild(shrinker)
 
-      const asyncTask = document.createElement('div');
-      asyncTask.classList.add(this.type);
-      shrinker.appendChild(asyncTask);
+      const asyncTask = document.createElement("div")
+      asyncTask.classList.add(this.type)
+      shrinker.appendChild(asyncTask)
 
-      requestAnimationFrame(() => asyncTask.classList.add('go'));
+      requestAnimationFrame(() => asyncTask.classList.add("go"))
 
-      if (this.type === 'timer') {
-        asyncTask.style.transitionDuration = `${this.getRandomTime()}ms`;
-        asyncTask.addEventListener('transitionend', () => {
-          this.addTask();
-          task.remove();
-        });
-      } else if (this.type === 'drive') {
-        const isPlaying = this.arm.style.animationPlayState === 'running';
+      if (this.type === "timer") {
+        asyncTask.style.transitionDuration = `${this.getRandomTime()}ms`
+        asyncTask.addEventListener("transitionend", () => {
+          this.addTask()
+          task.remove()
+        })
+      } else if (this.type === "drive") {
+        const isPlaying = this.arm.style.animationPlayState === "running"
 
         if (!isPlaying) {
-          this.arm.style.animationPlayState = 'running';
-          this.finishDriveTask(task);
+          this.arm.style.animationPlayState = "running"
+          this.finishDriveTask(task)
         }
       } else {
-        this.finishTask(task);
+        this.finishTask(task)
       }
     }
 
     finishTask(task, time = this.getRandomTime()) {
       setTimeout(() => {
-        this.addTask();
-        task.remove();
-      }, time);
+        this.addTask()
+        task.remove()
+      }, time)
     }
 
     finishDriveTask(task) {
       setTimeout(() => {
-        this.finishTask(task, 0);
+        this.finishTask(task, 0)
 
-        const driveTasks = this.shadow.querySelectorAll('.drive + .thread .thread-item');
+        const driveTasks = this.shadow.querySelectorAll(
+          ".drive + .thread .thread-item"
+        )
         if (driveTasks.length > 1) {
-          const nextTask = driveTasks[1];
-          this.finishDriveTask(nextTask);
+          const nextTask = driveTasks[1]
+          this.finishDriveTask(nextTask)
         } else {
-          this.arm.style.animationPlayState = 'paused';
+          this.arm.style.animationPlayState = "paused"
         }
-      }, this.getRandomTime());
+      }, this.getRandomTime())
     }
 
     getRandomTime() {
-      return (Math.random() * 7000) + 3000;
+      return Math.random() * 7000 + 3000
     }
 
     addTask() {
-      const type = this.type === 'promise' ? 'microtask' : this.type;
-      document.body.dispatchEvent(new CustomEvent('task', { detail: type }));     
+      const type = this.type === "promise" ? "microtask" : this.type
+      document.body.dispatchEvent(new CustomEvent("task", { detail: type }))
     }
 
     run() {
-      this.source.classList.add('running');
+      this.source.classList.add("running")
     }
     stop() {
-      this.source.classList.remove('running');
+      this.source.classList.remove("running")
     }
 
     hasTasksWaiting() {
       if (this.thread) {
-        return !!this.thread.children.length;
+        return !!this.thread.children.length
       }
     }
   }
-  customElements.define('task-source', TaskSource);
+  customElements.define("task-source", TaskSource)
 </script>
-

@@ -1,144 +1,188 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
-		<title>Further Adventures of the Event Loop</title>
+    <title>Further Adventures of the Event Loop</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/loops.css">
-		<link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/loops.css" />
+    <link rel="stylesheet" href="css/common.css" />
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css" />
 
-		<script src="js/reveal.js"></script>
+    <script src="js/reveal.js"></script>
 
-		<script>
-			const isNextSlide = key => key === 'PageDown' || key === 'ArrowRight' || key === ' ';
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>
-					<div class="mask">
-						<svg class="title" viewBox="0 0 100 50" style="width: 80%">
-							<path id="curve" d="M 10 50 a 40 40 0 0 1 80 0" fill="transparent" />
-							<text font-family="cursive">
-								<textPath font-size=".5em" textLength="125" xlink:href="#curve">
-									Further Adventures of
-								</textPath>
-							</text>
-						</svg>
-					</div>
-					<h1>The Event Loop</h1>
-					<div class="twitter">@erinjzimmer</div>
-				</section>
-				<section data-background-image="css/perth-concert-hall.JPG">
-					<div class="about-me">
-						<ul style="display: block; padding: 1em 2em">
-							<li class="fragment" data-fragment-index="1">Erin Zimmer</li>
-							<li class="fragment">twitter.com/ErinJZimmer</li>
-							<li class="fragment" style="margin-bottom: 0">ejzimmer.github.io/event-loop-talk</li>
-						</ul>
-						<div class="fragment shine-logo" data-fragment-index="2"><img src="css/shine-solutions-logo-dark.png" /></div>
-					</div>
-				</section>
-				<section>
-					<h2 style="font-size: 3.5em">What actually is the Event Loop?</h2>
-				</section>
-				<section data-state="web-apis">
-					<fieldset class="browser-internals">
-						<legend>The Browser</legend>
-						<div class="browser-bits">
-							<img id="engine" src="css/JavaScript-logo.png" class="fragment" style="margin-left: 0" />
-							<task-source type="network" class="fragment"></task-source>
-							<task-source type="timer" class="fragment"></task-source>
-							<task-source type="drive" class="fragment"></task-source>
-							<img src="css/mouse-pointer.svg" class="fragment" style="margin: .75em" />
-							<div class="html fragment"></div>
-							<div id="web-apis" class="fragment">Web APIs</div>
-						</div>
-					</fieldset>
-					<script>
-						let lastItem;
-						function highlightWebApis(event) {
-							if (lastItem.classList.contains('current-fragment') && isNextSlide(event.key)) {
-								event.stopPropagation();
-								document.querySelector('.browser-internals').classList.add('web-apis');
-								document.body.removeEventListener('keydown', highlightWebApis);
-							}
-						}
-						Reveal.addEventListener('web-apis', () => {
-							lastItem = document.querySelector('.browser-bits div.html.fragment');
-							document.body.addEventListener('keydown', highlightWebApis);
-						});
-					</script>
-				</section>
-				<section data-state="js-engine">
-					<fieldset class="browser-internals engine">
-						<legend>The Browser</legend>
-						<div class="browser-bits">
-							<img id="engine" src="css/JavaScript-logo.png" style="margin-left: 0" />
-							<task-source type="network"></task-source>
-							<task-source type="timer"></task-source>
-							<task-source type="drive"></task-source>
-							<img src="css/mouse-pointer.svg" style="margin: .75em" />
-							<div class="html"></div>
-							<div id="engines" class="fragment">JavaScript Engine</div>
-						</div>
-					</fieldset>
-					<script>
-						function highlightJSEngine(event) {
-							if (isNextSlide(event.key)) {
-								event.stopPropagation();
-								document.querySelector('.browser-internals.engine #engine').classList.add('highlighted');
-								document.body.removeEventListener('keydown', highlightJSEngine);
-							}
-						}
-						Reveal.addEventListener('js-engine', () => {
-							document.body.addEventListener('keydown', highlightJSEngine);
-						});
-					</script>
-				</section>
-				<section>
-					<div class="engine-logos">
-						<img class="fragment" src="css/v8-logo.png" />
-						<img class="fragment" src="css/edge-logo.png" style="transform: scale(.6)" />
-						<img class="fragment" src="css/squirrelfish.png" />
-					</div>
-					<img class="fragment" src="css/spider-monkey.jpg" style="width: 80%" />
-				</section>
-				<section>
-					<div class="centred">
-						<div class="inverse big-text">Web APIs</div>
-						<div class="arrow-down">^</div>
-						<div class="uninverse big-text">JavaScript Engine</div>
-					</div>
-				</section>
-				<section>
-					<pre><code data-noescape class="js" style="font-size: 4em">
+    <script>
+      const isNextSlide = (key) =>
+        key === "PageDown" || key === "ArrowRight" || key === " "
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <div class="mask">
+            <svg class="title" viewBox="0 0 100 50" style="width: 80%">
+              <path
+                id="curve"
+                d="M 10 50 a 40 40 0 0 1 80 0"
+                fill="transparent"
+              />
+              <text font-family="cursive">
+                <textPath font-size=".5em" textLength="125" xlink:href="#curve">
+                  Further Adventures of
+                </textPath>
+              </text>
+            </svg>
+          </div>
+          <h1>The Event Loop</h1>
+          <div class="twitter">@erinjzimmer</div>
+        </section>
+        <section data-background-image="css/perth-concert-hall.JPG">
+          <div class="about-me">
+            <ul style="display: block; padding: 1em 2em">
+              <li class="fragment" data-fragment-index="1">Erin Zimmer</li>
+              <li class="fragment">twitter.com/ErinJZimmer</li>
+              <li class="fragment" style="margin-bottom: 0">
+                event-loop.ez.codes
+              </li>
+            </ul>
+            <div class="fragment cogent-logo" data-fragment-index="2">
+              <img width="80%" src="css/CO-Cogent-secondary-watermelon.png" />
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2 style="font-size: 3.5em">What actually is the Event Loop?</h2>
+        </section>
+        <section data-state="web-apis">
+          <fieldset class="browser-internals">
+            <legend>The Browser</legend>
+            <div class="browser-bits">
+              <img
+                id="engine"
+                src="css/JavaScript-logo.png"
+                class="fragment"
+                style="margin-left: 0"
+              />
+              <task-source type="network" class="fragment"></task-source>
+              <task-source type="timer" class="fragment"></task-source>
+              <task-source type="drive" class="fragment"></task-source>
+              <img
+                src="css/mouse-pointer.svg"
+                class="fragment"
+                style="margin: 0.75em"
+              />
+              <div class="html fragment"></div>
+              <div id="web-apis" class="fragment">Web APIs</div>
+            </div>
+          </fieldset>
+          <script>
+            let lastItem
+            function highlightWebApis(event) {
+              if (
+                lastItem.classList.contains("current-fragment") &&
+                isNextSlide(event.key)
+              ) {
+                event.stopPropagation()
+                document
+                  .querySelector(".browser-internals")
+                  .classList.add("web-apis")
+                document.body.removeEventListener("keydown", highlightWebApis)
+              }
+            }
+            Reveal.addEventListener("web-apis", () => {
+              lastItem = document.querySelector(
+                ".browser-bits div.html.fragment"
+              )
+              document.body.addEventListener("keydown", highlightWebApis)
+            })
+          </script>
+        </section>
+        <section data-state="js-engine">
+          <fieldset class="browser-internals engine">
+            <legend>The Browser</legend>
+            <div class="browser-bits">
+              <img
+                id="engine"
+                src="css/JavaScript-logo.png"
+                style="margin-left: 0"
+              />
+              <task-source type="network"></task-source>
+              <task-source type="timer"></task-source>
+              <task-source type="drive"></task-source>
+              <img src="css/mouse-pointer.svg" style="margin: 0.75em" />
+              <div class="html"></div>
+              <div id="engines" class="fragment">JavaScript Engine</div>
+            </div>
+          </fieldset>
+          <script>
+            function highlightJSEngine(event) {
+              if (isNextSlide(event.key)) {
+                event.stopPropagation()
+                document
+                  .querySelector(".browser-internals.engine #engine")
+                  .classList.add("highlighted")
+                document.body.removeEventListener("keydown", highlightJSEngine)
+              }
+            }
+            Reveal.addEventListener("js-engine", () => {
+              document.body.addEventListener("keydown", highlightJSEngine)
+            })
+          </script>
+        </section>
+        <section>
+          <div class="engine-logos">
+            <img class="fragment" src="css/v8-logo.png" />
+            <img
+              class="fragment"
+              src="css/edge-logo.png"
+              style="transform: scale(0.6)"
+            />
+            <img class="fragment" src="css/squirrelfish.png" />
+          </div>
+          <img
+            class="fragment"
+            src="css/spider-monkey.jpg"
+            style="width: 80%"
+          />
+        </section>
+        <section>
+          <div class="centred">
+            <div class="inverse big-text">Web APIs</div>
+            <div class="arrow-down">^</div>
+            <div class="uninverse big-text">JavaScript Engine</div>
+          </div>
+        </section>
+        <section>
+          <pre><code data-noescape class="js" style="font-size: 4em">
 while (true) {
  <span class="variable-name">task</span> = taskQueue.pop();
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
-				</section>
-				<section>
-					<div class="list-and-image">
-						<ul>
-							<li class="fragment">What's a task?</li>
-							<li class="fragment">What's a task&nbsp;queue?</li>
-							<li class="fragment">How do tasks<br />get in the task&nbsp;queue?</li>
-						</ul>
-						<img src="css/Philosoraptor.jpg" />
-					</div>
-				</section>
-				<section>
-					<div class="columns">
-						<pre><code>
+        </section>
+        <section>
+          <div class="list-and-image">
+            <ul>
+              <li class="fragment">What's a task?</li>
+              <li class="fragment">What's a task&nbsp;queue?</li>
+              <li class="fragment">
+                How do tasks<br />get in the task&nbsp;queue?
+              </li>
+            </ul>
+            <img src="css/Philosoraptor.jpg" />
+          </div>
+        </section>
+        <section>
+          <div class="columns">
+            <pre><code>
 <script>
  const intrepidAdventurers = [
   'Little Foot',
@@ -155,296 +199,237 @@ while (true) {
  intrepidAdventurers.forEach(rawr);
 </script>
 					</code></pre>
-						<div class="arrow-right fragment" data-fragment-index="1">^</div>
-						<div class="task fragment" data-fragment-index="1"></div>
-					</div>
-				</section>
-				<section>
-					<iframe src="parser-only.html"></iframe>
-				</section>
-				<section>
-					<h2><div style="font-size: .9em">JavaScript, why are you like that?</div></h2>
-				</section>
-				<section>
-					<h2>JavaScript is single-threaded</h2>
-					<div class="notes">
-						- But remember, the JS engine is only one part of the browser
-					</div>
-				</section>
-				<section>
-					<h2><i>Browsers</i> are multi-threaded</h2>
-					<div class="notes">
-						As well as running your JavaScript, a browser could be 
-						- keeping track of mouse and keyboard events
-						- making network requests
-						- handling timers
-						- disk operations 
-						And any of these things could be generating tasks, via callbacks
-					</div>
-				</section>
-				<section>
-					<fieldset class="browser-internals">
-							<legend>The Browser</legend>
-							<div class="browser-bits">
-								<img id="engine" src="css/JavaScript-logo.png" style="margin-left: 0" />
-								<task-source type="network"></task-source>
-								<task-source type="timer"></task-source>
-								<task-source type="drive"></task-source>
-								<img src="css/mouse-pointer.svg" style="margin: .75em" />
-								<div class="html"></div>
-							</div>
-						</fieldset>						
-				</section>
-				<section>
-					<div class="notes">
-						In fact, this idea is the very heart of the asynchronous programming we all know and love so much		
-					</div>
-					<pre><code style="font-size: 3em">setTimeout(myCallbackFunction, 3000);</code></pre>		
-				</section>
-				<section>
-					<div style="display: flex; flex-direction: column; margin: 1em;">
-						<div class="quote fragment" style="text-align: left; margin-bottom: 2em; --quote-colour: var(--green)">
-							Hey WebAPIs! Could you wait 3 seconds and then run my callback function?
-						</div>
-						<div class="quote fragment" style="text-align: left; align-self: flex-end; --quote-colour: var(--pink);	">
-							No worries! You keep doing your thing, I'll take care of this.
-						</div>
-					</div>		
-				</section>
-				<section data-state="threads">
-					<div class="threaded" style="display: flex; justify-content: space-around; position: relative">
-						<div style="position: relative; display: flex">
-							<div class="task manual-task" style="transition-duration: 3s"></div>
-							<task-queue id="threads-task" style="--queue-width: 150px; margin-left: 50px;">
-							</task-queue>
-						</div>
-						<task-source id="threaded-timer" type="timer" class="timer-animation"></task-source>
-					</div>
-					<script>
-						Reveal.addEventListener('threads', () => {
-							let newTask;
+            <div class="arrow-right fragment" data-fragment-index="1">^</div>
+            <div class="task fragment" data-fragment-index="1"></div>
+          </div>
+        </section>
+        <section>
+          <iframe src="http://localhost:3000/parser-only"></iframe>
+        </section>
+        <section>
+          <h2>
+            <div style="font-size: 0.9em">
+              JavaScript, why are you like that?
+            </div>
+          </h2>
+        </section>
+        <section>
+          <h2>JavaScript is single-threaded</h2>
+          <div class="notes">
+            - But remember, the JS engine is only one part of the browser
+          </div>
+        </section>
+        <section>
+          <h2><i>Browsers</i> are multi-threaded</h2>
+          <div class="notes">
+            As well as running your JavaScript, a browser could be - keeping
+            track of mouse and keyboard events - making network requests -
+            handling timers - disk operations And any of these things could be
+            generating tasks, via callbacks
+          </div>
+        </section>
+        <section>
+          <fieldset class="browser-internals">
+            <legend>The Browser</legend>
+            <div class="browser-bits">
+              <img
+                id="engine"
+                src="css/JavaScript-logo.png"
+                style="margin-left: 0"
+              />
+              <task-source type="network"></task-source>
+              <task-source type="timer"></task-source>
+              <task-source type="drive"></task-source>
+              <img src="css/mouse-pointer.svg" style="margin: 0.75em" />
+              <div class="html"></div>
+            </div>
+          </fieldset>
+        </section>
+        <section>
+          <div class="notes">
+            In fact, this idea is the very heart of the asynchronous programming
+            we all know and love so much
+          </div>
+          <pre><code style="font-size: 3em">setTimeout(myCallbackFunction, 3000);</code></pre>
+        </section>
+        <section>
+          <div style="display: flex; flex-direction: column; margin: 1em">
+            <div
+              class="quote fragment"
+              style="
+                text-align: left;
+                margin-bottom: 2em;
+                --quote-colour: var(--green);
+              "
+            >
+              Hey WebAPIs! Could you wait 3 seconds and then run my callback
+              function?
+            </div>
+            <div
+              class="quote fragment"
+              style="
+                text-align: left;
+                align-self: flex-end;
+                --quote-colour: var(--pink);
+              "
+            >
+              No worries! You keep doing your thing, I'll take care of this.
+            </div>
+          </div>
+        </section>
+        <section data-state="threads">
+          <div
+            class="threaded"
+            style="
+              display: flex;
+              justify-content: space-around;
+              position: relative;
+            "
+          >
+            <div style="position: relative; display: flex">
+              <div
+                class="task manual-task"
+                style="transition-duration: 3s"
+              ></div>
+              <task-queue
+                id="threads-task"
+                style="--queue-width: 150px; margin-left: 50px"
+              >
+              </task-queue>
+            </div>
+            <task-source
+              id="threaded-timer"
+              type="timer"
+              class="timer-animation"
+            ></task-source>
+          </div>
+          <script>
+            Reveal.addEventListener("threads", () => {
+              let newTask
 
-							function finishTasks(event) {
-								if (isNextSlide(event.key)) {
-									event.stopPropagation();
-									task.style.transitionDuration = '2s';
-									task.style.top = '100px';
+              function finishTasks(event) {
+                if (isNextSlide(event.key)) {
+                  event.stopPropagation()
+                  task.style.transitionDuration = "2s"
+                  task.style.top = "100px"
 
-									task.addEventListener('transitionend', () => task.style.opacity = 0);
+                  task.addEventListener(
+                    "transitionend",
+                    () => (task.style.opacity = 0)
+                  )
 
-									newTask.style.top = '100px';
-									newTask.addEventListener('transitionend', () => newTask.style.opacity = 0);
+                  newTask.style.top = "100px"
+                  newTask.addEventListener(
+                    "transitionend",
+                    () => (newTask.style.opacity = 0)
+                  )
 
-									document.body.removeEventListener('keydown', finishTasks);
-								}
-							}
+                  document.body.removeEventListener("keydown", finishTasks)
+                }
+              }
 
-							function addTimerTaskToQueue(event) {
-								if (isNextSlide(event.key)) {
-									event.stopPropagation();
-									document.body.removeEventListener('keydown', addTimerTaskToQueue);
+              function addTimerTaskToQueue(event) {
+                if (isNextSlide(event.key)) {
+                  event.stopPropagation()
+                  document.body.removeEventListener(
+                    "keydown",
+                    addTimerTaskToQueue
+                  )
 
-									newTask = document.createElement('div');
-									newTask.classList.add('task', 'manual-task');
-									newTask.style.zIndex = -2;
-									newTask.style.right = '24px';
-									newTask.style.transition = 'top 5s linear 2s';
+                  newTask = document.createElement("div")
+                  newTask.classList.add("task", "manual-task")
+                  newTask.style.zIndex = -2
+                  newTask.style.right = "24px"
+                  newTask.style.transition = "top 5s linear 2s"
 
-									document.querySelector('.threaded div').append(newTask);
+                  document.querySelector(".threaded div").append(newTask)
 
-									timer.style.visibility = 'hidden';
+                  timer.style.visibility = "hidden"
 
-									document.body.addEventListener('keydown', finishTasks);
-								}
-							}
+                  document.body.addEventListener("keydown", finishTasks)
+                }
+              }
 
-							function runFiveSecondTask(event) {
-								if (isNextSlide(event.key)) {
-									event.stopPropagation();
-									task.style.top = '50px';
-									timer.classList.add('go');
+              function runFiveSecondTask(event) {
+                if (isNextSlide(event.key)) {
+                  event.stopPropagation()
+                  task.style.top = "50px"
+                  timer.classList.add("go")
 
-									document.body.removeEventListener('keydown', runFiveSecondTask);
-									timer.addEventListener('transitionend', () => {
-										timer.style.filter = 'drop-shadow(3px 3px 5px rgb(var(--green))';
-										document.body.addEventListener('keydown', addTimerTaskToQueue);
-									});
-								}
-							}
+                  document.body.removeEventListener(
+                    "keydown",
+                    runFiveSecondTask
+                  )
+                  timer.addEventListener("transitionend", () => {
+                    timer.style.filter =
+                      "drop-shadow(3px 3px 5px rgb(var(--green))"
+                    document.body.addEventListener(
+                      "keydown",
+                      addTimerTaskToQueue
+                    )
+                  })
+                }
+              }
 
-							const task = document.querySelector('.threaded .task');
-							const timer = document.getElementById('threaded-timer');
-							document.body.addEventListener('keydown', runFiveSecondTask);
-						});
-					</script>
-				</section>
-				<section>
-					<iframe src="simple.html"></iframe>
-				</section>
-				<section>
-					<pre><code data-noescape class="js" style="font-size: 4em">
+              const task = document.querySelector(".threaded .task")
+              const timer = document.getElementById("threaded-timer")
+              document.body.addEventListener("keydown", runFiveSecondTask)
+            })
+          </script>
+        </section>
+        <section>
+          <iframe src="http://localhost:3000/simple"></iframe>
+        </section>
+        <section>
+          <pre><code data-noescape class="js" style="font-size: 4em">
 while (true) {
  <span class="variable-name">task</span> = taskQueue.pop();
  execute(<span class="variable-name">task</span>);
 }
 					</code></pre>
-					<div class="notes">
-						So that's basically how tasks and task queues work.
-						Of course, in real life, it's a bit more complicated than that
-					</div>
-				</section>
-				<section data-background-image="css/mario.jpg">
-					<h2 class="heading-card">The Rendering Pipeline</h2>
-				</section>
-				<section>
-					<iframe src="rendering-pipeline.html"></iframe>
-				</section>
-				<section class="center">
-					<img src="css/dino-jaw.gif" class="stretch border" />
-					<div class="notes">
-						Long running tasks will cause your browser to start dropping frames
-						and, much like this cat, your app just won't run right
-					</div>
-				</section>
-				<section class="center">
-					<pre><code style="font-size: 3em">function repeat(reps, action) {
+          <div class="notes">
+            So that's basically how tasks and task queues work. Of course, in
+            real life, it's a bit more complicated than that
+          </div>
+        </section>
+        <section data-background-image="css/mario.jpg">
+          <h2 class="heading-card">The Rendering Pipeline</h2>
+        </section>
+        <section>
+          <iframe src="http://localhost:3000/rendering-pipeline"></iframe>
+        </section>
+        <section class="center">
+          <img src="css/dino-jaw.gif" class="stretch border" />
+          <div class="notes">
+            Long running tasks will cause your browser to start dropping frames
+            and, much like this cat, your app just won't run right
+          </div>
+        </section>
+        <section class="center">
+          <pre><code style="font-size: 3em">function repeat(reps, action) {
  action();
  if (--reps) {
   setTimeout(() => repeat(reps, action));
  }
 }					</code></pre>
-				</section>
-				<section>
-					<pre><code style="font-size: 3em" class="js">
+        </section>
+        <section>
+          <pre><code style="font-size: 3em" class="js">
 /*  job.js  */
 onmessage = function(e) {
  for (let i = 0; i < e.data.reps; i++) {
   e.data.action();
  }
-}</code></pre><pre><code style="font-size: 3em" class="js fragment">
+}</code></pre>
+          <pre><code style="font-size: 3em" class="js fragment">
 /*  app.js  */
 const worker = new Worker('job.js');
 worker.postMessage(action, reps);
 					</code></pre>
-					<img src="css/Yoshi_Happy.png" class="yoshi fragment" />
-				</section>
-				<section>
-					<h2 style="text-align: left">Why don't web workers interfere with rendering?</h2>
-					<div class="notes">
-						You all remember when we were talking about long-running tasks and I said you could
-						use web workers, because they were guaranteed not to interfere with the rendering pipeline?
-						So, given everything we now know about how the event loop works in browsers, how can I be so sure?
-						Because I read the spec...
-					</div>
-				</section>
-				<section>
-					<div class="spec-text">
-						Each <b><i>WorkerGlobalScope</i></b> object has a distinct <u>event loop</u>, 
-						separate from those used by <u>units of related similar-origin browsing contexts</u>.
-					</div>
-				</section>
-				<section>
-					<div style="font-size: 3.3em">Each web worker has its own event loop.</div>
-				</section>
-				<section data-state="scaleIFrames">
-					<div class="loops">
-						<fieldset class="web-workers">
-							<legend>Main browser window</legend>
-							<iframe id="main" src="rendering-pipeline.html"></iframe>
-							<button onclick="sendPostMessage('worker')">Post Message</button>
-						</fieldset>
-						<fieldset class="web-workers">
-							<legend>job.js</legend>
-							<iframe id="worker" src="web-worker.html"></iframe>   
-							<button onclick="sendPostMessage('main')">Post Message</button> 
-						</fieldset>
-						<script>
-							function sendPostMessage(id) {
-								const recipient = document.querySelector(`iframe#${id}`).contentWindow;
-								recipient.postMessage('addTask', '*');
-							}
-
-							Reveal.addEventListener('scaleIFrames', () => {
-								document.querySelectorAll('.web-workers iframe').forEach((iframe) => {
-									iframe.contentDocument.querySelector('event-loop').setScale(.5);
-								});
-
-							})
-						</script>
-					</div>
-				</section>
-				<section>
-					<div class="list-and-image">
-						<ul>
-							<li class="fragment">No user interactions</li>
-							<li class="fragment">No rendering pipeline</li>
-							<li class="fragment">No DOM at all!</li>
-						</ul>
-						<img src="css/top-hat-t-rex.gif" class="fragment" />
-				</section>
-				<section>
-					<img src="css/caniuse-web-workers.png" class="stretch shadow" />
-				</section>
-				<section>
-					<img src="css/chrome-processes.png" class="stretch shadow" />
-					<div class="notes">
-						If you've ever had a look at your Activity Monitor or Task Manager while Chrome is running,
-						you probably saw something like this...
-						Chrome likes to run things in lots of different processes. 
-						If you have a look at the Chrome Task Manager, you can see what each of those processes is actually doing.
-						(Do it)
-						And you would see that you've got a process for each tab, each browser extension, and a couple of extras.
-						The important thing here, is that we have a process for each tab.
-						Because each of those tabs is running in a separate process, they must have their own event loop.
-						This means that if we start some resource heavy process in one tab, none of the others are affected.
-						This is a big advantage of this process per tab model.
-						Each tab is isolated so it doesn't affect the security or performance of the other tabs.
-					</div>
-				</section>
-				<section>
-					<img src="css/firefox-processes.png" class="stretch shadow" />
-					<div class="notes">
-						It doesn't have to be this way though. If you open all the same tabs in Firefox and check out the task 
-						manager, you see something like this: just four processes for all of your tabs.
-						This means, if you've got a bunch of tabs open, some of them will be sharing an event loop.
-						So, there is potential for some badly behaved tab to interfere with the performance of other tabs,
-						but it also means you've got some RAM left over to do other things.
-					</div>
-				</section>
-				<section>
-					<div class="sharing-or-not">
-						<img src="css/sharing-is-caring.jpg" class="shadow offscreen fragment" />
-						<img src="css/isolated-dinosaurs.jpg" class="shadow offscreen fragment" />
-					</div>
-					<div class="notes">
-						So, generally speaking, it's up the browser whether it runs your JS in its own event loop, or makes you
-						share with other apps.
-						There is an important exception to this rule - shared browsing contexts always share an event loop
-					</div>
-				</section>
-				<section>
-					<a target="_blank" href="slow.html" class="opener-link">
-						&lt;a target="_blank" href="button.html"&gt;&lt;/a&gt;
-					</a>
-					<iframe src="animation.html" class="dino-animation"></iframe>
-					<div class="notes">
-						There's a good reason for this - these windows have access to each others'
-						DOM - demo changing background colour on opener - so they need to be on the same
-						event loop, else there would be issues
-						window.opener.document.body.style.backgroundColor & 
-						window.opener.document.querySelector('iframe').contentWindow.document.body.style.backgroundColor
-						This isn't a security issue, because it only works on same-origin windows and frames - if you try it
-						on cross-origin windows...
-					</div>
-				</section>
-				<section>
-						<a target="_blank" href="slow.html" rel="noopener" class="opener-link">
-							&lt;a target="_blank" <span style="color: rgb(var(--green))">rel="noopener"</span> href="button.html"&gt;&lt;/a&gt;
-						</a>
-						<iframe src="animation.html" class="dino-animation"></iframe>		
-				</section>
-				<section>
-						<pre><code data-noescape class="js" style="font-size: 3.7em">
+          <img src="css/Yoshi_Happy.png" class="yoshi fragment" />
+        </section>
+        <section>
+          <pre><code data-noescape class="js" style="font-size: 3.7em">
 while (true) {
  <span class="variable-name">task</span> = taskQueue.pop();
  execute(<span class="variable-name">task</span>);
@@ -452,12 +437,14 @@ while (true) {
  if (isRepaintTime()) repaint();
 }
 					</code></pre>
-				</section>
-				<section>
-					<div class="spec-text" style="font-size: 2.5em">An <u>event loop</u> has one or more <b>task queues.</b></div>
-				</section>
-				<section>
-						<pre><code>
+        </section>
+        <section>
+          <div class="spec-text" style="font-size: 2.5em">
+            An <u>event loop</u> has one or more <b>task queues.</b>
+          </div>
+        </section>
+        <section>
+          <pre><code>
 bool did_work = delegate->DoWork();
 if (!keep_running_)
  break;
@@ -470,24 +457,30 @@ did_work = delegate->DoIdleWork();
 if (!keep_running_)
  break;
 					</code></pre>
-				</section>
-				<section data-background-image="css/dinosaur-queues.jpg">
-					<h2 class="heading-card">Multiple task queues</h2>
-				</section>
-				<section>
-					<iframe src="multiple-queues.html"></iframe>
-				</section>
-				<section>
-					<div style="font-size: 1.5em">
-						<ul>
-							<li class="fragment">Queues can be executed in any order</li>
-							<li class="fragment">Tasks in the same queue must be executed in the order they arrived</li>
-							<li class="fragment">Tasks from the same source<br> must go in the same queue</li>
-						</ul>
-					</div>
-				</section>
-				<section>
-						<pre><code data-noescape class="js" style="font-size: 3.7em">
+        </section>
+        <section data-background-image="css/dinosaur-queues.jpg">
+          <h2 class="heading-card">Multiple task queues</h2>
+        </section>
+        <section>
+          <iframe src="multiple-queues.html"></iframe>
+        </section>
+        <section>
+          <div style="font-size: 1.5em">
+            <ul>
+              <li class="fragment">Queues can be executed in any order</li>
+              <li class="fragment">
+                Tasks in the same queue must be executed in the order they
+                arrived
+              </li>
+              <li class="fragment">
+                Tasks from the same source<br />
+                must go in the same queue
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <pre><code data-noescape class="js" style="font-size: 3.7em">
 while (true) {
  <span class="variable-name">queue</span> = getNextQueue();
  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
@@ -496,64 +489,66 @@ while (true) {
  if (isRepaintTime()) repaint();
 }
 					</code></pre>
-				</section>
-				<section data-background-image="css/littlefoot-and-mum.jpg">
-					<h2 class="heading-card" style="position: relative; top: 20px">Microtasks</h2>
-				</section>
-				<section>
-					<div style="font-size: 3.8em">
-						A task that happens between tasks
-					</div>
-					<div class="notes">
-						Between one task and the next, or between task and rendering
-					</div>
-				</section>
-				<section>
-					<pre><code>
+        </section>
+        <section data-background-image="css/littlefoot-and-mum.jpg">
+          <h2 class="heading-card" style="position: relative; top: 20px">
+            Microtasks
+          </h2>
+        </section>
+        <section>
+          <div style="font-size: 3.8em">A task that happens between tasks</div>
+          <div class="notes">
+            Between one task and the next, or between task and rendering
+          </div>
+        </section>
+        <section>
+          <pre><code>
 const observer = new MutationObserver(callback);
 const myElement = document.getElementById('stegosaurus');
 observer.observe(myElement, ({ subtree: true }));
 					</code></pre>
-					<div class="notes">
-						Potentially lots of things happening
-						Changes to DOM, want to run things related to changing DOM before window renders again
-					</div>
-				</section>
-				<section>
-					<pre><code class="js">
+          <div class="notes">
+            Potentially lots of things happening Changes to DOM, want to run
+            things related to changing DOM before window renders again
+          </div>
+        </section>
+        <section>
+          <pre><code class="js">
 const myPromise = new Promise((resolve, reject) => { ... });
 myPromise.then(callback).catch(errorCallback);
 					</code></pre>
-					<div class="notes">
-						Performance reasons
-						Esp catch -> want error handling to happen after stuff, but before anything else
-					</div>
-				</section>
-				<section>
-					<pre><code>
+          <div class="notes">
+            Performance reasons Esp catch -> want error handling to happen after
+            stuff, but before anything else
+          </div>
+        </section>
+        <section>
+          <pre><code>
 window.queueMicrotask(callback);
 					</code></pre>
-					<div class="notes">
-						Only in Chrome, generally intended for people writing frameworks
-					</div>
-				</section>
-				<section>
-					<iframe src="microtasks.html"></iframe>
-				</section>
-				<section data-background-image="css/dinos-fightin.jpg">
-					<div style="display: flex">
-						<h2 class="heading-card" style="display: block; margin: auto">
-							<a href="infinite-timeouts.html">Tasks</a>
-							<div style="margin: 10px">vs</div>
-							<a href="infinite-promises.html" target="_blank" rel="noopener">Microtasks</a>
-						</h2>
-					</div>
-				</section>
-				<section>
-					<iframe src="microtasks.html"></iframe>
-				</section>
-				<section>
-					<pre><code data-noescape class="js" style="font-size: 3.5em">
+          <div class="notes">
+            Only in Chrome, generally intended for people writing frameworks
+          </div>
+        </section>
+        <section>
+          <iframe src="microtasks.html"></iframe>
+        </section>
+        <section data-background-image="css/dinos-fightin.jpg">
+          <div style="display: flex">
+            <h2 class="heading-card" style="display: block; margin: auto">
+              <a href="infinite-timeouts.html">Tasks</a>
+              <div style="margin: 10px">vs</div>
+              <a href="infinite-promises.html" target="_blank" rel="noopener"
+                >Microtasks</a
+              >
+            </h2>
+          </div>
+        </section>
+        <section>
+          <iframe src="microtasks.html"></iframe>
+        </section>
+        <section>
+          <pre><code data-noescape class="js" style="font-size: 3.5em">
 while (true) {
  <span class="variable-name">queue</span> = getNextQueue();
  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
@@ -565,71 +560,98 @@ while (true) {
  if (isRepaintTime()) repaint();
 }
 					</code></pre>
-				</section>
-				<section data-background-image="css/ducky-walking.gif">
-					<h2 class="heading-card reverse" style="display: block">Animation Frame Callback Queue</h2>
-				</section>
-				<section>
-					<pre><code style="text-align: center; font-size: 3.7em;">
+        </section>
+        <section data-background-image="css/ducky-walking.gif">
+          <h2 class="heading-card reverse" style="display: block">
+            Animation Frame Callback Queue
+          </h2>
+        </section>
+        <section>
+          <pre><code style="text-align: center; font-size: 3.7em;">
 requestAnimationFrame(callback);
 					</code></pre>
-				</section>
-				<section>
-					<iframe style="width: 100%; min-height: 80vh; border: none" src="single-box-animation.html"></iframe>
-					<div class="notes">
-						Why would we want to do this?
-						Well, imagine we wanted to make a nice animation of a box moving along a path.
-					</div>
-				</section>
-				<section>
-					<pre style="font-size: 1.3em;"><code>while (box.style.right < screen.width) {
+        </section>
+        <section>
+          <iframe
+            style="width: 100%; min-height: 80vh; border: none"
+            src="single-box-animation.html"
+          ></iframe>
+          <div class="notes">
+            Why would we want to do this? Well, imagine we wanted to make a nice
+            animation of a box moving along a path.
+          </div>
+        </section>
+        <section>
+          <pre
+            style="font-size: 1.3em"
+          ><code>while (box.style.right < screen.width) {
  const elapsedTime = Date.now() - startTime;
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime)
 }
 
 					</code></pre>
-				</section>
-				<section data-transition="fade-in">
-					<div style="width: 100px; height: 100px; background-color: rgb(var(--green)); position: fixed; right: -50px"></div>
-					<div class="notes">
-						If you did that, what you would get is this...
-					</div>
-				</section>
-				<section data-state="naive-animation">
-					<div style="display: flex; align-items: flex-end;">
-						<div style="margin: 0 auto; position: relative">
-							<div class="task manual-task" id="naive-animation" style="width: 200px; top: -200px"></div>
-							<task-queue style="--queue-width: 150px; margin-left: 50px;">
-							</task-queue>
-						</div>
-						<rendering-pipeline style="transform: scaleX(1.5); margin: 0 auto"></rendering-pipeline>
-					</div>
-					<script>
-						Reveal.addEventListener('naive-animation', () => {
-							const naiveAnimationTask = document.getElementById('naive-animation');
+        </section>
+        <section data-transition="fade-in">
+          <div
+            style="
+              width: 100px;
+              height: 100px;
+              background-color: rgb(var(--green));
+              position: fixed;
+              right: -50px;
+            "
+          ></div>
+          <div class="notes">
+            If you did that, what you would get is this...
+          </div>
+        </section>
+        <section data-state="naive-animation">
+          <div style="display: flex; align-items: flex-end">
+            <div style="margin: 0 auto; position: relative">
+              <div
+                class="task manual-task"
+                id="naive-animation"
+                style="width: 200px; top: -200px"
+              ></div>
+              <task-queue style="--queue-width: 150px; margin-left: 50px">
+              </task-queue>
+            </div>
+            <rendering-pipeline
+              style="transform: scaleX(1.5); margin: 0 auto"
+            ></rendering-pipeline>
+          </div>
+          <script>
+            Reveal.addEventListener("naive-animation", () => {
+              const naiveAnimationTask =
+                document.getElementById("naive-animation")
 
-							function doNaiveAnimationTask(event) {
-								if (isNextSlide(event.key)) {
-									event.stopPropagation();
-									document.body.removeEventListener('keydown', doNaiveAnimationTask);
-									naiveAnimationTask.style.top = 0;
+              function doNaiveAnimationTask(event) {
+                if (isNextSlide(event.key)) {
+                  event.stopPropagation()
+                  document.body.removeEventListener(
+                    "keydown",
+                    doNaiveAnimationTask
+                  )
+                  naiveAnimationTask.style.top = 0
 
-									naiveAnimationTask.addEventListener('transitionend', () => {
-										naiveAnimationTask.style.display = 'none';
-										document.querySelector('rendering-pipeline').runTask()
-									})
+                  naiveAnimationTask.addEventListener("transitionend", () => {
+                    naiveAnimationTask.style.display = "none"
+                    document.querySelector("rendering-pipeline").runTask()
+                  })
+                }
+              }
 
-								}
-							}
-
-							document.body.addEventListener('keydown', doNaiveAnimationTask);
-						});
-						const naiveAnimationTask = document.getElementById('naive-animation');
-					</script>
-				</section>
-				<section>
-					<pre style="font-size: 1.3em"><code class="js" data-noescape>function move() {
+              document.body.addEventListener("keydown", doNaiveAnimationTask)
+            })
+            const naiveAnimationTask =
+              document.getElementById("naive-animation")
+          </script>
+        </section>
+        <section>
+          <pre
+            style="font-size: 1.3em"
+          ><code class="js" data-noescape>function move() {
  const elapsedTime = Date.now() - startTime;
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime);
@@ -637,47 +659,69 @@ requestAnimationFrame(callback);
   <span style="color: rgb(var(--green))">setTimeout(move);</span>
 }
 					</code></pre>
-				</section>
-				<section>
-					<iframe id="timeout-animations" style="width: 100%; min-height: 80vh; border: none;" src="timeout-animations.html"></iframe>
-				</section>
-				<section data-state="addTasks">
-					<div style="display: flex; align-items: center; position: fixed; top: 10%; right: 35%; height: 100vh">
-						<task-queue id="too-many-tasks" style="--queue-width: 200px; margin: auto;"></task-queue>
-					</div>
-					<script>
-						Reveal.addEventListener('addTasks', function () {
-							const tooManyTasks = document.getElementById('too-many-tasks');
-							for (let i = 0; i < 12; i++) {
-								if (!(i % 4))
-									tooManyTasks.addTask('necessary');
-								else 
-									tooManyTasks.addTask('unnecessary');
-							} 
-						});
-					</script>
-				</section>
-				<section>
-					<pre style="font-size: 1.3em"><code class="js" data-noescape>function move() {
+        </section>
+        <section>
+          <iframe
+            id="timeout-animations"
+            style="width: 100%; min-height: 80vh; border: none"
+            src="timeout-animations.html"
+          ></iframe>
+        </section>
+        <section data-state="addTasks">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              position: fixed;
+              top: 10%;
+              right: 35%;
+              height: 100vh;
+            "
+          >
+            <task-queue
+              id="too-many-tasks"
+              style="--queue-width: 200px; margin: auto"
+            ></task-queue>
+          </div>
+          <script>
+            Reveal.addEventListener("addTasks", function () {
+              const tooManyTasks = document.getElementById("too-many-tasks")
+              for (let i = 0; i < 12; i++) {
+                if (!(i % 4)) tooManyTasks.addTask("necessary")
+                else tooManyTasks.addTask("unnecessary")
+              }
+            })
+          </script>
+        </section>
+        <section>
+          <pre
+            style="font-size: 1.3em"
+          ><code class="js" data-noescape>function move() {
  const elapsedTime = Date.now() - startTime;
  box.style.left = calculateX(elapsedTime);
  box.style.top = calculateY(elapsedTime);
  if (x < screen.width)
   <span style="color: rgb(var(--green))">requestAnimationFrame(move);</span>
  }
-}</code></pre>	 
-				</section>
-				<section>
-						<iframe src="requestAnimationFrame.html"></iframe>
-				</section>
-				<section>
-					<iframe style="width: 100%; min-height: 80vh; border: none" src="animations.html"></iframe>
-				</section>
-				<section>
-					<img src="css/caniuse-requestAnimationFrame.png" class="stretch shadow" />
-				</section>
-				<section>
-						<pre><code data-noescape class="js" style="font-size: 2.6em">
+}</code></pre>
+        </section>
+        <section>
+          <iframe src="requestAnimationFrame.html"></iframe>
+        </section>
+        <section>
+          <iframe
+            style="width: 100%; min-height: 80vh; border: none"
+            src="animations.html"
+          ></iframe>
+        </section>
+        <section>
+          <img
+            src="css/caniuse-requestAnimationFrame.png"
+            class="stretch shadow"
+          />
+        </section>
+        <section>
+          <pre><code data-noescape class="js" style="font-size: 2.6em">
 while (true) {
  <span class="variable-name">queue</span> = getNextQueue();
  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
@@ -695,81 +739,89 @@ while (true) {
  }
 }
 					</code></pre>
-				</section>
-				<section data-background-image="css/skeleton.jpg">
-					<h2 class="heading-card" style="position: relative; top: 20px">Node</h2>
-				</section>
-				<section>
-						<img src="css/good-news-everyone.jpg" alt="" class="stretch shadow">
-				</section>	
-				<section>
-					<span style="position: relative">
-						<img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
-						<div class="libuv">libuv</div>
-					</span>
-					<div class="notes">
-						It still consists of an engine and a bunch of supporting APIs.
-						Although, in Node, they're not called Web APIs, because, obviously, that would be weird.
-						Instead they're called the unicorn velociraptor library. Or libuv.
-					</div>
-				</section>
-				<section>
-					<ul style="font-size: 3em">
-						<li class="fragment">No DOM</li>
-						<li class="fragment">Limited user interactions</li>
-						<li class="fragment">No windows</li>
-					</ul>
-					<div class="notes">
-						The event loop itself is much simpler
-						- no DOM - just straight up JS, no rendering pipeline, no animation frame queue
-						- user interactions when you ask for them, none of this hanging around letting them click wherever the whim takes them
-						- no windows = no sharing event loops, worrying about cross-origin anything
-						- there are workers, but as we saw before, they're dead simple
-					</div>
-				</section>
-				<section>
-					<img class="stretch shadow" src="css/corgi-carousel.gif" />
-				</section>
-				<section>
-					<img class="stretch shadow" src="css/thunderbolt.gif" />
-				</section>
-				<section>
-					<iframe src="node.html"></iframe>
-				</section>
-				<section>
-					<pre><code style="text-align: center; font-size: 4em" class="lisp">setImmediate(callback)</code></pre>
-				</section>
-				<section>
-					<div style="display: flex; align-items: center; font-size: 2em">
-						<pre><code>setTimeout(callback, 0)</code></pre>
-						<img style="width: 20vmin" src="css/hedgehog.png" />
-					</div>
-					<div style="display: flex; align-items: center; font-size: 2em">
-						<img style="width: 20vmin" src="css/sonic.png" />
-						<pre><code>setImmediate(callback)</code></pre>
-					</div>
-				</section>
-				<section>
-					<iframe src="node.html"></iframe>
-				</section>
-				<section>
-					<pre><code style="text-align: center; font-size: 4em" class="lisp">process.nextTick(callback)</code></pre>
-				</section>
-				<section>
-					<iframe src="node.html"></iframe>
-				</section>
-				<section>
-					<div style="display: flex">
-						<pre><code style="font-size: 3em">setImmediate():</code></pre>
-						<div style="padding: .5em; font-size: 2.2em; align-self: center">do something on the next tick</div>
-					</div>
-					<div style="display: flex;" class="fragment">
-						<pre><code style="font-size: 3em">process.nextTick():</code></pre>
-						<div style="padding: .5em; font-size: 2.2em; align-self: center">do something immediately</div>
-					</div>
-				</section>
-				<section>
-						<pre><code data-noescape class="js" style="font-size: 2.6em">
+        </section>
+        <section data-background-image="css/skeleton.jpg">
+          <h2 class="heading-card" style="position: relative; top: 20px">
+            Node
+          </h2>
+        </section>
+        <section>
+          <img src="css/good-news-everyone.jpg" alt="" class="stretch shadow" />
+        </section>
+        <section>
+          <span style="position: relative">
+            <img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
+            <div class="libuv">libuv</div>
+          </span>
+          <div class="notes">
+            It still consists of an engine and a bunch of supporting APIs.
+            Although, in Node, they're not called Web APIs, because, obviously,
+            that would be weird. Instead they're called the unicorn velociraptor
+            library. Or libuv.
+          </div>
+        </section>
+        <section>
+          <ul style="font-size: 3em">
+            <li class="fragment">No DOM</li>
+            <li class="fragment">Limited user interactions</li>
+            <li class="fragment">No windows</li>
+          </ul>
+          <div class="notes">
+            The event loop itself is much simpler - no DOM - just straight up
+            JS, no rendering pipeline, no animation frame queue - user
+            interactions when you ask for them, none of this hanging around
+            letting them click wherever the whim takes them - no windows = no
+            sharing event loops, worrying about cross-origin anything - there
+            are workers, but as we saw before, they're dead simple
+          </div>
+        </section>
+        <section>
+          <img class="stretch shadow" src="css/corgi-carousel.gif" />
+        </section>
+        <section>
+          <img class="stretch shadow" src="css/thunderbolt.gif" />
+        </section>
+        <section>
+          <iframe src="node.html"></iframe>
+        </section>
+        <section>
+          <pre><code style="text-align: center; font-size: 4em" class="lisp">setImmediate(callback)</code></pre>
+        </section>
+        <section>
+          <div style="display: flex; align-items: center; font-size: 2em">
+            <pre><code>setTimeout(callback, 0)</code></pre>
+            <img style="width: 20vmin" src="css/hedgehog.png" />
+          </div>
+          <div style="display: flex; align-items: center; font-size: 2em">
+            <img style="width: 20vmin" src="css/sonic.png" />
+            <pre><code>setImmediate(callback)</code></pre>
+          </div>
+        </section>
+        <section>
+          <iframe src="node.html"></iframe>
+        </section>
+        <section>
+          <pre><code style="text-align: center; font-size: 4em" class="lisp">process.nextTick(callback)</code></pre>
+        </section>
+        <section>
+          <iframe src="node.html"></iframe>
+        </section>
+        <section>
+          <div style="display: flex">
+            <pre><code style="font-size: 3em">setImmediate():</code></pre>
+            <div style="padding: 0.5em; font-size: 2.2em; align-self: center">
+              do something on the next tick
+            </div>
+          </div>
+          <div style="display: flex" class="fragment">
+            <pre><code style="font-size: 3em">process.nextTick():</code></pre>
+            <div style="padding: 0.5em; font-size: 2.2em; align-self: center">
+              do something immediately
+            </div>
+          </div>
+        </section>
+        <section>
+          <pre><code data-noescape class="js" style="font-size: 2.6em">
 while (tasksAreWaiting()) {
  <span class="variable-name">queue</span> = getNextQueue();
 
@@ -785,49 +837,471 @@ while (tasksAreWaiting()) {
  }
 }
 					</code></pre>
-				</section>
-				<section>
-					<ul>
-						<li class="fragment">Don't block rendering</li>
-						<li class="fragment">Use web workers</li>
-						<li class="fragment">Always use rel="noopener"</li>
-						<li class="fragment">Promises beat tasks</li>
-						<li class="fragment">Animate with requestAnimationFrame</li>
-					</ul>
-				</section>
-				<section>
-					<pre style="margin-top: -150px; font-size: 2em"><code style="padding-left: 0" class="js">setTimeout(fn, 0)</code></pre>
-				</section>
-				<section data-background-image="css/jurassic-park-raptors.jpg">
-					<h2 class="heading-card fragment" data-fragment-index="1">Thanks! (rawr)</h2>
-					<div class="twitter fragment" style="opacity: .9" data-fragment-index="1">@erinjzimmer</div>
-				</section>
-			</div>
-		</div>
+        </section>
+        <section>
+          <ul>
+            <li class="fragment">Don't block rendering</li>
+            <li class="fragment">Use web workers</li>
+            <li class="fragment">Always use rel="noopener"</li>
+            <li class="fragment">Promises beat tasks</li>
+            <li class="fragment">Animate with requestAnimationFrame</li>
+          </ul>
+        </section>
+        <section>
+          <pre
+            style="margin-top: -150px; font-size: 2em"
+          ><code style="padding-left: 0" class="js">setTimeout(fn, 0)</code></pre>
+        </section>
+        <section data-background-image="css/jurassic-park-raptors.jpg">
+          <h2 class="heading-card fragment" data-fragment-index="1">
+            Thanks! (rawr)
+          </h2>
+          <div
+            class="twitter fragment"
+            style="opacity: 0.9"
+            data-fragment-index="1"
+          >
+            @erinjzimmer
+          </div>
+        </section>
+      </div>
+    </div>
 
-		<script src="lib/js/head.min.js"></script>
+    <script src="lib/js/head.min.js"></script>
 
-		<link rel="import" href="components/queue.html">
-		<link rel="import" href="components/rendering-pipeline.html">
-		<link rel="import" href="components/browser.html">
-		<link rel="import" href="components/task-source.html">
-		
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				controls: false,
-				progress: false,
-				history: true,
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-				]
-			});
-		</script>
+    <link rel="import" href="components/queue.html" />
+    <link rel="import" href="components/rendering-pipeline.html" />
+    <link rel="import" href="components/browser.html" />
 
-	</body>
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        controls: false,
+        progress: false,
+        history: true,
+        dependencies: [
+          { src: "plugin/markdown/marked.js" },
+          { src: "plugin/markdown/markdown.js" },
+          { src: "plugin/notes/notes.js", async: true },
+          {
+            src: "plugin/highlight/highlight.js",
+            async: true,
+            callback: function () {
+              hljs.initHighlightingOnLoad()
+            },
+          },
+        ],
+      })
+    </script>
+
+    <template id="task-source">
+      <style>
+        :host {
+          --width: 8em;
+          --thickness: 12px;
+          cursor: pointer;
+        }
+
+        .thread {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: flex-start;
+          width: calc(var(--width) + var(--thickness) * 2);
+          position: absolute;
+          top: 100%;
+        }
+        .thread-item {
+          --size: calc(var(--width) / 2 + var(--thickness));
+          width: var(--size);
+          height: var(--size);
+        }
+        .shrinker {
+          transform: scale(0.4);
+          transform-origin: 20% top;
+        }
+
+        .html {
+          display: flex;
+          width: 10em;
+        }
+        .html::after {
+          content: "<script>\A...\A</script>";
+          font-family: "Courier New", Courier, monospace;
+          font-weight: bold;
+          font-size: 3.35vw;
+          margin: auto;
+        }
+
+        .browser {
+          background-image: url("css/mouse-pointer.svg");
+          background-size: contain;
+          background-repeat: no-repeat;
+          height: calc(var(--width) / 1.16);
+          width: calc(var(--width) / 2);
+        }
+
+        .timer {
+          --colour: white;
+          border: var(--thickness) solid var(--colour);
+          border-radius: 50%;
+          width: var(--width);
+          height: var(--width);
+          position: relative;
+          flex-shrink: 0;
+          transition: transform steps(12, end);
+        }
+        .timer::after {
+          content: "";
+          border: calc(var(--thickness) / 2) solid var(--colour);
+          background-color: var(--colour);
+          height: calc((var(--width) - var(--thickness)) / 2);
+          position: absolute;
+          left: calc(50% - var(--thickness) / 2);
+        }
+        .timer.go {
+          transform: rotate(1turn);
+        }
+
+        .network {
+          width: var(--width);
+          height: var(--width);
+          margin: auto;
+          background: repeating-radial-gradient(
+            circle at bottom left,
+            white,
+            white 9%,
+            transparent 9%,
+            transparent 18%
+          );
+          border-top-right-radius: 100%;
+          transform-origin: bottom left;
+          transform: translateX(50%) rotate(-0.125turn);
+          position: relative;
+        }
+        .network::after {
+          content: "";
+          display: block;
+          width: 18%;
+          height: 18%;
+          border-radius: 50%;
+          background-color: white;
+          position: absolute;
+          left: -4.5%;
+          bottom: -4.5%;
+        }
+        .thread .network {
+          animation: wifi 3s infinite steps(3);
+        }
+        @keyframes wifi {
+          from {
+            background: none;
+          }
+          33% {
+            background: radial-gradient(
+              circle at bottom left,
+              transparent,
+              transparent 18%,
+              white 18%,
+              white 27%,
+              transparent 27%
+            );
+          }
+          66% {
+            background: radial-gradient(
+              circle at bottom left,
+              transparent,
+              transparent 36%,
+              white 36%,
+              white 45%,
+              transparent 45%
+            );
+          }
+          to {
+            background: radial-gradient(
+              circle at bottom left,
+              transparent,
+              transparent 54%,
+              white 54%,
+              white 63%,
+              transparent 63%
+            );
+          }
+        }
+        .network:hover {
+          transform: translateX(50%) rotate(-0.125turn);
+        }
+
+        .drive {
+          width: var(--width);
+          height: calc(var(--width) * 1.4);
+          border: 12px solid white;
+          border-radius: 4px;
+          position: relative;
+          background: radial-gradient(
+              circle at 50% 40%,
+              transparent,
+              transparent 5%,
+              white 5%,
+              white 10%,
+              #f7df1e 10%,
+              grey 50%,
+              white 50%,
+              white calc(50% + 1px),
+              transparent 20%
+            ),
+            radial-gradient(
+              circle at 30% 75%,
+              #334 20%,
+              white calc(20% + 4px),
+              transparent calc(20% + 4px)
+            );
+        }
+        .drive .arm {
+          --arm-height: calc(var(--width) * 0.5);
+          height: --arm-height;
+          border: 8px solid transparent;
+          border-bottom: white solid var(--arm-height);
+          box-sizing: border-box;
+          width: 8px;
+          position: absolute;
+          bottom: 20%;
+          left: calc(30% - 8px);
+          transform-origin: bottom;
+          transform: rotate(0.1turn);
+          animation: read-drive 2s infinite alternate linear;
+          animation-play-state: paused;
+        }
+        @keyframes read-drive {
+          from {
+            transform: rotate(0.09turn);
+          }
+          to {
+            transform: rotate(0.18turn);
+          }
+        }
+
+        .promise {
+          width: var(--width);
+          height: var(--width);
+          background-color: #f7df1e;
+          position: relative;
+        }
+        .promise::after {
+          content: "then";
+          position: absolute;
+          right: 5px;
+          bottom: 5px;
+          color: black;
+          font-size: 2em;
+        }
+
+        .animation {
+          width: var(--width);
+          height: var(--width);
+          background-image: url("css/cat.png");
+          background-size: contain;
+        }
+        .animation.running {
+          background-image: url("css/cat.gif");
+        }
+
+        .immediate::after {
+          content: "!";
+          font-weight: bold;
+          color: white;
+          font-size: 4em;
+          padding: 0 10px;
+          font-family: serif;
+        }
+
+        .next-tick {
+          width: var(--width);
+          height: var(--width);
+          display: flex;
+          border-radius: 50%;
+        }
+
+        .next-tick::after {
+          content: "";
+          display: block;
+          border: 10px solid green;
+          width: calc(var(--width) * 0.6);
+          height: calc(var(--width) * 0.3);
+          border-top-style: none;
+          border-right-style: none;
+          transform: rotate(-0.125turn);
+          margin: auto;
+        }
+
+        .postmessage {
+          width: var(--width);
+          height: calc(var(--width) / 1.4);
+          margin-top: calc(var(--width) * 0.3);
+          border: 4px solid white;
+          position: relative;
+        }
+
+        .postmessage::after {
+          content: "";
+          display: block;
+          border: inherit;
+          width: calc(var(--width) / 1.41 - 1.5px);
+          height: calc(var(--width) / 1.41 - 1.5px);
+          transform-origin: top left;
+          transform: rotate(-0.125turn);
+          position: absolute;
+          left: -2.5px;
+          top: -0.5px;
+          border-top: transparent;
+          border-right: transparent;
+          border-bottom-left-radius: 5px;
+        }
+      </style>
+      <div class="container"></div>
+    </template>
+    <script>
+      const taskSourceDocument = document.currentScript.ownerDocument
+      class TaskSource extends HTMLElement {
+        constructor() {
+          super()
+
+          this.shadow = this.attachShadow({ mode: "closed" })
+          const content = taskSourceDocument
+            .getElementById("task-source")
+            .content.cloneNode(true)
+          this.shadow.appendChild(content)
+
+          this.type = this.attributes.type.value
+          this.container = this.shadow.querySelector(".container")
+
+          this.source = document.createElement("div")
+          this.source.classList.add(this.type)
+          this.container.appendChild(this.source)
+
+          this.thread = document.createElement("div")
+          this.thread.classList.add("thread")
+          this.container.appendChild(this.thread)
+
+          if (this.type === "drive") {
+            this.arm = document.createElement("div")
+            this.arm.classList.add("arm")
+            this.source.appendChild(this.arm)
+          }
+        }
+
+        connectedCallback() {
+          const syncTasks = [
+            "html",
+            "browser",
+            "promise",
+            "animation",
+            "immediate",
+            "next-tick",
+            "postmessage",
+          ]
+          const asyncTasks = ["timer", "network", "drive"]
+          if (asyncTasks.includes(this.type)) {
+            this.source.addEventListener("click", () => {
+              this.startAsyncTask()
+            })
+          } else if (this.source) {
+            this.container.addEventListener("click", () => {
+              this.addTask()
+            })
+          }
+
+          document.body.addEventListener(
+            "keydown",
+            (event) => {
+              if (event.key === "PageDown") {
+                location.href = "/#/7"
+              }
+            },
+            { once: true }
+          )
+        }
+
+        startAsyncTask() {
+          const task = document.createElement("div")
+          task.classList.add("thread-item")
+          this.thread.appendChild(task)
+
+          const shrinker = document.createElement("div")
+          shrinker.classList.add("shrinker")
+          task.appendChild(shrinker)
+
+          const asyncTask = document.createElement("div")
+          asyncTask.classList.add(this.type)
+          shrinker.appendChild(asyncTask)
+
+          requestAnimationFrame(() => asyncTask.classList.add("go"))
+
+          if (this.type === "timer") {
+            asyncTask.style.transitionDuration = `${this.getRandomTime()}ms`
+            asyncTask.addEventListener("transitionend", () => {
+              this.addTask()
+              task.remove()
+            })
+          } else if (this.type === "drive") {
+            const isPlaying = this.arm.style.animationPlayState === "running"
+
+            if (!isPlaying) {
+              this.arm.style.animationPlayState = "running"
+              this.finishDriveTask(task)
+            }
+          } else {
+            this.finishTask(task)
+          }
+        }
+
+        finishTask(task, time = this.getRandomTime()) {
+          setTimeout(() => {
+            this.addTask()
+            task.remove()
+          }, time)
+        }
+
+        finishDriveTask(task) {
+          setTimeout(() => {
+            this.finishTask(task, 0)
+
+            const driveTasks = this.shadow.querySelectorAll(
+              ".drive + .thread .thread-item"
+            )
+            if (driveTasks.length > 1) {
+              const nextTask = driveTasks[1]
+              this.finishDriveTask(nextTask)
+            } else {
+              this.arm.style.animationPlayState = "paused"
+            }
+          }, this.getRandomTime())
+        }
+
+        getRandomTime() {
+          return Math.random() * 7000 + 3000
+        }
+
+        addTask() {
+          const type = this.type === "promise" ? "microtask" : this.type
+          document.body.dispatchEvent(new CustomEvent("task", { detail: type }))
+        }
+
+        run() {
+          this.source.classList.add("running")
+        }
+        stop() {
+          this.source.classList.remove("running")
+        }
+
+        hasTasksWaiting() {
+          if (this.thread) {
+            return !!this.thread.children.length
+          }
+        }
+      }
+      customElements.define("task-source", TaskSource)
+    </script>
+  </body>
 </html>
