@@ -3,25 +3,30 @@ body {
 }
 
 h1 {
+  --g: #8dbd2e;
   margin: 0 0 20px 0;
   line-height: 1.2;
   text-transform: uppercase;
-  font-size: 5em;
-  text-shadow: 4px 4px rgba(var(--green), 0.5);
+  font-size: 6em;
+  text-shadow: 8px 8px 8px rgba(var(--green), 0.5);
+  text-shadow: 2px 2px var(--g), 4px 4px var(--g), 6px 6px var(--g),
+    8px 8px var(--g), 10px 10px var(--g);
+  font-family: "Raleway";
+  font-weight: normal;
 }
-
 h2 {
   font-size: 4em;
 }
 
 ul {
-  list-style: square;
+  list-style-type: "🦖";
   font-size: 2em;
   margin: auto;
   text-align: left;
 }
 li {
   margin-bottom: 1em;
+  padding-left: 0.6em;
 }
 
 a {
@@ -65,8 +70,6 @@ svg.title {
 }
 
 .browser-internals {
-  width: 80%;
-  height: 80%;
   margin: auto;
   border: 4px solid white;
   padding: 1.5em 2em;
@@ -77,24 +80,14 @@ svg.title {
   padding: 0.25em;
 }
 .browser-internals .browser-bits {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  height: 90%;
+  justify-items: center;
 }
-.browser-internals img {
-  width: 20%;
-  margin: 0 4.5vmin;
-  padding: 0.75em;
-}
-.browser-internals task-source {
-  margin: 0 5vmin;
-  padding: 0.75em;
-}
-.browser-internals .html {
-  margin: 1em;
-  padding: 0.75em;
+.browser-internals .browser-bits img {
+  padding: 20px;
+  width: 160px;
 }
 .browser-internals .html::before {
   content: "</>";
@@ -292,10 +285,12 @@ svg.title {
 
 .about-me {
   background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 350px;
   border-radius: 10px;
   padding: 0.5em;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
 }
 .cogent-logo {
   background: linear-gradient(to left, #ee4a67 75%, transparent);
@@ -315,7 +310,7 @@ svg.title {
 .yoshi {
   position: fixed;
   bottom: 0;
-  width: 40vw;
+  width: 40%;
 }
 
 .loops {

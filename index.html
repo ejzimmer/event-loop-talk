@@ -7,7 +7,20 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
 
-    <title>Further Adventures of the Event Loop</title>
+    <title>Fun Adventures with the Event Loop</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Raleway&display=swap"
+      rel="stylesheet"
+    />
 
     <link rel="stylesheet" href="css/reveal.css" />
     <link rel="stylesheet" href="css/loops.css" />
@@ -34,19 +47,33 @@
                 d="M 10 50 a 40 40 0 0 1 80 0"
                 fill="transparent"
               />
-              <text font-family="cursive">
-                <textPath font-size=".5em" textLength="125" xlink:href="#curve">
-                  Further Adventures of
+              <text font-family="Great Vibes">
+                <textPath font-size=".8em" textLength="125" xlink:href="#curve">
+                  Fun Adventures with
                 </textPath>
               </text>
             </svg>
           </div>
-          <h1>The Event Loop</h1>
+          <img
+            src="css/dinosaur-head.png"
+            style="
+              position: absolute;
+              transform: scale(0.3) translate(-160%, -200%);
+            "
+          />
+          <h1 style="position: relative">The Event Loop</h1>
           <div class="twitter">@erinjzimmer</div>
         </section>
         <section data-background-image="css/perth-concert-hall.JPG">
           <div class="about-me">
-            <ul style="display: block; padding: 1em 2em">
+            <ul
+              style="
+                display: block;
+                align-self: center;
+                margin: 15px 40px;
+                padding: 0.5em;
+              "
+            >
               <li class="fragment" data-fragment-index="1">Erin Zimmer</li>
               <li class="fragment">twitter.com/ErinJZimmer</li>
               <li class="fragment" style="margin-bottom: 0">
@@ -54,7 +81,7 @@
               </li>
             </ul>
             <div class="fragment cogent-logo" data-fragment-index="2">
-              <img width="80%" src="css/CO-Cogent-secondary-watermelon.png" />
+              <img width="200px" src="css/CO-Cogent-secondary-watermelon.png" />
             </div>
           </div>
         </section>
@@ -161,7 +188,7 @@
           </div>
         </section>
         <section>
-          <pre><code data-noescape class="js" style="font-size: 4em">
+          <pre><code data-noescape class="js" style="font-size: 4em; overflow: hidden">
 while (true) {
  <span class="variable-name">task</span> = taskQueue.pop();
  execute(<span class="variable-name">task</span>);
@@ -204,7 +231,10 @@ while (true) {
           </div>
         </section>
         <section>
-          <iframe src="http://localhost:3000/parser-only"></iframe>
+          <iframe
+            style="overflow: hidden"
+            src="http://localhost:3000/parser-only"
+          ></iframe>
         </section>
         <section>
           <h2>
@@ -281,7 +311,7 @@ while (true) {
           <iframe src="http://localhost:3000/simple"></iframe>
         </section>
         <section>
-          <pre><code data-noescape class="js" style="font-size: 4em">
+          <pre><code data-noescape class="js" style="font-size: 4em; overflow: hidden">
 while (true) {
  <span class="variable-name">task</span> = taskQueue.pop();
  execute(<span class="variable-name">task</span>);
@@ -306,7 +336,7 @@ while (true) {
           </div>
         </section>
         <section class="center">
-          <pre><code style="font-size: 3em">function repeat(reps, action) {
+          <pre><code style="font-size: 3em; overflow: hidden">function repeat(reps, action) {
  action();
  if (--reps) {
   setTimeout(() => repeat(reps, action));
@@ -314,14 +344,14 @@ while (true) {
 }					</code></pre>
         </section>
         <section>
-          <pre><code style="font-size: 3em" class="js">
+          <pre><code style="font-size: 3em; overflow: hidden" class="js">
 /*  job.js  */
 onmessage = function(e) {
  for (let i = 0; i < e.data.reps; i++) {
   e.data.action();
  }
 }</code></pre>
-          <pre><code style="font-size: 3em" class="js fragment">
+          <pre><code style="font-size: 3em; overflow: hidden" class="js fragment">
 /*  app.js  */
 const worker = new Worker('job.js');
 worker.postMessage(action, reps);
@@ -329,7 +359,7 @@ worker.postMessage(action, reps);
           <img src="css/Yoshi_Happy.png" class="yoshi fragment" />
         </section>
         <section>
-          <pre><code data-noescape class="js" style="font-size: 3.7em">
+          <pre><code data-noescape class="js" style="font-size: 3.7em; overflow: hidden">
 while (true) {
  <span class="variable-name">task</span> = taskQueue.pop();
  execute(<span class="variable-name">task</span>);
@@ -380,7 +410,7 @@ if (!keep_running_)
           </div>
         </section>
         <section>
-          <pre><code data-noescape class="js" style="font-size: 3.7em">
+          <pre><code data-noescape class="js" style="font-size: 3.7em' overflow: hidden">
 while (true) {
  <span class="variable-name">queue</span> = getNextQueue();
  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
@@ -413,7 +443,7 @@ observer.observe(myElement, ({ subtree: true }));
           </div>
         </section>
         <section>
-          <pre><code class="js">
+          <pre><code class="js" style="overflow: hidden">
 const myPromise = new Promise((resolve, reject) => { ... });
 myPromise.then(callback).catch(errorCallback);
 					</code></pre>
@@ -448,7 +478,7 @@ window.queueMicrotask(callback);
           <iframe src="http://localhost:3000/microtasks"></iframe>
         </section>
         <section>
-          <pre><code data-noescape class="js" style="font-size: 3.5em">
+          <pre><code data-noescape class="js" style="font-size: 3.5em; overflow: hidden">
 while (true) {
  <span class="variable-name">queue</span> = getNextQueue();
  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
@@ -467,13 +497,13 @@ while (true) {
           </h2>
         </section>
         <section>
-          <pre><code style="text-align: center; font-size: 3.7em;">
+          <pre><code style="text-align: center; font-size: 3.7em; overflow: hidden">
 requestAnimationFrame(callback);
 					</code></pre>
         </section>
         <section>
           <iframe
-            style="width: 100%; min-height: 80vh; border: none"
+            style="border: none; overflow: hidden"
             src="single-box-animation.html"
           ></iframe>
           <div class="notes">
@@ -568,16 +598,7 @@ requestAnimationFrame(callback);
           ></iframe>
         </section>
         <section data-state="addTasks">
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              position: fixed;
-              top: 10%;
-              right: 35%;
-              height: 100vh;
-            "
-          >
+          <div style="display: flex; align-items: center; margin-top: 200px">
             <task-queue
               id="too-many-tasks"
               style="--queue-width: 200px; margin: auto"
@@ -621,7 +642,7 @@ requestAnimationFrame(callback);
           />
         </section>
         <section>
-          <pre><code data-noescape class="js" style="font-size: 2.6em">
+          <pre><code data-noescape class="js" style="font-size: 2.6em; overflow: hidden">
 while (true) {
  <span class="variable-name">queue</span> = getNextQueue();
  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();

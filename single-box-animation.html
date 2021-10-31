@@ -1,8 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/common.css" />
     <style>
+      body {
+        height: 50vh;
+        width: 100%;
+        overflow: hidden;
+      }
       .box-world {
         display: flex;
         height: 100%;
@@ -22,26 +27,26 @@
       <div class="box"></div>
     </div>
     <script>
-      const box = document.querySelector('.box');
-      const rate = 10;
-      let startTime;
+      const box = document.querySelector(".box")
+      const rate = 10
+      let startTime
 
-      box.addEventListener('click', () => {
-        requestAnimationFrame((time) => startTime = time);
-        requestAnimationFrame(sine);
-      });	
+      box.addEventListener("click", () => {
+        requestAnimationFrame((time) => (startTime = time))
+        requestAnimationFrame(sine)
+      })
 
       function sine(currentTime) {
-        const elapsedTime = currentTime - startTime;
+        const elapsedTime = currentTime - startTime
 
-        const x = elapsedTime / rate;
-        const y = Math.sin(elapsedTime / 500) * 100;
+        const x = elapsedTime / rate
+        const y = Math.sin(elapsedTime / 500) * 100
 
-        box.style.left = `${x}px`;
-        box.style.top = `${y}px`;
+        box.style.left = `${x}px`
+        box.style.top = `${y}px`
 
-        if ((x + 50) < window.innerWidth) {
-          requestAnimationFrame(sine);
+        if (x + 50 < window.innerWidth) {
+          requestAnimationFrame(sine)
         }
       }
     </script>
