@@ -277,106 +277,6 @@ while (true) {
             </div>
           </div>
         </section>
-        <section data-state="threads">
-          <div
-            class="threaded"
-            style="
-              display: flex;
-              justify-content: space-around;
-              position: relative;
-            "
-          >
-            <div style="position: relative; display: flex">
-              <div
-                class="task manual-task"
-                style="transition-duration: 3s"
-              ></div>
-              <task-queue
-                id="threads-task"
-                style="--queue-width: 150px; margin-left: 50px"
-              >
-              </task-queue>
-            </div>
-            <task-source
-              id="threaded-timer"
-              type="timer"
-              class="timer-animation"
-            ></task-source>
-          </div>
-          <script>
-            Reveal.addEventListener("threads", () => {
-              let newTask
-
-              function finishTasks(event) {
-                if (isNextSlide(event.key)) {
-                  event.stopPropagation()
-                  task.style.transitionDuration = "2s"
-                  task.style.top = "100px"
-
-                  task.addEventListener(
-                    "transitionend",
-                    () => (task.style.opacity = 0)
-                  )
-
-                  newTask.style.top = "100px"
-                  newTask.addEventListener(
-                    "transitionend",
-                    () => (newTask.style.opacity = 0)
-                  )
-
-                  document.body.removeEventListener("keydown", finishTasks)
-                }
-              }
-
-              function addTimerTaskToQueue(event) {
-                if (isNextSlide(event.key)) {
-                  event.stopPropagation()
-                  document.body.removeEventListener(
-                    "keydown",
-                    addTimerTaskToQueue
-                  )
-
-                  newTask = document.createElement("div")
-                  newTask.classList.add("task", "manual-task")
-                  newTask.style.zIndex = -2
-                  newTask.style.right = "24px"
-                  newTask.style.transition = "top 5s linear 2s"
-
-                  document.querySelector(".threaded div").append(newTask)
-
-                  timer.style.visibility = "hidden"
-
-                  document.body.addEventListener("keydown", finishTasks)
-                }
-              }
-
-              function runFiveSecondTask(event) {
-                if (isNextSlide(event.key)) {
-                  event.stopPropagation()
-                  task.style.top = "50px"
-                  timer.classList.add("go")
-
-                  document.body.removeEventListener(
-                    "keydown",
-                    runFiveSecondTask
-                  )
-                  timer.addEventListener("transitionend", () => {
-                    timer.style.filter =
-                      "drop-shadow(3px 3px 5px rgb(var(--green))"
-                    document.body.addEventListener(
-                      "keydown",
-                      addTimerTaskToQueue
-                    )
-                  })
-                }
-              }
-
-              const task = document.querySelector(".threaded .task")
-              const timer = document.getElementById("threaded-timer")
-              document.body.addEventListener("keydown", runFiveSecondTask)
-            })
-          </script>
-        </section>
         <section>
           <iframe src="http://localhost:3000/simple"></iframe>
         </section>
@@ -664,7 +564,7 @@ requestAnimationFrame(callback);
           <iframe
             id="timeout-animations"
             style="width: 100%; min-height: 80vh; border: none"
-            src="timeout-animations.html"
+            src="http://localhost:3000/timeout-animation"
           ></iframe>
         </section>
         <section data-state="addTasks">
@@ -769,10 +669,6 @@ while (true) {
     </div>
 
     <script src="lib/js/head.min.js"></script>
-
-    <link rel="import" href="components/queue.html" />
-    <link rel="import" href="components/rendering-pipeline.html" />
-    <link rel="import" href="components/browser.html" />
 
     <script>
       // More info about config & dependencies:
@@ -1203,6 +1099,488 @@ while (true) {
         }
       }
       customElements.define("task-source", TaskSource)
+    </script>
+
+    <template id="pipeline">
+      <style>
+        :host {
+          display: flex;
+          flex-direction: column;
+          margin-top: 5vh;
+        }
+
+        browser-window {
+          height: 30vh;
+          width: 95%;
+          margin: auto;
+          z-index: -1;
+        }
+
+        browser-window.go {
+          transition: transform 2s 0.5s linear;
+          transform: translateY(103%);
+        }
+
+        .pipe {
+          --lightgreen: #16cc16;
+          --midgreen: #28a828;
+          width: 16vh;
+          max-width: 100%;
+          height: 33vh;
+          border: 6px solid #006000;
+          background: linear-gradient(
+            to right,
+            green,
+            green 12%,
+            var(--midgreen) 12%,
+            var(--midgreen) 15%,
+            green 15%,
+            green 17%,
+            var(--midgreen) 17%,
+            var(--midgreen) 60%,
+            var(--lightgreen) 60%,
+            var(--lightgreen) 81%,
+            var(--midgreen) 81%,
+            var(--midgreen) 86%,
+            var(--lightgreen) 86%,
+            var(--lightgreen) 93%,
+            var(--midgreen) 93%
+          );
+          box-sizing: border-box;
+          position: relative;
+        }
+        .pipe::before {
+          content: "";
+          display: block;
+          height: 25%;
+          position: absolute;
+          border: inherit;
+          left: calc(-2vw - 6px);
+          right: calc(-2vw - 6px);
+          top: -6px;
+          background: inherit;
+        }
+
+        .timer {
+          font-size: 3em;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
+        .overtime {
+          color: red;
+        }
+      </style>
+      <browser-window class="go">
+        <button>CLICK ME</button>
+      </browser-window>
+      <div class="pipe"></div>
+      <div class="timer" id="seconds-since-repaint"></div>
+    </template>
+    <script>
+      const pipelineDocument = document.currentScript.ownerDocument
+      class RenderingPipeline extends HTMLElement {
+        constructor() {
+          super()
+
+          this.shadow = this.attachShadow({ mode: "open" })
+          const content = pipelineDocument
+            .getElementById("pipeline")
+            .content.cloneNode(true)
+          this.shadow.appendChild(content)
+
+          this.browser = this.shadow.querySelector("browser-window")
+          this.timer = this.shadow.getElementById("seconds-since-repaint")
+          this.secondsSinceRepaint = 0
+
+          this.browser.addEventListener("transitionend", (event) => {
+            this.resolveTask()
+            // this.startTimer()
+          })
+        }
+
+        startTimer() {
+          this.interval = setInterval(() => {
+            this.timer.innerHTML = ++this.secondsSinceRepaint
+            if (this.secondsSinceRepaint > 16) {
+              this.timer.classList.add("overtime")
+            } else {
+              this.timer.classList.remove("overtime")
+            }
+          }, 500)
+        }
+
+        runTask() {
+          const taskPromise = new Promise(
+            (resolve) => (this.resolveTask = resolve)
+          )
+
+          this.secondsSinceRepaint = 0
+          clearInterval(this.interval)
+
+          requestAnimationFrame(() => {
+            this.browser.classList.remove("go")
+
+            requestAnimationFrame(() => {
+              this.browser.classList.add("go")
+            })
+          })
+
+          return taskPromise
+        }
+      }
+      customElements.define("rendering-pipeline", RenderingPipeline)
+    </script>
+
+    <template id="browser">
+      <style>
+        :host {
+          display: flex;
+          --control-colour: #aaa;
+          --control-highlight: #ccc;
+          --control-shadow: #888;
+        }
+        .chrome {
+          width: 100%;
+          height: 100%;
+          border: 2px solid var(--control-colour);
+          border-left: 4px ridge var(--control-colour);
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          background-color: white;
+        }
+        .chrome::before {
+          content: "";
+          width: calc(100% + 3px);
+          height: calc(100% + 3px);
+          border: 2px solid;
+          left: -4px;
+          top: -4px;
+          border-color: var(--control-highlight);
+          border-right-color: var(--control-shadow);
+          position: absolute;
+          z-index: -1;
+        }
+        .titlebar {
+          height: 20px;
+          margin: -3px -2px -2px -2px;
+          border-bottom: 4px ridge #aaa;
+          background-color: #aaa;
+          position: relative;
+          display: flex;
+          flex: 0 0 auto;
+        }
+        .page {
+          flex-grow: 1;
+          padding: 5px;
+          display: flex;
+        }
+
+        .window-control {
+          --box-shadow-1: 0 -1px 0 1px;
+          --box-shadow-2: 0 2px 2px;
+          --box-shadow-3: 0 2px rgba(255, 255, 255, 0.25) inset;
+          cursor: pointer;
+          background: #e53030;
+          box-shadow: var(--box-shadow-1) #c91919 inset,
+            var(--box-shadow-2) rgba(65, 8, 8, 0.17), var(--box-shadow-3);
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          margin: 5px 2px;
+          border: 1px solid #666;
+          flex-shrink: 0;
+        }
+        .window-control:nth-child(2) {
+          background: #ffc334;
+          box-shadow: var(--box-shadow-1) #ffb401 inset,
+            var(--box-shadow-2) rgba(103, 73, 0, 0.17), var(--box-shadow-3);
+        }
+        .window-control:last-child {
+          background: #0ec518;
+          box-shadow: var(--box-shadow-1) #0b9512 inset,
+            var(--box-shadow-2) rgba(0, 7, 1, 0.17), var(--box-shadow-3);
+        }
+
+        button {
+          cursor: pointer;
+          background: hsl(215, 100%, 50%);
+          color: white;
+          border: 1px solid #666;
+          border-radius: 2px;
+          box-shadow: 2px 2px 4px #ccc, 0 -2px 2px hsl(215, 80%, 38%) inset,
+            0 2px 2px hsl(215, 80%, 80%) inset;
+          width: 80%;
+          margin: auto;
+          padding: 5px;
+        }
+        button:active {
+          outline: none;
+          box-shadow: 0 -2px 2px hsl(215, 80%, 80%) inset,
+            0 2px 2px hsl(215, 80%, 38%) inset;
+        }
+        button:focus {
+          outline: none;
+        }
+      </style>
+      <div class="chrome">
+        <div class="titlebar">
+          <div class="window-control"></div>
+          <div class="window-control"></div>
+          <div class="window-control"></div>
+        </div>
+        <div class="page"><button>Click Me</button></div>
+      </div>
+    </template>
+    <script>
+      const browserDocument = document.currentScript.ownerDocument
+      class Browser extends HTMLElement {
+        constructor() {
+          super()
+
+          const shadow = this.attachShadow({ mode: "closed" })
+          const content = browserDocument
+            .getElementById("browser")
+            .content.cloneNode(true)
+          shadow.appendChild(content)
+
+          this.button = shadow.querySelector("button")
+          this.button.addEventListener("click", () => {
+            document.body.dispatchEvent(
+              new CustomEvent("task", { detail: "browser" })
+            )
+          })
+        }
+      }
+      customElements.define("browser-window", Browser)
+    </script>
+
+    <template id="queue">
+      <style>
+        :host {
+          display: block;
+          width: var(--queue-width);
+          height: calc(var(--queue-width) * 0.5);
+          position: relative;
+          border: 16px solid var(--container-colour);
+          border-top-color: transparent;
+          align-self: flex-end;
+        }
+        :host::before,
+        :host::after {
+          content: "";
+          --curl-width: calc(var(--queue-width) / 4);
+          width: var(--curl-width);
+          height: var(--curl-width);
+          display: block;
+          border: 16px solid var(--container-colour);
+          border-radius: 50%;
+          border-bottom-color: transparent;
+          border-right-color: transparent;
+          transform: translateY(16px) rotate(0.125turn);
+          position: absolute;
+          bottom: calc(100% - 1vw - 4px);
+        }
+        :host::before {
+          right: 100%;
+        }
+        :host::after {
+          left: 100%;
+        }
+
+        .task {
+          width: calc(var(--queue-width) * 0.8);
+          height: var(--queue-width);
+          background-color: white;
+          border: 4px solid black;
+          flex-shrink: 0;
+          display: flex;
+          transition: left 0.5s linear, bottom 0.5s linear, height 3s linear;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          overflow: hidden;
+          color: black;
+        }
+        .task::before {
+          margin: auto;
+          content: "{}";
+          font-family: "Courier New", Courier, monospace;
+          font-weight: bold;
+          overflow: hidden;
+          font-size: 3em;
+        }
+
+        .task.browser {
+          background-color: hsl(215, 80%, 80%);
+        }
+        .task.timer {
+          background-color: hsl(350, 80%, 80%);
+        }
+        .task.network {
+          background-color: hsl(100, 80%, 80%);
+        }
+        .task.drive {
+          background-color: hsl(40, 80%, 80%);
+        }
+        .task.microtask {
+          background-color: #f7df1e;
+        }
+        .task.next-tick {
+          color: white;
+          border-color: white;
+          background-color: red;
+        }
+        .task.necessary {
+          background-color: rgb(var(--green));
+        }
+        .task.unnecessary {
+          border-color: #aaa;
+        }
+
+        .task.animation {
+          height: 60px;
+          background-image: url("css/cat.png");
+          background-size: cover;
+        }
+        .task.animation::before {
+          content: "";
+        }
+      </style>
+      <div class="tasks"></div>
+    </template>
+    <script>
+      const queueDocument = document.currentScript.ownerDocument
+      class TaskQueue extends HTMLElement {
+        constructor() {
+          super()
+
+          this.shadow = this.attachShadow({ mode: "closed" })
+          const content = queueDocument
+            .getElementById("queue")
+            .content.cloneNode(true)
+          this.shadow.appendChild(content)
+
+          this.tasks = this.shadow.querySelector(".tasks")
+
+          const typeAttribute = this.attributes.type
+          this.type = typeAttribute ? typeAttribute.value : "default"
+
+          const colour = this.getColour(this.type)
+          this.style.setProperty("--container-colour", colour)
+
+          const shadowColour = this.getShadowColour(this.type)
+          this.style.setProperty("--shadow-colour", shadowColour)
+
+          this.addEventListener("do-task", this.runTask)
+        }
+
+        getColour(queueType) {
+          switch (queueType) {
+            case "microtask":
+              return "#f7df1e"
+            case "next-tick":
+              return "green"
+            case "animation":
+              return "#28a828"
+            default:
+              return "orange"
+          }
+        }
+
+        getShadowColour(queueType) {
+          if (queueType === "animation" || queueType === "next-tick") {
+            return "#006000"
+          }
+
+          return "#93510b"
+        }
+
+        addTask(taskType) {
+          const task = document.createElement("div")
+          task.classList.add("task")
+          task.classList.add(taskType)
+
+          const index = this.getTasks().length
+          this.positionTask(task, index)
+
+          this.tasks.appendChild(task)
+        }
+
+        getTasks() {
+          return this.shadow.querySelectorAll(".task")
+        }
+        getTask(index) {
+          return this.getTasks()[index]
+        }
+        hasTasks() {
+          return this.getTasks().length
+        }
+
+        async runTask(time) {
+          if (this.type === "animation") {
+            return this.runAnimationTasks()
+          }
+
+          const firstTask = this.getTask(0)
+          if (firstTask) {
+            let duration = time || this.getRandomTime()
+            if (firstTask.classList.contains("repeating")) {
+              this.addTask("repeating")
+              duration = 2
+            }
+            await this.startTask(firstTask, duration)
+          }
+        }
+
+        startTask(task, duration) {
+          let resolveTask
+          const taskPromise = new Promise((resolve) => (resolveTask = resolve))
+
+          task.style.transitionDuration = `.5s, .5s, ${duration}s`
+          task.style.height = 0
+
+          task.addEventListener("transitionend", (event) => {
+            if (event.propertyName === "height") {
+              task.remove()
+              this.redrawTasks()
+              resolveTask()
+            }
+          })
+
+          return taskPromise
+        }
+
+        async runAnimationTasks() {
+          const animationSource = document.querySelector(
+            'task-source[type="animation"]'
+          )
+          animationSource.run()
+          const currentTasks = this.getTasks()
+          currentTasks.forEach((task) => (task.style.borderColor = "white"))
+          for (let task of currentTasks) {
+            await this.startTask(task)
+          }
+          animationSource.stop()
+        }
+
+        redrawTasks() {
+          const tasks = this.getTasks()
+          tasks.forEach(this.positionTask)
+        }
+
+        positionTask(task, index) {
+          task.style.right = `${index * 8}px`
+          task.style.bottom = `${index * 8}px`
+          task.style.zIndex = index * -1
+        }
+
+        getRandomTime() {
+          return Math.random() * 4 + 2
+        }
+      }
+      customElements.define("task-queue", TaskQueue)
     </script>
   </body>
 </html>
