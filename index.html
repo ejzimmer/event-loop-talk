@@ -740,109 +740,10 @@ while (true) {
 }
 					</code></pre>
         </section>
-        <section data-background-image="css/skeleton.jpg">
-          <h2 class="heading-card" style="position: relative; top: 20px">
-            Node
-          </h2>
-        </section>
-        <section>
-          <img src="css/good-news-everyone.jpg" alt="" class="stretch shadow" />
-        </section>
-        <section>
-          <span style="position: relative">
-            <img src="css/libuv.svg" style="width: calc(80vmin - 80px)" />
-            <div class="libuv">libuv</div>
-          </span>
-          <div class="notes">
-            It still consists of an engine and a bunch of supporting APIs.
-            Although, in Node, they're not called Web APIs, because, obviously,
-            that would be weird. Instead they're called the unicorn velociraptor
-            library. Or libuv.
-          </div>
-        </section>
-        <section>
-          <ul style="font-size: 3em">
-            <li class="fragment">No DOM</li>
-            <li class="fragment">Limited user interactions</li>
-            <li class="fragment">No windows</li>
-          </ul>
-          <div class="notes">
-            The event loop itself is much simpler - no DOM - just straight up
-            JS, no rendering pipeline, no animation frame queue - user
-            interactions when you ask for them, none of this hanging around
-            letting them click wherever the whim takes them - no windows = no
-            sharing event loops, worrying about cross-origin anything - there
-            are workers, but as we saw before, they're dead simple
-          </div>
-        </section>
-        <section>
-          <img class="stretch shadow" src="css/corgi-carousel.gif" />
-        </section>
-        <section>
-          <img class="stretch shadow" src="css/thunderbolt.gif" />
-        </section>
-        <section>
-          <iframe src="node.html"></iframe>
-        </section>
-        <section>
-          <pre><code style="text-align: center; font-size: 4em" class="lisp">setImmediate(callback)</code></pre>
-        </section>
-        <section>
-          <div style="display: flex; align-items: center; font-size: 2em">
-            <pre><code>setTimeout(callback, 0)</code></pre>
-            <img style="width: 20vmin" src="css/hedgehog.png" />
-          </div>
-          <div style="display: flex; align-items: center; font-size: 2em">
-            <img style="width: 20vmin" src="css/sonic.png" />
-            <pre><code>setImmediate(callback)</code></pre>
-          </div>
-        </section>
-        <section>
-          <iframe src="node.html"></iframe>
-        </section>
-        <section>
-          <pre><code style="text-align: center; font-size: 4em" class="lisp">process.nextTick(callback)</code></pre>
-        </section>
-        <section>
-          <iframe src="node.html"></iframe>
-        </section>
-        <section>
-          <div style="display: flex">
-            <pre><code style="font-size: 3em">setImmediate():</code></pre>
-            <div style="padding: 0.5em; font-size: 2.2em; align-self: center">
-              do something on the next tick
-            </div>
-          </div>
-          <div style="display: flex" class="fragment">
-            <pre><code style="font-size: 3em">process.nextTick():</code></pre>
-            <div style="padding: 0.5em; font-size: 2.2em; align-self: center">
-              do something immediately
-            </div>
-          </div>
-        </section>
-        <section>
-          <pre><code data-noescape class="js" style="font-size: 2.6em">
-while (tasksAreWaiting()) {
- <span class="variable-name">queue</span> = getNextQueue();
 
- while (queue.hasTasks()) {
-  <span class="variable-name">task</span> = <span class="variable-name">queue</span>.pop();
-  execute(<span class="variable-name">task</span>);
-
-  while (<span class="variable-name">nextTickQueue</span>.hasTasks()) 
-   doNextTickTask();
-
-  while (<span class="variable-name">promiseQueue</span>.hasTasks()) 
-   doPromiseTask();
- }
-}
-					</code></pre>
-        </section>
         <section>
           <ul>
             <li class="fragment">Don't block rendering</li>
-            <li class="fragment">Use web workers</li>
-            <li class="fragment">Always use rel="noopener"</li>
             <li class="fragment">Promises beat tasks</li>
             <li class="fragment">Animate with requestAnimationFrame</li>
           </ul>
