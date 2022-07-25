@@ -337,6 +337,13 @@ while (true) {
         </section>
         <section class="center">
           <pre><code style="font-size: 3em; overflow: hidden">function repeat(reps, action) {
+ for (let i = 0; i < reps; i++) {
+   action();
+ }
+}					</code></pre>
+        </section>
+        <section class="center">
+          <pre><code style="font-size: 3em; overflow: hidden">function repeat(reps, action) {
  action();
  if (--reps) {
   setTimeout(() => repeat(reps, action));
@@ -426,7 +433,9 @@ while (true) {
           </h2>
         </section>
         <section>
-          <div style="font-size: 3.8em">A task that happens between tasks</div>
+          <div style="font-size: 3.8em">
+            A task that happens between a task and rendering
+          </div>
           <div class="notes">
             Between one task and the next, or between task and rendering
           </div>
@@ -536,48 +545,6 @@ requestAnimationFrame(callback);
             If you did that, what you would get is this...
           </div>
         </section>
-        <section data-state="naive-animation">
-          <div style="display: flex; align-items: flex-end">
-            <div style="margin: 0 auto; position: relative">
-              <div
-                class="task manual-task"
-                id="naive-animation"
-                style="width: 200px; top: -200px"
-              ></div>
-              <task-queue style="--queue-width: 150px; margin-left: 50px">
-              </task-queue>
-            </div>
-            <rendering-pipeline
-              style="transform: scaleX(1.5); margin: 0 auto"
-            ></rendering-pipeline>
-          </div>
-          <script>
-            Reveal.addEventListener("naive-animation", () => {
-              const naiveAnimationTask =
-                document.getElementById("naive-animation")
-
-              function doNaiveAnimationTask(event) {
-                if (isNextSlide(event.key)) {
-                  event.stopPropagation()
-                  document.body.removeEventListener(
-                    "keydown",
-                    doNaiveAnimationTask
-                  )
-                  naiveAnimationTask.style.top = 0
-
-                  naiveAnimationTask.addEventListener("transitionend", () => {
-                    naiveAnimationTask.style.display = "none"
-                    document.querySelector("rendering-pipeline").runTask()
-                  })
-                }
-              }
-
-              document.body.addEventListener("keydown", doNaiveAnimationTask)
-            })
-            const naiveAnimationTask =
-              document.getElementById("naive-animation")
-          </script>
-        </section>
         <section>
           <pre
             style="font-size: 1.3em"
@@ -593,7 +560,7 @@ requestAnimationFrame(callback);
         <section>
           <iframe
             id="timeout-animations"
-            style="width: 100%; min-height: 80vh; border: none"
+            style="width: 100%; min-height: 40vh; border: none"
             src="http://localhost:3000/timeout-animation"
           ></iframe>
         </section>
