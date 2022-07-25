@@ -638,8 +638,26 @@ while (true) {
         </section>
         <section>
           <pre
-            style="margin-top: -150px; font-size: 2em"
-          ><code style="padding-left: 0" class="js">setTimeout(fn, 0)</code></pre>
+            style="
+              margin-top: -150px;
+              text-align: left;
+              line-height: 1.5;
+              font-size: 1.2em;
+            "
+          >
+console.error node_modules/react-dom/cjs/react-dom.development.js:530
+Warning: An update to MyComponent inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://fb.me/react-wrap-tests-with-act
+    in MyComponent 
+          </pre>
         </section>
         <section data-background-image="css/jurassic-park-raptors.jpg">
           <h2 class="heading-card fragment" data-fragment-index="1">
