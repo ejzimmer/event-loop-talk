@@ -293,7 +293,7 @@ svg.title {
   overflow: hidden;
 }
 .cogent-logo {
-  background: linear-gradient(to left, #ee4a67 75%, transparent);
+  background: linear-gradient(to left, #00d54b 75%, transparent);
   display: flex;
   align-items: center;
   border-top-right-radius: 10px;
